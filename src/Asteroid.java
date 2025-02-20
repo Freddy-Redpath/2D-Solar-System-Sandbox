@@ -1,30 +1,30 @@
 import java.awt.*;
 
 /**
- * The Black Hole class represents a black hole in a 2D space.
+ * The Asteroid class represents an asteroid in a 2D space.
  * and is used to initialize such an object
  */
-public class BlackHole {
-    private double xPosition;  // X-coordinate of the black hole
-    private double yPosition;  // Y-coordinate of the black hole
-    private double mass;       // Mass of the black hole
-    private double speed;      // Speed of the black hole
+public class Asteroid {
+    private double xPosition;  // X-coordinate of the asteroid
+    private double yPosition;  // Y-coordinate of the asteroid
+    private double mass;       // Mass of the asteroid
+    private double speed;      // Speed of the asteroid
     private double direction;  // Direction of movement in degrees
-    private double size;       // Size of the black hole
-    private Image image;       // Image representation of the black hole
+    private double size;       // Size of the asteroid
+    private Image image;       // Image representation of the asteroid
 
     /**
-     * Constructor to initialize an BlackHole object.
+     * Constructor to initialize an Asteroid object.
      *
      * @param xPosition  Initial X-coordinate
      * @param yPosition  Initial Y-coordinate
-     * @param mass       Mass of the black hole
-     * @param speed      Speed of the black hole
+     * @param mass       Mass of the asteroid
+     * @param speed      Speed of the asteroid
      * @param direction  Direction of movement in degrees
-     * @param size       Size of the black hole
-     * @param image      Image representation of the black hole
+     * @param size       Size of the asteroid
+     * @param image      Image representation of the asteroid
      */
-    public BlackHole(double xPosition, double yPosition, double mass, double speed, double direction, double size, Image image) {
+    public Asteroid(double xPosition, double yPosition, double mass, double speed, double direction, double size, Image image) {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.mass = mass;
@@ -34,7 +34,7 @@ public class BlackHole {
         this.image = image;
     }
 
-    // Getter methods to retrieve black hole properties
+    // Getter methods to retrieve asteroid properties
     public double getXPosition() {
         return xPosition;
     }
@@ -63,7 +63,7 @@ public class BlackHole {
         return image;
     }
 
-    // Setter methods to modify black hole properties
+    // Setter methods to modify asteroid properties
     public void setImage(Image image) {
         this.image = image;
     }
