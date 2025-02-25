@@ -12,7 +12,8 @@ public class Planet {
     private double direction;  // Direction of movement in degrees
     private double size;       // Size of the planet
     private Image image;       // Image representation of the planet
-
+// Test comment 1 for Git
+// Test comment 2 for Git
     /**
      * Constructor to initialize an Planet object.
      *
