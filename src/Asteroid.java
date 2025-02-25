@@ -14,7 +14,7 @@ public class Asteroid {
     private Image image;       // Image representation of the asteroid
 
     /**
-     * Constructor to initialize an Asteroid object. hello
+     * Constructor to initialize an Asteroid object.
      *
      * @param xPosition  Initial X-coordinate
      * @param yPosition  Initial Y-coordinate
