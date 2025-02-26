@@ -5,6 +5,7 @@ import java.awt.*;
  * and is used to initialize such an object
  */
 public class Sun {
+    private String Name;
     private double xPosition;  // X-coordinate of the sun
     private double yPosition;  // Y-coordinate of the sun
     private double mass;       // Mass of the sun

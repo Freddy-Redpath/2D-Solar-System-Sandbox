@@ -5,6 +5,7 @@ import java.awt.*;
  * and is used to initialize such an object
  */
 public class Asteroid {
+    private String Name;
     private double xPosition;  // X-coordinate of the asteroid
     private double yPosition;  // Y-coordinate of the asteroid
     private double mass;       // Mass of the asteroid

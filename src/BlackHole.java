@@ -5,6 +5,7 @@ import java.awt.*;
  * and is used to initialize such an object
  */
 public class BlackHole {
+    private String Name;
     private double xPosition;  // X-coordinate of the black hole
     private double yPosition;  // Y-coordinate of the black hole
     private double mass;       // Mass of the black hole
