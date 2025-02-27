@@ -15,7 +15,7 @@ public class Main {
         ui = new UI();
         ui.Initialisewindow();
 
-        planets.add(new Planet(0,0,3, 0, 12, 12, null));
+        //planets.add(new Planet(0,0,3, 0, 12, 12, null));
 
     }
 

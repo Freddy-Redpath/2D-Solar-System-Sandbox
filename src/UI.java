@@ -3,29 +3,29 @@ import javax.swing.*;
 import java.awt.*;
 
 public class UI extends JPanel {
-   JButton changeColour = new JButton("Change Colour");
+
 
    public void Initialisewindow() {
 
-      this.setBackground(Color.BLACK);
       JFrame window = new JFrame("UI Dev Test");
       window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       window.setSize(1280, 720);
+
       window.setLayout(null);
-      ButtonCreator();
+      JButton changeColour =  ButtonCreator(Color.GREEN, 300, 300, 200, 50, "HELLO woRLD");
       window.add(changeColour);
       window.setLocationRelativeTo(null);
       window.setVisible(true);
 
    }
-   public void ButtonCreator(){
+   public JButton ButtonCreator( Color colour, int xPos, int yPos, int width, int height, String text){
+      JButton button = new JButton(text);
+      button.setBackground(colour);
+      //changeColour.setForeground( new Color(153,153,252));
+      button.setBounds(xPos, yPos, width, height);
+      button.addActionListener(e -> {
 
-      changeColour.setBackground(Color.GREEN);
-      changeColour.setForeground( new Color(153,153,252));
-      changeColour.setBounds(300, 300, 200, 50);
-      changeColour.addActionListener(e -> {
-         System.out.println("Change Colour");
       });
-
+      return button;
    }
    }
