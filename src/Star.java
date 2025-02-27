@@ -1,30 +1,32 @@
 import java.awt.*;
 
 /**
- * The Sun class represents a sun in a 2D space.
+ * The Star class represents a star in a 2D space.
  * and is used to initialize such an object
  */
-public class Sun {
-    private double xPosition;  // X-coordinate of the sun
-    private double yPosition;  // Y-coordinate of the sun
-    private double mass;       // Mass of the sun
-    private double speed;      // Speed of the sun
+public class Star {
+    private String name;
+    private double xPosition;  // X-coordinate of the star
+    private double yPosition;  // Y-coordinate of the star
+    private double mass;       // Mass of the star
+    private double speed;      // Speed of the star
     private double direction;  // Direction of movement in degrees
-    private double size;       // Size of the sun
-    private Image image;       // Image representation of the sun
+    private double size;       // Size of the star
+    private Image image;       // Image representation of the star
 
     /**
-     * Constructor to initialize an Sun object.
+     * Constructor to initialize a star object.
      *
+     * @param name       Label for the star
      * @param xPosition  Initial X-coordinate
      * @param yPosition  Initial Y-coordinate
-     * @param mass       Mass of the sun
-     * @param speed      Speed of the sun
+     * @param mass       Mass of the star
+     * @param speed      Speed of the star
      * @param direction  Direction of movement in degrees
-     * @param size       Size of the sun
-     * @param image      Image representation of the sun
+     * @param size       Size of the star
+     * @param image      Image representation of the star
      */
-    public Sun(double xPosition, double yPosition, double mass, double speed, double direction, double size, Image image) {
+    public Star(double xPosition, double yPosition, double mass, double speed, double direction, double size, Image image, String name) {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.mass = mass;
@@ -32,9 +34,10 @@ public class Sun {
         this.direction = direction;
         this.size = size;
         this.image = image;
+        this.name = name;
     }
 
-    // Getter methods to retrieve sun properties
+    // Getter methods to retrieve star properties
     public double getXPosition() {
         return xPosition;
     }
@@ -63,7 +66,9 @@ public class Sun {
         return image;
     }
 
-    // Setter methods to modify sun properties
+    public String getName() {return name;}
+
+    // Setter methods to modify star properties
     public void setImage(Image image) {
         this.image = image;
     }
@@ -91,4 +96,6 @@ public class Sun {
     public void setDirection(double direction) {
         this.direction = direction;
     }
+
+    public void setName(String name) { this.name = name;}
 }

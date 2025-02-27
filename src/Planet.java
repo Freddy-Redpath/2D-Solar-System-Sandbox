@@ -5,6 +5,7 @@ import java.awt.*;
  * and is used to initialize such an object
  */
 public class Planet {
+    private String name;
     private double xPosition;  // X-coordinate of the planet
     private double yPosition;  // Y-coordinate of the planet
     private double mass;       // Mass of the planet
@@ -14,8 +15,9 @@ public class Planet {
     private Image image;       // Image representation of the planet
 
     /**
-     * Constructor to initialize an Planet object.
+     * Constructor to initialize a Planet object.
      *
+     * @param name       Label for the planet
      * @param xPosition  Initial X-coordinate
      * @param yPosition  Initial Y-coordinate
      * @param mass       Mass of the planet
@@ -24,7 +26,7 @@ public class Planet {
      * @param size       Size of the planet
      * @param image      Image representation of the planet
      */
-    public Planet(double xPosition, double yPosition, double mass, double speed, double direction, double size, Image image) {
+    public Planet(double xPosition, double yPosition, double mass, double speed, double direction, double size, Image image, String name) {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.mass = mass;
@@ -32,6 +34,7 @@ public class Planet {
         this.direction = direction;
         this.size = size;
         this.image = image;
+        this.name = name;
     }
 
     // Getter methods to retrieve planet properties
@@ -63,6 +66,8 @@ public class Planet {
         return image;
     }
 
+    public String getName() {return name;}
+
     // Setter methods to modify planet properties
     public void setImage(Image image) {
         this.image = image;
@@ -91,4 +96,6 @@ public class Planet {
     public void setDirection(double direction) {
         this.direction = direction;
     }
+
+    public void setName(String name) {this.name = name;}
 }
