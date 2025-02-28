@@ -70,12 +70,19 @@ public class UI {
 
         // create buttons with specified values
         JButton createPlanetBTN = ButtonCreator(null, 0, 0, 150, 100, "Create Planet");
-        JButton changeVelocityBTN = ButtonCreator(null, 0, 0, 150, 50, "Change Velocity");
+        createPlanetBTN.addActionListener(e -> {
+            System.out.println("Create Planet pressed");
+        });
+
+        JButton deletePlanetBTN = ButtonCreator(null, 0, 0, 150, 50, "Delete Planet");
+        deletePlanetBTN.addActionListener(e -> {
+            System.out.println("Delete planet pressed");
+        });
 
         // add buttons to side panel with Button.add
         sidePanel.add(createPlanetBTN);
         sidePanel.add(Box.createVerticalStrut(20)); // add vertical spacing between buttons
-        sidePanel.add(changeVelocityBTN);
+        sidePanel.add(deletePlanetBTN);
 
         return sidePanel;
     }
