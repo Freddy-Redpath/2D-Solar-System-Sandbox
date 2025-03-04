@@ -11,7 +11,7 @@ public class SolarSystem {
 
     public ArrayList<BlackHole> blackHoleArray = new ArrayList<BlackHole>();
 
-
+    // Constructor, nothing is in here as we can instantiate an empty solar system
     public SolarSystem(){
     }
 
@@ -99,5 +99,23 @@ public class SolarSystem {
     }
     public void removeBlackHole(BlackHole blackhole){
         this.blackHoleArray.remove(blackhole);
+    }
+
+    /*
+    Getter functions for returning objects in Solar System
+    Can change this to return individual planets quite easily, either by giving the function the name attribute
+    or the index
+    */
+    public ArrayList<Planet> getPlanets() {
+        return planetArray;
+    }
+    public ArrayList<Star> getStars() {
+        return starArray;
+    }
+    public ArrayList<Asteroid> getAsteroids() {
+        return asteroidArray;
+    }
+    public ArrayList<BlackHole> getBlackHoles() {
+        return blackHoleArray;
     }
 }
