@@ -11,7 +11,7 @@ public class SolarGraphics extends JFrame  {
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
             // Get image from resource package "Images"
-            ImageIcon icon = new ImageIcon(getClass().getResource("Solar system images/image-removebg-preview.png"));
+            ImageIcon icon = new ImageIcon(getClass().getResource("images/Earth.png"));
             // Scale image to appropriate size
             Image ScaledImage = icon.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
             // Planet object with scaled image (positions set as example)
