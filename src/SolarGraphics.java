@@ -15,7 +15,7 @@ public class SolarGraphics extends JFrame  {
             // Scale image to appropriate size
             Image ScaledImage = icon.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
             // Planet object with scaled image (positions set as example)
-            earth = new Planet(150,150,5,0,0,64,ScaledImage);
+            earth = new Planet(150, 150,150,5,0,64,ScaledImage, "earth");
 
             //Panel to draw planet
             SolarSystemPanel panel = new SolarSystemPanel(earth);
