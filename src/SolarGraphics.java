@@ -9,7 +9,7 @@ public class SolarGraphics extends JFrame  {
         public SolarGraphics() {
             setTitle("Solar System");
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+//EFUEF
             // Get image from resource package "Images"
             ImageIcon icon = new ImageIcon(getClass().getResource("images/Earth.png"));
             // Scale image to appropriate size
