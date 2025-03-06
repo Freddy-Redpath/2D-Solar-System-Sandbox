@@ -13,7 +13,7 @@ public class Asteroid {
     private double size;       // Size of the asteroid
     private Image image;       // Image representation of the asteroid
     private String name;
-
+//
     /**
      * Constructor to initialize an Asteroid object. hello2
      *
