@@ -64,7 +64,8 @@ public class UI {
         JPanel sidePanel = new JPanel(); // create a new panel
         sidePanel.setPreferredSize(new Dimension(250, window.getHeight())); // make panel thin, and as tall as the window
         sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS)); // arrange elements vertically
-
+        JSlider speedSlider = new JSlider(JSlider.HORIZONTAL,
+                0, 1000, 500);
         // box.createRigidArea adds an invisible componemnt (used as border) to stop components going off screen
         sidePanel.add(Box.createRigidArea(new Dimension(20, 20)));
 
@@ -81,7 +82,8 @@ public class UI {
 
         // add buttons to side panel with Button.add
         sidePanel.add(createPlanetBTN);
-        sidePanel.add(Box.createVerticalStrut(20)); // add vertical spacing between buttons
+        sidePanel.add(Box.createVerticalStrut(20));// add vertical spacing between buttons
+        sidePanel.add(speedSlider);
         sidePanel.add(deletePlanetBTN);
 
         return sidePanel;
