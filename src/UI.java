@@ -90,17 +90,19 @@ public class UI {
     }
     public JPanel topPanel() {
         JPanel topPanel = new JPanel(); // create a new panel
-        topPanel.setPreferredSize(new Dimension(window.getWidth(), 175));
+        topPanel.setPreferredSize(new Dimension(window.getWidth(), 125));
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
         JComboBox planetSelector = new JComboBox();
         for (Planet x : solarSystem.getPlanets()) {
             planetSelector.addItem(x.getName());
+
         }
 
 
-        planetSelector.setPreferredSize(new Dimension(200, 30)); // Set preferred size
-        planetSelector.setMaximumSize(new Dimension(200, 30));
+        planetSelector.setPreferredSize(new Dimension(120, 30)); // Set preferred size
+        planetSelector.setMaximumSize(new Dimension(120, 30));
         // add buttons to side panel with Button.add
+        topPanel.add(Box.createHorizontalStrut(20));
         topPanel.add(planetSelector);
 
         topPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
