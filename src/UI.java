@@ -2,11 +2,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class UI {
-
+    SolarSystem solarSystem;
     JFrame window = new JFrame("Solar System Sandbox!");
 
     public UI() {
-
+        solarSystem = new SolarSystem();
+        solarSystem.addOurSolarSystem();
         // this code executes once when an instance of UI is created
     }
 
@@ -19,9 +20,8 @@ public class UI {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // exit program when window closed
         window.setSize(width, height); // set size of window
         window.setLayout(new BorderLayout()); // add layout for side/top panels etc.
-
         window.add(sidePanel(), BorderLayout.WEST);// create (sidePanel()) and display side panel on left hand side of window
-
+        window.add(topPanel(), BorderLayout.NORTH);
         window.setLocationRelativeTo(null); // make window centre of screen
         window.setVisible(true); // make the window visible
     }
@@ -62,7 +62,7 @@ public class UI {
      */
     public JPanel sidePanel() {
         JPanel sidePanel = new JPanel(); // create a new panel
-        sidePanel.setPreferredSize(new Dimension(250, window.getHeight())); // make panel thin, and as tall as the window
+        sidePanel.setPreferredSize(new Dimension(200, window.getHeight())); // make panel thin, and as tall as the window
         sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS)); // arrange elements vertically
         JSlider speedSlider = new JSlider(JSlider.HORIZONTAL,
                 0, 1000, 500);
@@ -75,7 +75,7 @@ public class UI {
             System.out.println("Create Planet pressed");
         });
 
-        JButton deletePlanetBTN = ButtonCreator(null, 0, 0, 150, 50, "Delete Planet");
+        JButton deletePlanetBTN = ButtonCreator(null, 0, 0, 175, 50, "Delete Planet");
         deletePlanetBTN.addActionListener(e -> {
             System.out.println("Delete planet pressed");
         });
@@ -85,7 +85,26 @@ public class UI {
         sidePanel.add(Box.createVerticalStrut(20));// add vertical spacing between buttons
         sidePanel.add(speedSlider);
         sidePanel.add(deletePlanetBTN);
-
+        sidePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         return sidePanel;
+    }
+    public JPanel topPanel() {
+        JPanel topPanel = new JPanel(); // create a new panel
+        topPanel.setPreferredSize(new Dimension(window.getWidth(), 175));
+        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
+        JComboBox planetSelector = new JComboBox();
+        for (Planet x : solarSystem.getPlanets()) {
+            planetSelector.addItem(x.getName());
+        }
+
+
+        planetSelector.setPreferredSize(new Dimension(200, 30)); // Set preferred size
+        planetSelector.setMaximumSize(new Dimension(200, 30));
+        // add buttons to side panel with Button.add
+        topPanel.add(planetSelector);
+
+        topPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+        return topPanel;
     }
 }
