@@ -6,10 +6,12 @@ public class UI {
     SolarSystem solarSystem;
     JFrame window = new JFrame("Solar System Sandbox!");
     JFrame createPlanetFrame = new JFrame("Planet Creator!");
-
+    SolarGraphics solareGraphics;
+    SolarGraphics solarGraphics = new SolarGraphics();
     public UI() {
         solarSystem = new SolarSystem();
         solarSystem.addOurSolarSystem();
+
         // this code executes once when an instance of UI is created
     }
 
@@ -24,6 +26,7 @@ public class UI {
         window.setLayout(new BorderLayout()); // add layout for side/top panels etc.
         window.add(sidePanel(), BorderLayout.WEST);// create (sidePanel()) and display side panel on left hand side of window
         window.add(topPanel(), BorderLayout.NORTH);
+        window.add(solarGraphics.SolarPanelCreator(solarSystem));
         window.setLocationRelativeTo(null); // make window centre of screen
         window.setVisible(true); // make the window visible
 
@@ -105,8 +108,13 @@ public class UI {
         JComboBox planetSelector = new JComboBox();
         for (Planet x : solarSystem.getPlanets()) {
             planetSelector.addItem(x.getName());
-            // planetIcons.add(new ImageIcon(x.getImage()));
-            planetIcons.add(new ImageIcon("src/testImageShrunk.png"));
+            // planetIcons.add(new ImageIcon());
+            ImageIcon icon = new ImageIcon(x.getImage());
+            // Scale image to appropriate size
+            Image ScaledImage = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+
+            planetIcons.add(new ImageIcon(ScaledImage));
+
         }
 
 
@@ -139,7 +147,7 @@ public class UI {
         JLabel dropDownLabel = new JLabel("Select Planet:");
         JComboBox planetSelector = createPlanetCombo();
 
-        JButton focusPlanetBTN = ButtonCreator(null, 0, 0, 100, 50, "Focus on \n selected Planet");
+        JButton focusPlanetBTN = ButtonCreator(null, 0, 0, 110, 50, "Focus on \n selected Planet");
         focusPlanetBTN.addActionListener(e -> {
             System.out.println("focusPlanetBTN pressed");
             System.out.println("focus on: "+ planetSelector.getSelectedItem());

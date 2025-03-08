@@ -12,7 +12,7 @@ public class Planet {
     private double speed;      // Speed of the planet
     private double direction;  // Direction of movement in degrees
     private double size;       // Size of the planet
-    private Image image;       // Image representation of the planet
+    private String image;       // Image representation of the planet
 
     /**
      * Constructor to initialize a Planet object.
@@ -26,7 +26,7 @@ public class Planet {
      * @param size       Size of the planet
      * @param image      Image representation of the planet
      */
-    public Planet(double xPosition, double yPosition, double mass, double speed, double direction, double size, Image image, String name) {
+    public Planet(double xPosition, double yPosition, double mass, double speed, double direction, double size, String image, String name) {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.mass = mass;
@@ -62,14 +62,14 @@ public class Planet {
         return size;
     }
 
-    public Image getImage() {
+    public String getImage() {
         return image;
     }
 
     public String getName() {return name;}
 
     // Setter methods to modify planet properties
-    public void setImage(Image image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
