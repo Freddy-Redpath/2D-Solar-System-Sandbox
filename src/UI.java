@@ -1,9 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class UI {
     SolarSystem solarSystem;
     JFrame window = new JFrame("Solar System Sandbox!");
+    JFrame createPlanetFrame = new JFrame("Planet Creator!");
 
     public UI() {
         solarSystem = new SolarSystem();
@@ -24,6 +26,11 @@ public class UI {
         window.add(topPanel(), BorderLayout.NORTH);
         window.setLocationRelativeTo(null); // make window centre of screen
         window.setVisible(true); // make the window visible
+
+        createPlanetFrame.setSize((int) (width/1.25),  (int)(height/1.25)); // set size of window
+        createPlanetFrame.setLayout(new BorderLayout()); // add layout for side/top panels etc.
+        createPlanetFrame.setLocationRelativeTo(null); // make window centre of screen
+        createPlanetFrame.setVisible(false); // make the window visible
     }
 
     /**
@@ -38,22 +45,21 @@ public class UI {
      * @return JButton instance with specified properties
      */
     public JButton ButtonCreator(Color colour, int xPos, int yPos, int width, int height, String text) {
-        JButton button = new JButton(text); // Create a new button with the given text
+        JButton button = new JButton("<html><center>" + text.replace("\n", "<br>") + "</center></html>");
 
-        // if colour given, set button to that colour
         if (colour != null) {
             button.setBackground(colour);
         }
 
-        // set size to width and height, if either are empty or 0, default dimensions are used
         if (width != 0 && height != 0) {
-            button.setPreferredSize(new Dimension(width, height)); // set preffered size (automatically changes if it doesnt fit on panel/frame)
-            button.setMaximumSize(new Dimension(width, height)); // maximum size to prevent resizing
-            button.setMinimumSize(new Dimension(width, height)); // minimum size to prevent shrinking
+            button.setPreferredSize(new Dimension(width, height));
+            button.setMaximumSize(new Dimension(width, height));
+            button.setMinimumSize(new Dimension(width, height));
         }
 
         return button;
     }
+
 
     /**
      * creates and returns the side panel containing buttons.
@@ -61,7 +67,7 @@ public class UI {
      * @return JPanel with buttons and spacing
      */
     public JPanel sidePanel() {
-        JPanel sidePanel = new JPanel(); // create a new panel
+        JPanel sidePanel = new JPanel(new BorderLayout());// create a new panel
         sidePanel.setPreferredSize(new Dimension(200, window.getHeight())); // make panel thin, and as tall as the window
         sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS)); // arrange elements vertically
         JSlider speedSlider = new JSlider(JSlider.HORIZONTAL,
@@ -70,9 +76,10 @@ public class UI {
         sidePanel.add(Box.createRigidArea(new Dimension(20, 20)));
 
         // create buttons with specified values
-        JButton createPlanetBTN = ButtonCreator(null, 0, 0, 150, 100, "Create Planet");
+        JButton createPlanetBTN = ButtonCreator(null, 0, 0, 150, 50, "Create Planet");
         createPlanetBTN.addActionListener(e -> {
             System.out.println("Create Planet pressed");
+            OpenPlanetCreator();
         });
 
         JButton deletePlanetBTN = ButtonCreator(null, 0, 0, 175, 50, "Delete Planet");
@@ -81,32 +88,121 @@ public class UI {
         });
 
         // add buttons to side panel with Button.add
-        sidePanel.add(createPlanetBTN);
         sidePanel.add(Box.createVerticalStrut(20));// add vertical spacing between buttons
         sidePanel.add(speedSlider);
         sidePanel.add(deletePlanetBTN);
+        sidePanel.add(Box.createVerticalGlue());
+
+
+
+        sidePanel.add(createPlanetBTN);
+        sidePanel.add(Box.createVerticalStrut(20));
         sidePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         return sidePanel;
     }
-    public JPanel topPanel() {
-        JPanel topPanel = new JPanel(); // create a new panel
-        topPanel.setPreferredSize(new Dimension(window.getWidth(), 125));
-        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
+    public JComboBox createPlanetCombo() {
+        ArrayList<ImageIcon> planetIcons = new ArrayList<>();
         JComboBox planetSelector = new JComboBox();
         for (Planet x : solarSystem.getPlanets()) {
             planetSelector.addItem(x.getName());
-
+            // planetIcons.add(new ImageIcon(x.getImage()));
+            planetIcons.add(new ImageIcon("src/testImageShrunk.png"));
         }
 
 
         planetSelector.setPreferredSize(new Dimension(120, 30)); // Set preferred size
-        planetSelector.setMaximumSize(new Dimension(120, 30));
-        // add buttons to side panel with Button.add
-        topPanel.add(Box.createHorizontalStrut(20));
-        topPanel.add(planetSelector);
+        planetSelector.setMaximumSize(new Dimension(150, 30));
 
+        planetSelector.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+                                                          boolean isSelected, boolean cellHasFocus) {
+                JLabel planetLabel = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                planetLabel.setHorizontalAlignment(SwingConstants.LEFT); // Align text and icon
+
+                // Set icon based on index
+                if (index >= 0 && index < planetIcons.size()) {
+                    planetLabel.setIcon(planetIcons.get(index)); // Use get() instead of array index
+                }
+
+                return planetLabel;
+            }
+        });
+        return planetSelector;
+    }
+
+
+    public JPanel topPanel() {
+        JPanel topPanel = new JPanel(); // create a new panel
+        topPanel.setPreferredSize(new Dimension(window.getWidth(), 125));
+        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
+        JLabel dropDownLabel = new JLabel("Select Planet:");
+        JComboBox planetSelector = createPlanetCombo();
+
+        JButton focusPlanetBTN = ButtonCreator(null, 0, 0, 100, 50, "Focus on \n selected Planet");
+        focusPlanetBTN.addActionListener(e -> {
+            System.out.println("focusPlanetBTN pressed");
+            System.out.println("focus on: "+ planetSelector.getSelectedItem());
+        });
+
+
+
+
+        topPanel.add(Box.createRigidArea(new Dimension(20, 20)));
+
+        topPanel.add(dropDownLabel);
+        topPanel.add(Box.createHorizontalStrut(10));
+        topPanel.add(planetSelector);
+        topPanel.add(Box.createHorizontalStrut(10));
+
+        topPanel.add(focusPlanetBTN);
         topPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         return topPanel;
+    }
+    public void OpenPlanetCreator() {
+        createPlanetFrame.add(Box.createRigidArea(new Dimension(20, 20)));
+
+        createPlanetFrame.add(createPlanetSidePanel(), BorderLayout.EAST);
+        createPlanetFrame.setVisible(true);
+
+
+    }
+    public JPanel createPlanetSidePanel() {
+        JPanel createPlanetSidePanel = new JPanel(); // create a new panel
+        createPlanetSidePanel.setLayout(new BoxLayout(createPlanetSidePanel, BoxLayout.Y_AXIS));
+
+
+
+
+        JLabel nameLabel = new JLabel("Name:");
+        JTextField nameField = new JTextField(15);
+        nameField.setMaximumSize(new Dimension(Integer.MAX_VALUE, nameField.getPreferredSize().height));
+
+        JLabel massLabel = new JLabel("Mass:");
+        JTextField massField = new JTextField(15);
+        massField.setMaximumSize(new Dimension(Integer.MAX_VALUE, nameField.getPreferredSize().height));
+
+
+        JLabel densityLabel = new JLabel("Density:");
+        JTextField densityField = new JTextField(15);
+        densityField.setMaximumSize(new Dimension(Integer.MAX_VALUE, densityField.getPreferredSize().height));
+
+        JLabel sizeLabel = new JLabel("Size:");
+        JTextField sizeField = new JTextField(15);
+        sizeField.setMaximumSize(new Dimension(Integer.MAX_VALUE, sizeField.getPreferredSize().height));
+
+        createPlanetSidePanel.add(Box.createRigidArea(new Dimension(20, 20)));
+        // Add components to the panel
+        createPlanetSidePanel.add(nameLabel);
+        createPlanetSidePanel.add(nameField);
+        createPlanetSidePanel.add(massLabel);
+        createPlanetSidePanel.add(massField);
+        createPlanetSidePanel.add(densityLabel);
+        createPlanetSidePanel.add(densityField);
+        createPlanetSidePanel.add(sizeLabel);
+        createPlanetSidePanel.add(sizeField);
+
+        return createPlanetSidePanel;
     }
 }

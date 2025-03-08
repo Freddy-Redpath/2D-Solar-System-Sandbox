@@ -60,6 +60,10 @@ public class SolarSystem {
 
     // Function for adding all of our solar system at once
     public void addOurSolarSystem(){
+        Planet pluto = new Planet(0.0, 0.0, 0.0130e24, 0.0, 0.0, 2376.0, null, "pluto");
+        addPlanet(pluto);
+
+
         addSun();
         addEarth();
         addMercury();
