@@ -1,52 +1,40 @@
 import javax.swing.*;
 import java.awt.*;
 
-// Main class
-public class SolarGraphics extends JFrame  {
-    private Planet earth; // Planet object to be taken from Planet file
+public class SolarGraphics {
 
 
-        public SolarGraphics() {
-            setTitle("Solar System");
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-            // Get image from resource package "Images"
-            ImageIcon icon = new ImageIcon(getClass().getResource("Solar system images/image-removebg-preview.png"));
-            // Scale image to appropriate size
+    public JPanel SolarPanelCreator(SolarSystem solarSystem) {
+        // Establishes the JPanel, and establishes the background + layout
+        JPanel SolarPanel = new JPanel();
+        SolarPanel.setLayout(null);
+        SolarPanel.setBackground(Color.black);
+        // Loops through each planet in the Solar System, setting the image
+        for (Planet planet : solarSystem.getPlanets()) {
+            ImageIcon icon = new ImageIcon(planet.getImage());
             Image ScaledImage = icon.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
-            // Planet object with scaled image (positions set as example)
-            earth = new Planet(150, 150,150,5,0,64,ScaledImage, "earth");
-
-            //Panel to draw planet
-            SolarSystemPanel panel = new SolarSystemPanel(earth);
-            add(panel);
-
-            // Set window dimensions
-            setSize(440,440);
-
-            setLocationRelativeTo(null);
-            setVisible(true);
+            ImageIcon scaledIcon = new ImageIcon(ScaledImage);
+            //create a label for each planet
+            JLabel planetLabel = new JLabel(scaledIcon);
+            //set size and position of label to match size of image (to stop stretching or shrinking of image)
+            planetLabel.setBounds((int) planet.getXPosition(), (int) planet.getYPosition(), 64, 64);
+            //add planet labels to Panel
+            SolarPanel.add(planetLabel);
         }
-        public static void main(String[] args) {
-            SwingUtilities.invokeLater(SolarGraphics::new);
+        for (Star star : solarSystem.getStars()) {
+            ImageIcon icon = new ImageIcon(star.getImage());
+            Image ScaledImage = icon.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
+            ImageIcon scaledIcon = new ImageIcon(ScaledImage);
+            //create a label for each star
+            JLabel starLabel = new JLabel(scaledIcon);
+            //set size and position of label to match size of image (to stop stretching or shrinking of image)
+            starLabel.setBounds(150, 150, 64, 64);
+            //add star labels to Panel
+            SolarPanel.add(starLabel);
         }
-    }
 
-    // Custom Jpanel to draw planet
-class SolarSystemPanel extends JPanel{
-    private Planet planet;
-    public SolarSystemPanel(Planet planet) {
-        this.planet = planet;
-        setBackground(Color.BLACK);
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        // Draw the planet's image at its specified x and y coordinates
-        g.drawImage(planet.getImage(), (int) planet.getXPosition(), (int) planet.getYPosition(), this);
+        // return the panel
+        return SolarPanel;
     }
 }
-
-
 
