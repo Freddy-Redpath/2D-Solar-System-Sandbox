@@ -11,9 +11,9 @@ public class Asteroid {
     private double speed;      // Speed of the asteroid
     private double direction;  // Direction of movement in degrees
     private double size;       // Size of the asteroid
-    private Image image;       // Image representation of the asteroid
+    private String image;       // String representation of the asteroid
     private String name;
-
+//
     /**
      * Constructor to initialize an Asteroid object. hello2
      *
@@ -23,10 +23,10 @@ public class Asteroid {
      * @param speed      Speed of the asteroid
      * @param direction  Direction of movement in degrees
      * @param size       Size of the asteroid
-     * @param image      Image representation of the asteroid
+     * @param image      String representation of the asteroid
      * @param name       Label for the asteroid
      */
-    public Asteroid(double xPosition, double yPosition, double mass, double speed, double direction, double size, Image image, String name) {
+    public Asteroid(double xPosition, double yPosition, double mass, double speed, double direction, double size, String image, String name) {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.mass = mass;
@@ -62,14 +62,14 @@ public class Asteroid {
         return size;
     }
 
-    public Image getImage() {
+    public String getString() {
         return image;
     }
 
     public String getName() { return name; }
 
     // Setter methods to modify asteroid properties
-    public void setImage(Image image) {
+    public void setString(String image) {
         this.image = image;
     }
 

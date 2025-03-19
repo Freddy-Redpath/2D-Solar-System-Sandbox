@@ -12,7 +12,7 @@ public class Star {
     private double speed;      // Speed of the star
     private double direction;  // Direction of movement in degrees
     private double size;       // Size of the star
-    private Image image;       // Image representation of the star
+    private String image;       // Image representation of the star
 
     /**
      * Constructor to initialize a star object.
@@ -26,7 +26,7 @@ public class Star {
      * @param size       Size of the star
      * @param image      Image representation of the star
      */
-    public Star(double xPosition, double yPosition, double mass, double speed, double direction, double size, Image image, String name) {
+    public Star(double xPosition, double yPosition, double mass, double speed, double direction, double size, String image, String name) {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.mass = mass;
@@ -62,14 +62,14 @@ public class Star {
         return size;
     }
 
-    public Image getImage() {
+    public String getImage() {
         return image;
     }
 
     public String getName() {return name;}
 
     // Setter methods to modify star properties
-    public void setImage(Image image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

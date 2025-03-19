@@ -12,7 +12,7 @@ public class BlackHole {
     private double speed;      // Speed of the black hole
     private double direction;  // Direction of movement in degrees
     private double size;       // Size of the black hole
-    private Image image;       // Image representation of the black hole
+    private String image;       // String representation of the black hole
 
     /**
      * Constructor to initialize an BlackHole object.
@@ -23,10 +23,10 @@ public class BlackHole {
      * @param speed      Speed of the black hole
      * @param direction  Direction of movement in degrees
      * @param size       Size of the black hole
-     * @param image      Image representation of the black hole
+     * @param image      String representation of the black hole
      * @param name       Label for the black hole
      */
-    public BlackHole(double xPosition, double yPosition, double mass, double speed, double direction, double size, Image image, String name) {
+    public BlackHole(double xPosition, double yPosition, double mass, double speed, double direction, double size, String image, String name) {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.mass = mass;
@@ -62,14 +62,14 @@ public class BlackHole {
         return size;
     }
 
-    public Image getImage() {
+    public String getString() {
         return image;
     }
 
     public String getName() {return name; }
 
     // Setter methods to modify black hole properties
-    public void setImage(Image image) {
+    public void setString(String image) {
         this.image = image;
     }
 
