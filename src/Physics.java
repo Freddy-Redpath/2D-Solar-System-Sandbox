@@ -1,5 +1,10 @@
 public class Physics {
 
+    public static void main(String[] args) {
+
+
+    }
+
     public double eccentricityCalc(Planet planet, Star sun){
         double a = KeplersThirdLaw(planet, sun);
         double radius = planet.getRadius();
