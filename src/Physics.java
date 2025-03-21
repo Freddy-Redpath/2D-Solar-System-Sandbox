@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+
+
 public class Physics {
 
     public static void main(String[] args) {
@@ -99,4 +102,35 @@ public class Physics {
     }
 
 
+    public double[] newxandy(Planet planet, Star sun, double deltaT) {
+        double G = 6.67e-11;
+        double mass1 = sun.getMass();
+        double mass2 = planet.getMass();
+        double x = planet.getXPosition();
+        double y = planet.getYPosition();
+        double radius= planet.getRadius();
+        double force = (G * mass1 * mass2) / (radius * radius);
+
+        double ax = -force * (x / radius) / mass2;
+        double ay = -force * (y / radius) / mass2;
+
+        double acceleration = Math.sqrt(ax * ax + ay * ay);
+        double theta2 = Math.atan2(y, x);
+        double V0 = planet.getSpeed();
+        double theta1 = planet.getDirection();
+
+        double Va = acceleration * deltaT;
+
+        double Vtx = V0 * Math.sin(theta1) + Va * Math.sin(theta2);
+        double Vty = V0 * Math.cos(theta1) + Va * Math.cos(theta2);
+
+        double Vt = Math.sqrt(Vtx * Vtx + Vty * Vty);
+        double velocityDirection = Math.atan2(Vty, Vtx);
+
+        // Position update using velocity
+        double x_new = x + Vtx * deltaT;
+        double y_new = y + Vty * deltaT;
+
+        return new double[]{x_new, y_new, Vt, velocityDirection};
+    }
 }
