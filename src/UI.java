@@ -26,6 +26,7 @@ public class UI {
         window.setLayout(new BorderLayout()); // add layout for side/top panels etc.
         window.add(sidePanel(), BorderLayout.WEST);// create (sidePanel()) and display side panel on left hand side of window
         window.add(topPanel(), BorderLayout.NORTH);
+
         window.add(solarGraphics.SolarPanelCreator(solarSystem));
         window.setLocationRelativeTo(null); // make window centre of screen
         window.setVisible(true); // make the window visible

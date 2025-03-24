@@ -1,8 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class SolarGraphics {
 
+public class SolarGraphics {
+    private double zoomLevel = 1.0;
 
     public JPanel SolarPanelCreator(SolarSystem solarSystem) {
         // Establishes the JPanel, and establishes the background + layout
@@ -17,8 +18,9 @@ public class SolarGraphics {
             //create a label for each planet
             JLabel planetLabel = new JLabel(scaledIcon);
             //set size and position of label to match size of image (to stop stretching or shrinking of image)
-            planetLabel.setBounds((int) planet.getXPosition(), (int) planet.getYPosition(), 64, 64);
-            //add planet labels to Panel
+
+            planetLabel.setBounds(50,50, 64, 64); //add planet labels to Panel
+
             SolarPanel.add(planetLabel);
         }
         for (Star star : solarSystem.getStars()) {
@@ -33,8 +35,11 @@ public class SolarGraphics {
             SolarPanel.add(starLabel);
         }
 
+
+
         // return the panel
         return SolarPanel;
     }
 }
+
 
