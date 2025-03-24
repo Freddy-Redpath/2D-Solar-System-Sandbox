@@ -3,10 +3,13 @@ import java.util.ArrayList;
 
 public class Physics {
 
-    public double totalForceCalc(ArrayList<Planet>  planetArray, Star sun){
-        for(Planet planet : planetArray){
+    public ArrayList<Double> totalForceCalc(ArrayList<Planet>  planetArray, Star sun){
+        ArrayList<Double> forceTotalList = new ArrayList<>();
+
+        for(Planet planet : planetArray) {
             double x = planet.getXPosition();
             double y = planet.getYPosition();
+
             ArrayList<Double> forceList = new ArrayList<>();
             double mass1 = sun.getMass();
             double forcePlanetToSun = newtonsLawGrav(planet, mass1, -1);
@@ -18,8 +21,8 @@ public class Physics {
             double radiusDirectionPlanetToSun = radiusDirectionCalc(x, y, x2, y2);
             forceDirectionList.add(radiusDirectionPlanetToSun);
 
-            for(Planet planet2 : planetArray){
-                if (planet2 != planet){
+            for (Planet planet2 : planetArray) {
+                if (planet2 != planet) {
                     double x2 = planet.getXPosition();
                     double y2 = planet.getYPosition();
                     double radiusPlanetToPlanet2 = radiusCalc(x, y, x2, y2);
@@ -33,10 +36,14 @@ public class Physics {
                 }
             }
 
+            double forceTotalX = 0, forceTotalY = 0;
             for (int i = 0; i < 10; i++) {
-                
+                forceTotalX += forceList.get(i) * Math.cos(forceDirectionList.get(i));
+                forceTotalY += forceList.get(i) * Math.sin(forceDirectionList.get(i));
             }
-
+            forceTotalList.add(Math.sqrt(forceTotalX*forceTotalX + forceTotalY*forceTotalY));
+        }
+        return forceTotalList;
     }
 
     public double radiusDirectionCalc(double x, double y, double x2, double y2){
