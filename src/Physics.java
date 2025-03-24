@@ -3,9 +3,52 @@ import java.util.ArrayList;
 
 public class Physics {
 
-    public static void main(String[] args) {
+    public double totalForceCalc(ArrayList<Planet>  planetArray, Star sun){
+        for(Planet planet : planetArray){
+            double x = planet.getXPosition();
+            double y = planet.getYPosition();
+            ArrayList<Double> forceList = new ArrayList<>();
+            double mass1 = sun.getMass();
+            double forcePlanetToSun = newtonsLawGrav(planet, mass1, -1);
+            forceList.add(forcePlanetToSun);
+
+            ArrayList<Double> forceDirectionList = new ArrayList<>();
+            double x2 = sun.getXPosition();
+            double y2 = sun.getYPosition();
+            double radiusDirectionPlanetToSun = radiusDirectionCalc(x, y, x2, y2);
+            forceDirectionList.add(radiusDirectionPlanetToSun);
+
+            for(Planet planet2 : planetArray){
+                if (planet2 != planet){
+                    double x2 = planet.getXPosition();
+                    double y2 = planet.getYPosition();
+                    double radiusPlanetToPlanet2 = radiusCalc(x, y, x2, y2);
+                    mass1 = planet2.getMass();
+
+                    double forcePlanetToPlanet2 = newtonsLawGrav(planet, mass1, radiusPlanetToPlanet2);
+                    forceList.add(forcePlanetToPlanet2);
+
+                    double radiusDirectionPlanetToPlanet2 = radiusDirectionCalc(x, y, x2, y2);
+                    forceDirectionList.add(radiusDirectionPlanetToPlanet2);
+                }
+            }
+
+            for (int i = 0; i < 10; i++) {
+                
+            }
+
+    }
+
+    public double radiusDirectionCalc(double x, double y, double x2, double y2){
+        double radiusDirection = Math.atan((Math.abs(x - x2) / Math.abs(y - y2)));
+        return radiusDirection;
+    }
 
 
+    // Calculates distance between two objects based on coordinates
+    public double radiusCalc(double x, double y, double x2, double y2){
+        double radius = Math.sqrt(Math.pow(x - x2, 2)+Math.pow(y - y2, 2));
+        return radius;
     }
 
     public double eccentricityCalc(Planet planet, Star sun){
@@ -29,7 +72,7 @@ public class Physics {
         double pi = Math.PI;
         double radius = planet.getRadius();
         double speed = planet.getSpeed();
-        double direction = planet.getDirection();
+        double speedDirection = planet.getDirection();
 
         double T = (2*pi*radius)/speed;
         long time = (long)T;
@@ -38,12 +81,13 @@ public class Physics {
 
     }
 
-    public double forceCalc(Planet planet, Star sun){
-        double mass1 = sun.getMass();
+    public double newtonsLawGrav(Planet planet, double mass1, double radius){
         double mass2 = planet.getMass();
         double speed = planet.getSpeed();
-        double direction = planet.getDirection();
-        double radius = planet.getRadius();
+        double speedDirection = planet.getDirection();
+        if (radius == -1){
+            radius = planet.getRadius();
+        }
         double G = 6.67e-11;
 
 
@@ -58,7 +102,7 @@ public class Physics {
         double G = 6.67e-11;
         double radius = planet.getRadius();
         double speed = planet.getSpeed();
-        double direction = planet.getDirection();
+        double speedDirection = planet.getDirection();
 
         double period = periodCalc(planet, sun); //check on direction? (based on angualr velocity)
         double a = Math.cbrt((period*period*G*mass1)/4*pi*pi);
@@ -72,7 +116,7 @@ public class Physics {
         double G = 6.67e-11;
         double radius = planet.getRadius();
         double speed = planet.getSpeed();
-        double direction = planet.getDirection();
+        double speedDirection = planet.getDirection();
         double a = KeplersThirdLaw(planet, sun);
 
         double speedAtR = Math.sqrt(G*mass1*((2/radius)-(1/a)));
@@ -83,7 +127,7 @@ public class Physics {
     public double specificAngularMomentum (Planet planet, Star sun){
         double radius1 = planet.getRadius();
         double speed = planet.getSpeed();
-        double direction = planet.getDirection();
+        double speedDirection = planet.getDirection();
 
         double h = radius1 * speed;
 
@@ -92,7 +136,7 @@ public class Physics {
 
     public double specificOrbitalEnergy (Planet planet, Star sun){
         double speed = planet.getSpeed();
-        double direction = planet.getDirection();
+        double speedDirection = planet.getDirection();
         double radius = planet.getRadius();
         double mass1 = sun.getMass();
         double G = 6.67e-11;
