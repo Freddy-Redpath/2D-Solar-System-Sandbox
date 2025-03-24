@@ -12,7 +12,7 @@ public class UI {
 
     public UI() {
         solarSystem = new SolarSystem(this);
-        solarSystem.addOurSolarSystem();
+
 
         // this code executes once when an instance of UI is created
     }
@@ -219,7 +219,6 @@ public class UI {
     public void updateSim(ArrayList<?> bodyArray) {
 
         solarPanel = solarGraphics.updateBodies(bodyArray, this.solarPanel);
-
 
     }
 
