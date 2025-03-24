@@ -217,8 +217,8 @@ public class UI {
 
     public void updateSim(ArrayList<?> bodyArray) {
 
-        solarPanel = SolarGraphics.updateBodies(bodyArray, this.solarPanel);
-        solarPanel.repaint();
+        solarPanel = solarGraphics.updateBodies(bodyArray, this.solarPanel);
+
 
     }
 

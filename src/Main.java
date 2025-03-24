@@ -11,8 +11,6 @@ public class Main {
         ui = new UI();
         ui.initialiseUI();
         solarSystem = new SolarSystem(ui);
-        solarSystem.addEarth();
-        solarSystem.addSun();
 
 
 
