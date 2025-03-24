@@ -22,11 +22,9 @@ public class SolarGraphics {
     }
 
     public JPanel updateBodies(ArrayList<?> bodyArray, JPanel SolarPanel) {
-
         for (Object o : bodyArray) {
             ImageIcon icon = null;
             if (o instanceof Planet body) {
-                System.out.println("planet made");
                 icon = new ImageIcon(body.getImage());
                 Image ScaledImage = icon.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
                 ImageIcon scaledIcon = new ImageIcon(ScaledImage);
