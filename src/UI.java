@@ -6,7 +6,6 @@ public class UI {
     SolarSystem solarSystem;
     JFrame window = new JFrame("Solar System Sandbox!");
     JFrame createPlanetFrame = new JFrame("Planet Creator!");
-    SolarGraphics solareGraphics;
     JPanel solarPanel = new JPanel();
     SolarGraphics solarGraphics = new SolarGraphics();
 
@@ -216,10 +215,6 @@ public class UI {
         return createPlanetSidePanel;
     }
 
-    public void updateSim(ArrayList<?> bodyArray) {
 
-        solarPanel = solarGraphics.updateBodies(bodyArray, this.solarPanel);
-
-    }
 
 }

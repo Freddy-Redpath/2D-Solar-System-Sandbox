@@ -77,7 +77,7 @@ public class SolarSystem {
     // Functions for adding created bodies to the relevant ArrayLists
     public void addPlanet(Planet planet) {
         this.planetArray.add(planet);
-        ui.updateSim(this.planetArray);
+        //ui.updateSim(this.planetArray);
     }
     public void removePlanet(Planet planet) {
         this.planetArray.remove(planet);
@@ -85,7 +85,7 @@ public class SolarSystem {
 
     public void addStar(Star star) {
         this.starArray.add(star);
-        ui.updateSim(this.starArray);
+        //ui.updateSim(this.starArray);
     }
     public void removeStar(Star star) {
         this.starArray.remove(star);
@@ -93,7 +93,7 @@ public class SolarSystem {
 
     public void addAsteroid(Asteroid asteroid) {
         this.asteroidArray.add(asteroid);
-        ui.updateSim(this.asteroidArray);
+        //ui.updateSim(this.asteroidArray);
     }
     public void removeAsteroid(Asteroid asteroid) {
         this.asteroidArray.remove(asteroid);
@@ -101,7 +101,7 @@ public class SolarSystem {
 
     public void addBlackHole(BlackHole blackhole){
         this.blackHoleArray.add(blackhole);
-        ui.updateSim(this.planetArray);
+        //ui.updateSim(this.planetArray);
     }
     public void removeBlackHole(BlackHole blackhole){
         this.blackHoleArray.remove(blackhole);
