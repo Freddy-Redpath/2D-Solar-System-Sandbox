@@ -3,6 +3,7 @@ import java.util.ArrayList;
 
 public class SolarSystem {
     // ArrayLists to hold the current orbital bodies
+    UI ui;
     public ArrayList<Planet> planetArray = new ArrayList<Planet>();
 
     public ArrayList<Star> starArray = new ArrayList<Star>();
@@ -12,13 +13,14 @@ public class SolarSystem {
     public ArrayList<BlackHole> blackHoleArray = new ArrayList<BlackHole>();
 
     // Constructor, nothing is in here as we can instantiate an empty solar system
-    public SolarSystem(){
+    public SolarSystem(UI ui){
+        this.ui = ui;
     }
 
 
     // Functions for adding pre-set planets from our solar system
     public void addSun(){
-        Star theSun = new Star(0.0, 0.0, 1.989e30, 0.0, 0.0, 1.3927e6, "src/images/Sun.png", "sun");
+        Star theSun = new Star(640, 360, 1.989e30, 0.0, 0.0, 1.3927e6, "src/images/Sun.png", "sun");
         addStar(theSun);
     }
     public void addEarth(){
@@ -75,6 +77,7 @@ public class SolarSystem {
     // Functions for adding created bodies to the relevant ArrayLists
     public void addPlanet(Planet planet) {
         this.planetArray.add(planet);
+        ui.updateSim(this.planetArray);
     }
     public void removePlanet(Planet planet) {
         this.planetArray.remove(planet);
@@ -82,6 +85,7 @@ public class SolarSystem {
 
     public void addStar(Star star) {
         this.starArray.add(star);
+        ui.updateSim(this.starArray);
     }
     public void removeStar(Star star) {
         this.starArray.remove(star);
@@ -89,6 +93,7 @@ public class SolarSystem {
 
     public void addAsteroid(Asteroid asteroid) {
         this.asteroidArray.add(asteroid);
+        ui.updateSim(this.asteroidArray);
     }
     public void removeAsteroid(Asteroid asteroid) {
         this.asteroidArray.remove(asteroid);
@@ -96,6 +101,7 @@ public class SolarSystem {
 
     public void addBlackHole(BlackHole blackhole){
         this.blackHoleArray.add(blackhole);
+        ui.updateSim(this.planetArray);
     }
     public void removeBlackHole(BlackHole blackhole){
         this.blackHoleArray.remove(blackhole);

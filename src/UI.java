@@ -7,9 +7,11 @@ public class UI {
     JFrame window = new JFrame("Solar System Sandbox!");
     JFrame createPlanetFrame = new JFrame("Planet Creator!");
     SolarGraphics solareGraphics;
+    JPanel solarPanel = new JPanel();
     SolarGraphics solarGraphics = new SolarGraphics();
+
     public UI() {
-        solarSystem = new SolarSystem();
+        solarSystem = new SolarSystem(this);
         solarSystem.addOurSolarSystem();
 
         // this code executes once when an instance of UI is created
@@ -26,12 +28,12 @@ public class UI {
         window.setLayout(new BorderLayout()); // add layout for side/top panels etc.
         window.add(sidePanel(), BorderLayout.WEST);// create (sidePanel()) and display side panel on left hand side of window
         window.add(topPanel(), BorderLayout.NORTH);
-
-        window.add(solarGraphics.SolarPanelCreator(solarSystem));
+        solarPanel = solarGraphics.SolarPanelCreator(solarSystem);
+        window.add(solarPanel);
         window.setLocationRelativeTo(null); // make window centre of screen
         window.setVisible(true); // make the window visible
 
-        createPlanetFrame.setSize((int) (width/1.25),  (int)(height/1.25)); // set size of window
+        createPlanetFrame.setSize((int) (width / 1.25), (int) (height / 1.25)); // set size of window
         createPlanetFrame.setLayout(new BorderLayout()); // add layout for side/top panels etc.
         createPlanetFrame.setLocationRelativeTo(null); // make window centre of screen
         createPlanetFrame.setVisible(false); // make the window visible
@@ -41,11 +43,11 @@ public class UI {
      * Creates a button with the specified properties.
      *
      * @param colour Background color of the button (null for default)
-     * @param xPos X position of button, given it isn't placed in a panel
-     * @param yPos Y position of button, given it isn't placed in a panel
-     * @param width width of button
+     * @param xPos   X position of button, given it isn't placed in a panel
+     * @param yPos   Y position of button, given it isn't placed in a panel
+     * @param width  width of button
      * @param height height of button
-     * @param text text of button
+     * @param text   text of button
      * @return JButton instance with specified properties
      */
     public JButton ButtonCreator(Color colour, int xPos, int yPos, int width, int height, String text) {
@@ -98,12 +100,12 @@ public class UI {
         sidePanel.add(Box.createVerticalGlue());
 
 
-
         sidePanel.add(createPlanetBTN);
         sidePanel.add(Box.createVerticalStrut(20));
         sidePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         return sidePanel;
     }
+
     public JComboBox createPlanetCombo() {
         ArrayList<ImageIcon> planetIcons = new ArrayList<>();
         JComboBox planetSelector = new JComboBox();
@@ -151,10 +153,8 @@ public class UI {
         JButton focusPlanetBTN = ButtonCreator(null, 0, 0, 110, 50, "Focus on \n selected Planet");
         focusPlanetBTN.addActionListener(e -> {
             System.out.println("focusPlanetBTN pressed");
-            System.out.println("focus on: "+ planetSelector.getSelectedItem());
+            System.out.println("focus on: " + planetSelector.getSelectedItem());
         });
-
-
 
 
         topPanel.add(Box.createRigidArea(new Dimension(20, 20)));
@@ -169,6 +169,7 @@ public class UI {
 
         return topPanel;
     }
+
     public void OpenPlanetCreator() {
         createPlanetFrame.add(Box.createRigidArea(new Dimension(20, 20)));
 
@@ -177,11 +178,10 @@ public class UI {
 
 
     }
+
     public JPanel createPlanetSidePanel() {
         JPanel createPlanetSidePanel = new JPanel(); // create a new panel
         createPlanetSidePanel.setLayout(new BoxLayout(createPlanetSidePanel, BoxLayout.Y_AXIS));
-
-
 
 
         JLabel nameLabel = new JLabel("Name:");
@@ -214,4 +214,12 @@ public class UI {
 
         return createPlanetSidePanel;
     }
+
+    public void updateSim(ArrayList<?> bodyArray) {
+
+        solarPanel = SolarGraphics.updateBodies(bodyArray, this.solarPanel);
+        solarPanel.repaint();
+
+    }
+
 }
