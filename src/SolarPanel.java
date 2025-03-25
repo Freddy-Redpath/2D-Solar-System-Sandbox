@@ -1,6 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.Random;
+import java.util.ArrayList;
 
 
 public class SolarPanel extends JPanel {
@@ -23,7 +23,7 @@ public class SolarPanel extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.white);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.drawRect(0, 0, 64,64);
+
 
         for (Planet planet : Main.solarSystem.getPlanets()) {
             Image img = null;
