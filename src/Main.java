@@ -1,7 +1,9 @@
+import java.util.*;
 
 public class Main {
+    public static SolarSystem solarSystem;
     public UI ui;
-    private SolarSystem solarSystem;
+
     public Main(){
         solarSystem = new SolarSystem();
         solarSystem.addOurSolarSystem();
