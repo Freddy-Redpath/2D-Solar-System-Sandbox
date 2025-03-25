@@ -4,7 +4,7 @@ import java.awt.*;
  * The Planet class represents a planet in a 2D space.
  * and is used to initialize such an object
  */
-public class Planet {
+public class Planet  {
     private String name;
     private double xPosition;  // X-coordinate of the planet
     private double yPosition;  // Y-coordinate of the planet

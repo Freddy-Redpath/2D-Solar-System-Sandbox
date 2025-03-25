@@ -3,16 +3,17 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class UI {
-    SolarSystem solarSystem;
+
+
+    SolarSystem solarSystem = Main.solarSystem;
     JFrame window = new JFrame("Solar System Sandbox!");
     JFrame createPlanetFrame = new JFrame("Planet Creator!");
-    SolarGraphics solareGraphics;
+   // SolarGraphics solareGraphics;
     JPanel solarPanel = new JPanel();
-    SolarGraphics solarGraphics = new SolarGraphics();
-
+    //SolarGraphics solarGraphics = new SolarGraphics();
+    SolarPanel solarPanelClass = new SolarPanel();
     public UI() {
-        solarSystem = new SolarSystem(this);
-        solarSystem.addOurSolarSystem();
+
 
         // this code executes once when an instance of UI is created
     }
@@ -28,7 +29,7 @@ public class UI {
         window.setLayout(new BorderLayout()); // add layout for side/top panels etc.
         window.add(sidePanel(), BorderLayout.WEST);// create (sidePanel()) and display side panel on left hand side of window
         window.add(topPanel(), BorderLayout.NORTH);
-        solarPanel = solarGraphics.SolarPanelCreator(solarSystem);
+        solarPanel = solarPanelClass.SolarPanelCreator();
         window.add(solarPanel);
         window.setLocationRelativeTo(null); // make window centre of screen
         window.setVisible(true); // make the window visible
@@ -217,9 +218,7 @@ public class UI {
 
     public void updateSim(ArrayList<?> bodyArray) {
 
-        solarPanel = solarGraphics.updateBodies(bodyArray, this.solarPanel);
-
-
     }
+
 
 }

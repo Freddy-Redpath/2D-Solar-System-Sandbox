@@ -1,3 +1,5 @@
+/*
+
 import javax.swing.*;
 import java.awt.*;
 import java.text.AttributedString;
@@ -7,26 +9,13 @@ import java.util.ArrayList;
 public class SolarGraphics {
     private double zoomLevel = 1.0;
 
-    public JPanel SolarPanelCreator(SolarSystem solarSystem) {
-        // Establishes the JPanel, and establishes the background + layout
-        JPanel SolarPanel = new JPanel();
-        SolarPanel.setLayout(null);
-        SolarPanel.setBackground(Color.black);
-        // Loops through each planet in the Solar System, setting the image
 
-
-
-
-        // return the panel
-        return SolarPanel;
-    }
 
     public JPanel updateBodies(ArrayList<?> bodyArray, JPanel SolarPanel) {
 
         for (Object o : bodyArray) {
             ImageIcon icon = null;
             if (o instanceof Planet body) {
-                System.out.println("planet made");
                 icon = new ImageIcon(body.getImage());
                 Image ScaledImage = icon.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
                 ImageIcon scaledIcon = new ImageIcon(ScaledImage);
@@ -61,11 +50,14 @@ public class SolarGraphics {
 
 
         }
+        SolarPanel.revalidate(); // Revalidate the panel
+        SolarPanel.repaint(); // Repaint the panel
         return SolarPanel;
+
         }
     }
 
-
+*/
 
 
 
