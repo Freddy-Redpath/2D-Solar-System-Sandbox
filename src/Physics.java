@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class Physics {
 
-    public ArrayList<Double> totalForceCalc(ArrayList<Planet>  planetArray, Star sun){
+    public void totalForceCalc(ArrayList<Planet>  planetArray, Star sun){
         ArrayList<Double> forceTotalList = new ArrayList<>();
 
         for(Planet planet : planetArray) {
@@ -23,8 +23,8 @@ public class Physics {
 
             for (Planet planet2 : planetArray) {
                 if (planet2 != planet) {
-                    double x2 = planet.getXPosition();
-                    double y2 = planet.getYPosition();
+                    x2 = planet.getXPosition();
+                    y2 = planet.getYPosition();
                     double radiusPlanetToPlanet2 = radiusCalc(x, y, x2, y2);
                     mass1 = planet2.getMass();
 
@@ -41,9 +41,10 @@ public class Physics {
                 forceTotalX += forceList.get(i) * Math.cos(forceDirectionList.get(i));
                 forceTotalY += forceList.get(i) * Math.sin(forceDirectionList.get(i));
             }
-            forceTotalList.add(Math.sqrt(forceTotalX*forceTotalX + forceTotalY*forceTotalY));
+            double forceTotal = Math.sqrt(forceTotalX*forceTotalX + forceTotalY*forceTotalY);
+            planet.setForceDirection(Math.asin(forceTotalY/forceTotal));
+            planet.setForce(forceTotal);
         }
-        return forceTotalList;
     }
 
     public double radiusDirectionCalc(double x, double y, double x2, double y2){
@@ -58,7 +59,7 @@ public class Physics {
         return radius;
     }
 
-    public double eccentricityCalc(Planet planet, Star sun){
+    public void eccentricityCalc(Planet planet, Star sun){
         double a = KeplersThirdLaw(planet, sun);
         double radius = planet.getRadius();
         double speedAtR = visViva(planet, sun);
@@ -69,10 +70,8 @@ public class Physics {
 
 
         double e = Math.sqrt(1+(2*E*h*h)/(G*G*mass1*mass1));
-
-        return e; // Used to calc eccentricity but factsheet has for existing planets
-
-
+        planet.setEccentricity(e);
+        // Used to calc eccentricity but factsheet has for existing planets
     }
 
     public long periodCalc(Planet planet, Star sun){
@@ -114,6 +113,7 @@ public class Physics {
         double period = periodCalc(planet, sun); //check on direction? (based on angualr velocity)
         double a = Math.cbrt((period*period*G*mass1)/4*pi*pi);
 
+        planet.setSemiMajor(a);
         return a; // b isn't needed
     }
 
@@ -159,7 +159,7 @@ public class Physics {
         double mass2 = planet.getMass();
         double x = planet.getXPosition();
         double y = planet.getYPosition();
-        double radius= planet.getRadius();
+        double radius = planet.getRadius();
         double force = (G * mass1 * mass2) / (radius * radius);
 
         double ax = -force * (x / radius) / mass2;
