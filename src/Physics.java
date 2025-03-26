@@ -4,8 +4,6 @@ import java.util.ArrayList;
 public class Physics {
 
     public void totalForceCalc(ArrayList<Planet>  planetArray, Star sun){
-        ArrayList<Double> forceTotalList = new ArrayList<>();
-
         for(Planet planet : planetArray) {
             double x = planet.getXPosition();
             double y = planet.getYPosition();
@@ -48,15 +46,13 @@ public class Physics {
     }
 
     public double radiusDirectionCalc(double x, double y, double x2, double y2){
-        double radiusDirection = Math.atan((Math.abs(x - x2) / Math.abs(y - y2)));
-        return radiusDirection;
+        return Math.atan((Math.abs(x - x2) / Math.abs(y - y2)));
     }
 
 
     // Calculates distance between two objects based on coordinates
     public double radiusCalc(double x, double y, double x2, double y2){
-        double radius = Math.sqrt(Math.pow(x - x2, 2)+Math.pow(y - y2, 2));
-        return radius;
+        return Math.sqrt(Math.pow(x - x2, 2)+Math.pow(y - y2, 2));
     }
 
     public void eccentricityCalc(Planet planet, Star sun){
@@ -78,19 +74,18 @@ public class Physics {
         double pi = Math.PI;
         double radius = planet.getRadius();
         double speed = planet.getSpeed();
-        double speedDirection = planet.getDirection();
+        double speedDirection = planet.getSpeedDirection();
 
         double T = (2*pi*radius)/speed;
-        long time = (long)T;
 
-        return time; // Orbit length in sec
+        return (long)T; // Orbit length in sec
 
     }
 
     public double newtonsLawGrav(Planet planet, double mass1, double radius){
         double mass2 = planet.getMass();
         double speed = planet.getSpeed();
-        double speedDirection = planet.getDirection();
+        double speedDirection = planet.getSpeedDirection();
         if (radius == -1){
             radius = planet.getRadius();
         }
@@ -111,7 +106,7 @@ public class Physics {
         double period = periodCalc(planet, sun); //check on direction? (based on angualr velocity)
         double a = Math.cbrt((period*period*G*mass1)/4*pi*pi);
 
-        planet.setSemiMajor(a);
+        planet.setSemiMajorAxis(a);
         return a; // b isn't needed
     }
 
@@ -121,7 +116,7 @@ public class Physics {
         double G = 6.67e-11;
         double radius = planet.getRadius();
         double speed = planet.getSpeed();
-        double speedDirection = planet.getDirection();
+        double speedDirection = planet.getSpeedDirection();
         double a = KeplersThirdLaw(planet, sun);
 
         double speedAtR = Math.sqrt(G*mass1*((2/radius)-(1/a)));
@@ -132,7 +127,7 @@ public class Physics {
     public double specificAngularMomentum (Planet planet, Star sun){
         double radius1 = planet.getRadius();
         double speed = planet.getSpeed();
-        double speedDirection = planet.getDirection();
+        double speedDirection = planet.getSpeedDirection();
 
         double h = radius1 * speed;
 
@@ -141,7 +136,7 @@ public class Physics {
 
     public double specificOrbitalEnergy (Planet planet, Star sun){
         double speed = planet.getSpeed();
-        double speedDirection = planet.getDirection();
+        double speedDirection = planet.getSpeedDirection();
         double radius = planet.getRadius();
         double mass1 = sun.getMass();
         double G = 6.67e-11;
@@ -151,14 +146,14 @@ public class Physics {
     }
 
 
-    public double[] newxandy(Planet planet, Star sun, double deltaT) {
+    public void newxandy(Planet planet, Star sun, double deltaT) {
         double G = 6.67e-11;
         double mass1 = sun.getMass();
         double mass2 = planet.getMass();
         double x = planet.getXPosition();
         double y = planet.getYPosition();
         double radius = planet.getRadius();
-        double force = newtonsLawGrav(planet, mass1, radius));
+        double force = newtonsLawGrav(planet, mass1, radius);
 
         double ax = -force * (x / radius) / mass2;
         double ay = -force * (y / radius) / mass2;
@@ -166,7 +161,7 @@ public class Physics {
         double acceleration = Math.sqrt(ax * ax + ay * ay);
         double theta2 = planet.getForceDirection();
         double V0 = planet.getSpeed();
-        double theta1 = planet.getDirection();
+        double theta1 = planet.getSpeedDirection();
 
         double Va = acceleration * deltaT;
 
@@ -180,6 +175,10 @@ public class Physics {
         double x_new = x + Vtx * deltaT;
         double y_new = y + Vty * deltaT;
 
-        return new double[]{x_new, y_new, Vt, velocityDirection};
+        //Set values
+        planet.setXPosition(x_new);
+        planet.setYPosition(y_new);
+        planet.setSpeed(Vt);
+        planet.setSpeedDirection(velocityDirection);
     }
 }
