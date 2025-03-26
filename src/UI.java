@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 public class UI {
@@ -30,6 +32,18 @@ public class UI {
         window.add(sidePanel(), BorderLayout.WEST);// create (sidePanel()) and display side panel on left hand side of window
         window.add(topPanel(), BorderLayout.NORTH);
         solarPanel = solarPanelClass;
+
+        //adding space listener for pause
+        window.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    System.out.println("space");
+                    Main.simPaused = !Main.simPaused;
+                }
+            }
+        });
+
         window.add(solarPanel);
         window.setLocationRelativeTo(null); // make window centre of screen
         window.setVisible(true); // make the window visible
