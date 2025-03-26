@@ -6,33 +6,38 @@ import java.awt.*;
  */
 public class Planet {
     private String name;
-    private double xPosition;  // X-coordinate of the planet
-    private double yPosition;  // Y-coordinate of the planet
-    private double mass;       // Mass of the planet
-    private double speed;      // Speed of the planet
-    private double speedDirection;  // Direction of movement in degrees
-    private double radius;           // Distance of planet from the sun
-    private double eccentricity;     // Eccentricity value of the orbit of the planet
-    private double period;           // orbit time in seconds
-    private double force;            // Gravitational Force
-    private double forceDirection;  // Direction of Gravitational force
-    private double semiMajorAxis;  // Semi Major axis of the orbit of the planet
-    private double size;             // Size of the planet
-    private String image;            // Image representation of the planet
+    private double xPosition;         // X-coordinate of the planet
+    private double yPosition;         // Y-coordinate of the planet
+    private double mass;              // Mass of the planet
+    private double speed;             // Speed of the planet
+    private double speedDirection;    // Direction of movement in degrees
+    private double radius;            // Distance of planet from the sun
+    private double eccentricity;      // Eccentricity value of the orbit of the planet
+    private double period;            // orbit time in seconds
+    private double force;             // Gravitational Force
+    private double forceDirection;    // Direction of Gravitational force
+    private double semiMajorAxis;     // Semi Major axis of the orbit of the planet
+    private double size;              // Size of the planet
+    private String image;             // Image representation of the planet
 
-    // radius:0.0, eccentricity:0.0, period:0.0, force:0.0, force_direction:0.0, semi_major_axis:0.0
+
     /**
      * Constructor to initialize a Planet object.
      *
-     * @param name       Label for the planet
-     * @param xPosition  Initial X-coordinate
-     * @param yPosition  Initial Y-coordinate
-     * @param mass       Mass of the planet
-     * @param speed      Speed of the planet
+     * @param name            Label for the planet
+     * @param xPosition       Initial X-coordinate
+     * @param yPosition       Initial Y-coordinate
+     * @param mass            Mass of the planet
+     * @param speed           Speed of the planet
      * @param speedDirection  Direction of movement in degrees
-     * @param radius     Distance between Sun and the planet
-     * @param size       Size of the planet
-     * @param image      Image representation of the planet
+     * @param radius          Distance between Sun and the planet
+     * @param eccentricity    Eccentricity of the orbit
+     * @param period          Revolution time of the planet
+     * @param force           Gravitational force on the planet
+     * @param forceDirection  Direction of the force on the planet
+     * @param semiMajorAxis   Semi Major Axis of the orbit
+     * @param size            Size of the planet
+     * @param image           Image representation of the planet
      */
     public Planet(double xPosition, double yPosition, double mass, double speed, double speedDirection, double radius, double eccentricity, double period, double force,double forceDirection,double semiMajorAxis , double size, String image, String name) {
         this.xPosition = xPosition;
@@ -130,7 +135,7 @@ public class Planet {
 
     public void setForce(double force) {this.force = force;}
 
-    public void setForce_direction(double forceDirection) {this.forceDirection = forceDirection;}
+    public void setForceDirection(double forceDirection) {this.forceDirection = forceDirection;}
 
     public  void setSemiMajorAxis(double semiMajorAxis) {this.semiMajorAxis = semiMajorAxis;}
 
