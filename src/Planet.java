@@ -29,7 +29,7 @@ public class Planet {
      * @param yPosition  Initial Y-coordinate
      * @param mass       Mass of the planet
      * @param speed      Speed of the planet
-     * @param direction  Direction of movement in degrees
+     * @param speed_direction  Direction of movement in degrees
      * @param radius     Distance between Sun and the planet
      * @param size       Size of the planet
      * @param image      Image representation of the planet
@@ -80,7 +80,7 @@ public class Planet {
 
     public double getForce() {return force;}
 
-    public double getForce_direction() {return force_direction;}
+    public double getForceDirection() {return force_direction;}
 
     public double getSemiMajorAxis() {return semi_major_axis;}
 
