@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -202,9 +203,11 @@ public class UI {
     }
 
     public void OpenPlanetCreator() {
-        createPlanetFrame.add(Box.createRigidArea(new Dimension(20, 20)));
+        createPlanetFrame.getContentPane().removeAll();
 
-        createPlanetFrame.add(createPlanetSidePanel(), BorderLayout.EAST);
+        createPlanetFrame.add(new CreatePlanetView(), BorderLayout.CENTER);
+        createPlanetFrame.pack();
+        createPlanetFrame.setLocationRelativeTo(null);
         createPlanetFrame.setVisible(true);
 
 
