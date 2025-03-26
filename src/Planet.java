@@ -10,13 +10,13 @@ public class Planet {
     private double yPosition;  // Y-coordinate of the planet
     private double mass;       // Mass of the planet
     private double speed;      // Speed of the planet
-    private double speed_direction;  // Direction of movement in degrees
+    private double speedDirection;  // Direction of movement in degrees
     private double radius;           // Distance of planet from the sun
     private double eccentricity;     // Eccentricity value of the orbit of the planet
     private double period;           // orbit time in seconds
     private double force;            // Gravitational Force
-    private double force_direction;  // Direction of Gravitational force
-    private double semi_major_axis;  // Semi Major axis of the orbit of the planet
+    private double forceDirection;  // Direction of Gravitational force
+    private double semiMajorAxis;  // Semi Major axis of the orbit of the planet
     private double size;             // Size of the planet
     private String image;            // Image representation of the planet
 
@@ -29,23 +29,23 @@ public class Planet {
      * @param yPosition  Initial Y-coordinate
      * @param mass       Mass of the planet
      * @param speed      Speed of the planet
-     * @param speed_direction  Direction of movement in degrees
+     * @param speedDirection  Direction of movement in degrees
      * @param radius     Distance between Sun and the planet
      * @param size       Size of the planet
      * @param image      Image representation of the planet
      */
-    public Planet(double xPosition, double yPosition, double mass, double speed, double speed_direction, double radius, double eccentricity, double period, double force,double force_direction,double semi_major_axis , double size, String image, String name) {
+    public Planet(double xPosition, double yPosition, double mass, double speed, double speedDirection, double radius, double eccentricity, double period, double force,double forceDirection,double semiMajorAxis , double size, String image, String name) {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.mass = mass;
         this.speed = speed;
-        this.speed_direction = speed_direction;
+        this.speedDirection = speedDirection;
         this.radius = radius;
         this.eccentricity = eccentricity;
         this.period = period;
         this.force = force;
-        this.force_direction = force_direction;
-        this.semi_major_axis = semi_major_axis;
+        this.forceDirection = forceDirection;
+        this.semiMajorAxis = semiMajorAxis;
         this.size = size;
         this.image = image;
         this.name = name;
@@ -69,7 +69,7 @@ public class Planet {
     }
 
     public double getSpeedDirection() {
-        return speed_direction;
+        return speedDirection;
     }
 
     public double getRadius() {return radius;}
@@ -80,9 +80,9 @@ public class Planet {
 
     public double getForce() {return force;}
 
-    public double getForceDirection() {return force_direction;}
+    public double getForceDirection() {return forceDirection;}
 
-    public double getSemiMajorAxis() {return semi_major_axis;}
+    public double getSemiMajorAxis() {return semiMajorAxis;}
 
     public double getSize() {return size;}
 
@@ -118,21 +118,21 @@ public class Planet {
         this.size = size;
     }
 
-    public void setSpeedDirection(double speed_direction) {
-        this.speed_direction = speed_direction;
+    public void setSpeedDirection(double speedDirection) {
+        this.speedDirection = speedDirection;
     }
 
     public void setRadius(double radius) {this.radius = radius;}
 
-    public void setEccentricity(double eccentricit) {this.eccentricity = eccentricit;}
+    public void setEccentricity(double eccentricity) {this.eccentricity = eccentricity;}
 
     public void setPeriod(double period) {this.period = period;}
 
     public void setForce(double force) {this.force = force;}
 
-    public void setForce_direction(double force_direction) {this.force_direction = force_direction;}
+    public void setForce_direction(double forceDirection) {this.forceDirection = forceDirection;}
 
-    public  void setSemiMajorAxis(double semi_major_axis) {this.semi_major_axis = semi_major_axis;}
+    public  void setSemiMajorAxis(double semiMajorAxis) {this.semiMajorAxis = semiMajorAxis;}
 
     public void setName(String name) {this.name = name;}
 }
