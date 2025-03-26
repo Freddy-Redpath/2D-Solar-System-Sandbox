@@ -171,6 +171,11 @@ public class UI {
             System.out.println("focus on: " + planetSelector.getSelectedItem());
         });
 
+        JButton pauseBTN = ButtonCreator(null, 0, 0, 100, 100, "Pause");
+        pauseBTN.addActionListener(e -> {
+            System.out.println("Pause pressed");
+            Main.simPaused = !Main.simPaused;
+        });
 
         topPanel.add(Box.createRigidArea(new Dimension(20, 20)));
 
@@ -181,6 +186,8 @@ public class UI {
 
         topPanel.add(focusPlanetBTN);
         topPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+        topPanel.add(pauseBTN);
 
         return topPanel;
     }
