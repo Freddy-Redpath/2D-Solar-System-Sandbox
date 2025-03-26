@@ -24,15 +24,20 @@ public class Planet {
     /**
      * Constructor to initialize a Planet object.
      *
-     * @param name       Label for the planet
-     * @param xPosition  Initial X-coordinate
-     * @param yPosition  Initial Y-coordinate
-     * @param mass       Mass of the planet
-     * @param speed      Speed of the planet
+     * @param name            Label for the planet
+     * @param xPosition       Initial X-coordinate
+     * @param yPosition       Initial Y-coordinate
+     * @param mass            Mass of the planet
+     * @param speed           Speed of the planet
      * @param speedDirection  Direction of movement in degrees
-     * @param radius     Distance between Sun and the planet
-     * @param size       Size of the planet
-     * @param image      Image representation of the planet
+     * @param radius          Distance between Sun and the planet
+     * @param eccentricity    Eccentricity of the orbit
+     * @param period          Revolution time of the planet
+     * @param force           Gravitational force on the planet
+     * @param forceDirection  Direction of the force on the planet
+     * @param semiMajorAxis   Semi Major Axis of the orbit
+     * @param size            Size of the planet
+     * @param image           Image representation of the planet
      */
     public Planet(double xPosition, double yPosition, double mass, double speed, double speedDirection, double radius, double eccentricity, double period, double force,double forceDirection,double semiMajorAxis , double size, String image, String name) {
         this.xPosition = xPosition;
