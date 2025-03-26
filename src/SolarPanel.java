@@ -1,48 +1,56 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.Random;
-
+import java.awt.event.*;
 
 public class SolarPanel extends JPanel {
+    private int offsetX = 0, offsetY = 0;
+    private int prevMouseX, prevMouseY;
 
-    public JPanel SolarPanelCreator() {
+    public SolarPanel() {
+        setBackground(Color.black);
 
-        SolarPanel panel = new SolarPanel();
-        panel.setBackground(Color.black);
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                prevMouseX = e.getX();
+                prevMouseY = e.getY();
+            }
+        });
 
+        addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                int dx = e.getX() - prevMouseX;
+                int dy = e.getY() - prevMouseY;
 
-        return panel;
+                offsetX += dx;
+                offsetY += dy;
+
+                prevMouseX = e.getX();
+                prevMouseY = e.getY();
+
+                repaint();
+            }
+        });
     }
-
 
     @Override
     protected void paintComponent(Graphics g) {
-
-
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.white);
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.drawRect(0, 0, 64,64);
 
         for (Planet planet : Main.solarSystem.getPlanets()) {
-            Image img = null;
-            img = new ImageIcon(planet.getImage()).getImage();
-            int x = (int)planet.getXPosition();
-            int y = (int)planet.getYPosition();
-
-
-            g2d.drawImage(img,x,y,64, 64, this);
+            Image img = new ImageIcon(planet.getImage()).getImage();
+            int x = (int) planet.getXPosition() + offsetX;
+            int y = (int) planet.getYPosition() + offsetY;
+            g2d.drawImage(img, x, y, 64, 64, this);
         }
+
         for (Star star : Main.solarSystem.getStars()) {
-            Image img = null;
-            img = new ImageIcon(star.getImage()).getImage();
-            int x = (int)star.getXPosition();
-            int y = (int)star.getYPosition();
-
-
-            g2d.drawImage(img,x,y,64,64, this);
+            Image img = new ImageIcon(star.getImage()).getImage();
+            int x = (int) star.getXPosition() + offsetX;
+            int y = (int) star.getYPosition() + offsetY;
+            g2d.drawImage(img, x, y, 64, 64, this);
         }
-
     }
 }

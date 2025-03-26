@@ -20,7 +20,7 @@ public class SolarSystem {
 
     // Functions for adding pre-set planets from our solar system
     public void addSun(){
-        Star theSun = new Star(500, 250, 1.989e30, 0.0, 0.0, 1.3927e6, "src/images/Sun.png", "sun");
+        Star theSun = new Star(500, 500, 1.989e30, 0.0, 0.0, 1.3927e6, "src/images/Sun.png", "sun");
         addStar(theSun);
     }
     public void addEarth(){
