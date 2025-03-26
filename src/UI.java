@@ -168,14 +168,33 @@ public class UI {
 
         return topPanel;
     }
+
+
+
+//    public void OpenPlanetCreator() {
+//        createPlanetFrame.add(Box.createRigidArea(new Dimension(20, 20)));
+//
+//        createPlanetFrame.add(createPlanetSidePanel(), BorderLayout.EAST);
+//        createPlanetFrame.setVisible(true);
+//
+//
+//    }
+
+    // New OpenPlanetCreator method (to be placed at the end of your UI class)
     public void OpenPlanetCreator() {
-        createPlanetFrame.add(Box.createRigidArea(new Dimension(20, 20)));
-
-        createPlanetFrame.add(createPlanetSidePanel(), BorderLayout.EAST);
+        // Clear any existing content in createPlanetFrame
+        createPlanetFrame.getContentPane().removeAll();
+        // Add an instance of CreatePlanetView to the frame (which now contains all the preview and side panel code)
+        createPlanetFrame.add(new CreatePlanetView(), BorderLayout.CENTER);
+        // Pack, center, and display the frame
+        createPlanetFrame.pack();
+        createPlanetFrame.setLocationRelativeTo(null);
         createPlanetFrame.setVisible(true);
-
-
     }
+
+
+
+
     public JPanel createPlanetSidePanel() {
         JPanel createPlanetSidePanel = new JPanel(); // create a new panel
         createPlanetSidePanel.setLayout(new BoxLayout(createPlanetSidePanel, BoxLayout.Y_AXIS));
