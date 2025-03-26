@@ -3,6 +3,8 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class CreatePlanetView extends JPanel {
+    private Color selectedColor;
+
     // This class now contains both the preview area and the side panel controls
     public CreatePlanetView() {
         // Use BorderLayout so we can place the preview area and side panel separately
@@ -18,7 +20,17 @@ public class CreatePlanetView extends JPanel {
         sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
         sidePanel.setPreferredSize(new Dimension(200, 300));
         sidePanel.setBackground(Color.LIGHT_GRAY);
+        selectedColor = Color.WHITE;
+        JButton colorButton = new JButton("Select Color");
 
+        colorButton.addActionListener(e -> {
+            Color newColor = JColorChooser.showDialog(this, "Choose Planet Color", selectedColor);
+            if (newColor != null) {
+                selectedColor = newColor;
+                colorButton.setBackground(selectedColor);
+                preview.setPlanetColour(selectedColor);
+            }
+        });
         // Create labels and text fields
         JLabel nameLabel = new JLabel("Name:");
         JTextField nameField = new JTextField(15);
@@ -52,6 +64,7 @@ public class CreatePlanetView extends JPanel {
         sidePanel.add(Box.createRigidArea(new Dimension(20,20)));
         sidePanel.add(nameLabel);
         sidePanel.add(nameField);
+        sidePanel.add(colorButton);
         sidePanel.add(Box.createRigidArea(new Dimension(0,10)));
         sidePanel.add(massLabel);
         sidePanel.add(massField);
@@ -70,7 +83,7 @@ public class CreatePlanetView extends JPanel {
     // Inner class for the preview area that draws a white circle on a black background
     private class PreviewPanel extends JPanel {
         private double planetSize = 10;
-
+        private Color planetColour = Color.WHITE;
         public PreviewPanel() {
             setPreferredSize(new Dimension(300,300));
             setBackground(Color.BLACK);
@@ -80,7 +93,10 @@ public class CreatePlanetView extends JPanel {
             this.planetSize = newSize;
             repaint();
         }
-
+        public void setPlanetColour(Color color) {
+            this.planetColour = color;
+            repaint();
+        }
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
@@ -88,7 +104,7 @@ public class CreatePlanetView extends JPanel {
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             // Set color to white
-            g2d.setColor(Color.WHITE);
+            g2d.setColor(planetColour);
             // Calculate center of the panel
             int centerX = getWidth() / 2;
             int centerY = getHeight() / 2;

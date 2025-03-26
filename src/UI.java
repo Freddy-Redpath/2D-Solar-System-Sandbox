@@ -193,13 +193,12 @@ public class UI {
     }
 
     public void OpenPlanetCreator() {
-        createPlanetFrame.add(Box.createRigidArea(new Dimension(20, 20)));
-
-        createPlanetFrame.add(createPlanetSidePanel(), BorderLayout.EAST);
+        createPlanetFrame.getContentPane().removeAll();
+        createPlanetFrame.add(new CreatePlanetView(), BorderLayout.CENTER);
+        createPlanetFrame.pack();
+        createPlanetFrame.setLocationRelativeTo(null);
         createPlanetFrame.setVisible(true);
-
-
-    }
+}
 
     public JPanel createPlanetSidePanel() {
         JPanel createPlanetSidePanel = new JPanel(); // create a new panel
