@@ -20,7 +20,7 @@ public class Planet {
     private double size;             // Size of the planet
     private String image;            // Image representation of the planet
 
-    // radius:0.0, eccentricity:0.0, period:0.0, force:0.0, force_direction:0.0, semi_major_axis:0.0
+
     /**
      * Constructor to initialize a Planet object.
      *
@@ -130,7 +130,7 @@ public class Planet {
 
     public void setForce(double force) {this.force = force;}
 
-    public void setForce_direction(double forceDirection) {this.forceDirection = forceDirection;}
+    public void setForceDirection(double forceDirection) {this.forceDirection = forceDirection;}
 
     public  void setSemiMajorAxis(double semiMajorAxis) {this.semiMajorAxis = semiMajorAxis;}
 
