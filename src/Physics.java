@@ -107,8 +107,6 @@ public class Physics {
         double pi = Math.PI;
         double G = 6.67e-11;
         double radius = planet.getRadius();
-        double speed = planet.getSpeed();
-        double speedDirection = planet.getDirection();
 
         double period = periodCalc(planet, sun); //check on direction? (based on angualr velocity)
         double a = Math.cbrt((period*period*G*mass1)/4*pi*pi);
@@ -127,7 +125,7 @@ public class Physics {
         double a = KeplersThirdLaw(planet, sun);
 
         double speedAtR = Math.sqrt(G*mass1*((2/radius)-(1/a)));
-
+        planet.setSpeed(speedAtR);
         return speedAtR; // Used to calc speed at a given distance from star in secure orbit
     }
 
@@ -160,13 +158,13 @@ public class Physics {
         double x = planet.getXPosition();
         double y = planet.getYPosition();
         double radius = planet.getRadius();
-        double force = (G * mass1 * mass2) / (radius * radius);
+        double force = newtonsLawGrav(planet, mass1, radius));
 
         double ax = -force * (x / radius) / mass2;
         double ay = -force * (y / radius) / mass2;
 
         double acceleration = Math.sqrt(ax * ax + ay * ay);
-        double theta2 = Math.atan2(y, x);
+        double theta2 = planet.getForceDirection();
         double V0 = planet.getSpeed();
         double theta1 = planet.getDirection();
 
