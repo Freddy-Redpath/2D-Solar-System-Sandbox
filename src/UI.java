@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 public class UI {
@@ -26,13 +28,30 @@ public class UI {
         // Set window properties
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // exit program when window closed
         window.setSize(width, height); // set size of window
+
         window.setLayout(new BorderLayout()); // add layout for side/top panels etc.
         window.add(sidePanel(), BorderLayout.WEST);// create (sidePanel()) and display side panel on left hand side of window
         window.add(topPanel(), BorderLayout.NORTH);
         solarPanel = solarPanelClass.SolarPanelCreator();
+
+        //adding space listener for pause
+        window.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    System.out.println("space");
+                    Main.simPaused = !Main.simPaused;
+                }
+            }
+        });
+
         window.add(solarPanel);
+
+
         window.setLocationRelativeTo(null); // make window centre of screen
         window.setVisible(true); // make the window visible
+        window.requestFocusInWindow();
+
 
         createPlanetFrame.setSize((int) (width / 1.25), (int) (height / 1.25)); // set size of window
         createPlanetFrame.setLayout(new BorderLayout()); // add layout for side/top panels etc.
@@ -158,6 +177,13 @@ public class UI {
         });
 
 
+        JButton pauseBTN = ButtonCreator(null, 0, 0, 100, 100, "Pause");
+        pauseBTN.addActionListener(e -> {
+            System.out.println("Pause pressed");
+            Main.simPaused = !Main.simPaused;
+        });
+
+
         topPanel.add(Box.createRigidArea(new Dimension(20, 20)));
 
         topPanel.add(dropDownLabel);
@@ -166,6 +192,10 @@ public class UI {
         topPanel.add(Box.createHorizontalStrut(10));
 
         topPanel.add(focusPlanetBTN);
+        topPanel.add(Box.createHorizontalGlue());
+        topPanel.add(pauseBTN);
+        topPanel.add(Box.createHorizontalStrut(20));
+
         topPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         return topPanel;

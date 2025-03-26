@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 
@@ -8,6 +10,7 @@ public class SolarPanel extends JPanel {
     public JPanel SolarPanelCreator() {
 
         SolarPanel panel = new SolarPanel();
+
         panel.setBackground(Color.black);
 
 
