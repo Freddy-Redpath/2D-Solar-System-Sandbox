@@ -6,19 +6,19 @@ import java.awt.*;
  */
 public class Planet {
     private String name;
-    private double xPosition;  // X-coordinate of the planet
-    private double yPosition;  // Y-coordinate of the planet
-    private double mass;       // Mass of the planet
-    private double speed;      // Speed of the planet
-    private double speedDirection;  // Direction of movement in degrees
-    private double radius;           // Distance of planet from the sun
-    private double eccentricity;     // Eccentricity value of the orbit of the planet
-    private double period;           // orbit time in seconds
-    private double force;            // Gravitational Force
-    private double forceDirection;  // Direction of Gravitational force
-    private double semiMajorAxis;  // Semi Major axis of the orbit of the planet
-    private double size;             // Size of the planet
-    private String image;            // Image representation of the planet
+    private double xPosition;         // X-coordinate of the planet
+    private double yPosition;         // Y-coordinate of the planet
+    private double mass;              // Mass of the planet
+    private double speed;             // Speed of the planet
+    private double speedDirection;    // Direction of movement in degrees
+    private double radius;            // Distance of planet from the sun
+    private double eccentricity;      // Eccentricity value of the orbit of the planet
+    private double period;            // orbit time in seconds
+    private double force;             // Gravitational Force
+    private double forceDirection;    // Direction of Gravitational force
+    private double semiMajorAxis;     // Semi Major axis of the orbit of the planet
+    private double size;              // Size of the planet
+    private String image;             // Image representation of the planet
 
 
     /**
