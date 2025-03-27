@@ -11,12 +11,8 @@ public class Physics {
             ArrayList<Double> forceList = new ArrayList<>();
 
             double mass1 = sun.getMass();
-            System.out.println("Calculating forces for planet: " + planet.getName());
-            System.out.println("Position: (" + x + ", " + y + ")");
-            System.out.println("Sun mass: " + mass1);
 
             double forcePlanetToSun = newtonsLawGrav(planet, mass1, -1);
-            System.out.println("Force from sun: " + forcePlanetToSun);
 
             forceList.add(forcePlanetToSun);
 
@@ -28,17 +24,15 @@ public class Physics {
 
             for (Planet planet2 : planetArray) {
                 if (planet2 != planet) {
-                    x2 = planet.getXPosition();
-                    y2 = planet.getYPosition();
+                    x2 = planet2.getXPosition();
+                    y2 = planet2.getYPosition();
                     double radiusPlanetToPlanet2 = radiusCalc(x, y, x2, y2);
                     mass1 = planet2.getMass();
 
                     double forcePlanetToPlanet2 = newtonsLawGrav(planet, mass1, radiusPlanetToPlanet2);
-                    System.out.println("Force: " + forcePlanetToPlanet2);
                     forceList.add(forcePlanetToPlanet2);
 
                     double radiusDirectionPlanetToPlanet2 = radiusDirectionCalc(x, y, x2, y2);
-                    System.out.println("Force Direction: " + radiusDirectionPlanetToPlanet2);
                     forceDirectionList.add(radiusDirectionPlanetToPlanet2);
                 }
             }
@@ -55,17 +49,13 @@ public class Physics {
     }
 
     public double radiusDirectionCalc(double x, double y, double x2, double y2){
-        double dx = x2 - x;
-        double dy = y2 - y;
-        return Math.atan2(dy, dx); // Properly calculates direction
+        return Math.atan((Math.abs(x - x2) / Math.abs(y - y2)));
     }
 
 
     // Calculates distance between two objects based on coordinates
     public double radiusCalc(double x, double y, double x2, double y2){
-        double dx = x2 - x;
-        double dy = y2 - y;
-        return Math.sqrt(dx * dx + dy * dy);
+        return Math.sqrt(Math.pow(x - x2, 2) + Math.pow(y - y2, 2));
     }
 
     public void eccentricityCalc(Planet planet, Star sun){
@@ -111,7 +101,9 @@ public class Physics {
         double G = 6.67e-11;
 
         double period = periodCalc(planet); //check on direction? (based on angualr velocity)
+        System.out.println("Period: " + period);
         double a = Math.cbrt((period*period*G*mass1)/4*pi*pi);
+        System.out.println("a: " + a);
 
         planet.setSemiMajorAxis(a);
     }
@@ -188,9 +180,17 @@ public class Physics {
         totalForceCalc(planets,sun);
 
         for(Planet planet : planets){
-            System.out.println(planet.getName() + planet.getForce());
+            System.out.println(planet.getName());
             System.out.println(planet.getForceDirection());
             System.out.println(planet.getForce());
+            eccentricityCalc(planet, sun);
+            System.out.println(planet.getEccentricity());
+            System.out.println(planet.getSemiMajorAxis());
+            System.out.println(planet.getSpeed());
+            newxandy(planet, sun, 1.0);
+            System.out.println(planet.getXPosition());
+            System.out.println(planet.getYPosition());
+            System.out.println(planet.getRadius());
         }
     }
 
