@@ -57,7 +57,7 @@ public class Physics {
 
     public void eccentricityCalc(Planet planet, Star sun){
         KeplersThirdLaw(planet, sun);
-        double speedAtR = visViva(planet, sun);
+        visViva(planet, sun);
         double h = specificAngularMomentum(planet);
         double E = specificOrbitalEnergy(planet, sun);
         double mass1 = sun.getMass();
@@ -73,7 +73,6 @@ public class Physics {
         double pi = Math.PI;
         double radius = planet.getRadius();
         double speed = planet.getSpeed();
-        double speedDirection = planet.getSpeedDirection();
 
         double T = (2*pi*radius)/speed;
 
@@ -104,30 +103,26 @@ public class Physics {
         planet.setSemiMajorAxis(a);
     }
 
-    public double visViva(Planet planet, Star sun){
+    public void visViva(Planet planet, Star sun){
         double mass1 = sun.getMass();
         double G = 6.67e-11;
         double radius = planet.getRadius();
-        double speed = planet.getSpeed();
-        double speedDirection = planet.getSpeedDirection();
         double a = planet.getSemiMajorAxis();
 
         double speedAtR = Math.sqrt(G*mass1*((2/radius)-(1/a)));
         planet.setSpeed(speedAtR);
-        return speedAtR; // Used to calc speed at a given distance from star in secure orbit
+        // Used to calc speed at a given distance from star in secure orbit
     }
 
     public double specificAngularMomentum (Planet planet){
         double radius1 = planet.getRadius();
         double speed = planet.getSpeed();
-        double speedDirection = planet.getSpeedDirection();
 
         return radius1 * speed;
     }
 
     public double specificOrbitalEnergy (Planet planet, Star sun){
         double speed = planet.getSpeed();
-        double speedDirection = planet.getSpeedDirection();
         double radius = planet.getRadius();
         double mass1 = sun.getMass();
         double G = 6.67e-11;
@@ -137,7 +132,6 @@ public class Physics {
 
 
     public void newxandy(Planet planet, Star sun, double deltaT) {
-        double G = 6.67e-11;
         double mass1 = sun.getMass();
         double mass2 = planet.getMass();
         double x = planet.getXPosition();
