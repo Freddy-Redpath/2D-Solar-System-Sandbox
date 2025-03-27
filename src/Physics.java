@@ -78,6 +78,7 @@ public class Physics {
         double speed = planet.getSpeed();
 
         double T = (2*pi*radius)/speed;
+        System.out.println("Period: " + T);
 
         return (long)T; // Orbit length in sec
 
