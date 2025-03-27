@@ -52,7 +52,6 @@ public class Physics {
         return Math.atan((Math.abs(x - x2) / Math.abs(y - y2)));
     }
 
-
     // Calculates distance between two objects based on coordinates
     public double radiusCalc(double x, double y, double x2, double y2){
         return Math.sqrt(Math.pow(x - x2, 2) + Math.pow(y - y2, 2));
@@ -100,10 +99,8 @@ public class Physics {
         double pi = Math.PI;
         double G = 6.67e-11;
 
-        double period = planet.getPeriod();//periodCalc(planet); //check on direction? (based on angualr velocity)
-        System.out.println("Period: " + period);
-        double a = Math.cbrt((period*period*G*mass1)/4*pi*pi);
-        System.out.println("a: " + a);
+        double period = planet.getPeriod(); //check on direction? (based on angular velocity)
+        double a = Math.cbrt((period*period*G*mass1)/(4*pi*pi));
 
         planet.setSemiMajorAxis(a);
     }
