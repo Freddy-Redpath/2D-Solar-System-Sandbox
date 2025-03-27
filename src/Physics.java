@@ -59,8 +59,8 @@ public class Physics {
     }
 
     public void eccentricityCalc(Planet planet, Star sun){
-        KeplersThirdLaw(planet, sun);
-        visViva(planet, sun);
+        //KeplersThirdLaw(planet, sun);
+        //visViva(planet, sun);
         double h = specificAngularMomentum(planet);
         double E = specificOrbitalEnergy(planet, sun);
         double mass1 = sun.getMass();
