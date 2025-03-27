@@ -56,10 +56,9 @@ public class Physics {
     }
 
     public void eccentricityCalc(Planet planet, Star sun){
-        double a = KeplersThirdLaw(planet, sun);
-        double radius = planet.getRadius();
+        KeplersThirdLaw(planet, sun);
         double speedAtR = visViva(planet, sun);
-        double h = specificAngularMomentum(planet, sun);
+        double h = specificAngularMomentum(planet);
         double E = specificOrbitalEnergy(planet, sun);
         double mass1 = sun.getMass();
         double G = 6.67e-11;
@@ -70,7 +69,7 @@ public class Physics {
         // Used to calc eccentricity but factsheet has for existing planets
     }
 
-    public long periodCalc(Planet planet, Star sun){
+    public long periodCalc(Planet planet){
         double pi = Math.PI;
         double radius = planet.getRadius();
         double speed = planet.getSpeed();
@@ -84,54 +83,46 @@ public class Physics {
 
     public double newtonsLawGrav(Planet planet, double mass1, double radius){
         double mass2 = planet.getMass();
-        double speed = planet.getSpeed();
-        double speedDirection = planet.getSpeedDirection();
         if (radius == -1){
             radius = planet.getRadius();
         }
         double G = 6.67e-11;
 
 
-        double force = (G*mass1*mass2)/radius; // check if correct equation for context
-
-        return force; // Force in Newtons
+        // check if correct equation for context
+        return (G*mass1*mass2)/radius; // Force in Newtons
     }
 
-    public double KeplersThirdLaw(Planet planet, Star sun){
+    public void KeplersThirdLaw(Planet planet, Star sun){
         double mass1 = sun.getMass();
         double pi = Math.PI;
         double G = 6.67e-11;
-        double radius = planet.getRadius();
 
-        double period = periodCalc(planet, sun); //check on direction? (based on angualr velocity)
+        double period = periodCalc(planet); //check on direction? (based on angualr velocity)
         double a = Math.cbrt((period*period*G*mass1)/4*pi*pi);
 
         planet.setSemiMajorAxis(a);
-        return a; // b isn't needed
     }
 
     public double visViva(Planet planet, Star sun){
         double mass1 = sun.getMass();
-        double pi = Math.PI;
         double G = 6.67e-11;
         double radius = planet.getRadius();
         double speed = planet.getSpeed();
         double speedDirection = planet.getSpeedDirection();
-        double a = KeplersThirdLaw(planet, sun);
+        double a = planet.getSemiMajorAxis();
 
         double speedAtR = Math.sqrt(G*mass1*((2/radius)-(1/a)));
         planet.setSpeed(speedAtR);
         return speedAtR; // Used to calc speed at a given distance from star in secure orbit
     }
 
-    public double specificAngularMomentum (Planet planet, Star sun){
+    public double specificAngularMomentum (Planet planet){
         double radius1 = planet.getRadius();
         double speed = planet.getSpeed();
         double speedDirection = planet.getSpeedDirection();
 
-        double h = radius1 * speed;
-
-        return h;
+        return radius1 * speed;
     }
 
     public double specificOrbitalEnergy (Planet planet, Star sun){
@@ -141,8 +132,7 @@ public class Physics {
         double mass1 = sun.getMass();
         double G = 6.67e-11;
 
-        double E = (speed*speed)/2 - (G*mass1)/radius;
-        return E;
+        return (speed*speed)/2 - (G*mass1)/radius;
     }
 
 
