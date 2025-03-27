@@ -72,15 +72,14 @@ public class Physics {
         // Used to calc eccentricity but factsheet has for existing planets
     }
 
-    public long periodCalc(Planet planet){
+    public double periodCalc(Planet planet){
         double pi = Math.PI;
         double radius = planet.getRadius();
         double speed = planet.getSpeed();
 
         double T = (2*pi*radius)/speed;
-        System.out.println("Period: " + T);
 
-        return (long)T; // Orbit length in sec
+        return T; // Orbit length in sec
 
     }
 
@@ -101,7 +100,7 @@ public class Physics {
         double pi = Math.PI;
         double G = 6.67e-11;
 
-        double period = periodCalc(planet); //check on direction? (based on angualr velocity)
+        double period = planet.getPeriod();//periodCalc(planet); //check on direction? (based on angualr velocity)
         System.out.println("Period: " + period);
         double a = Math.cbrt((period*period*G*mass1)/4*pi*pi);
         System.out.println("a: " + a);
@@ -181,17 +180,17 @@ public class Physics {
         totalForceCalc(planets,sun);
 
         for(Planet planet : planets){
-            System.out.println(planet.getName());
-            System.out.println(planet.getForceDirection());
-            System.out.println(planet.getForce());
+            System.out.println("name: " + planet.getName());
+            System.out.println("Force direction: " + planet.getForceDirection());
+            System.out.println("Force: " + planet.getForce());
             eccentricityCalc(planet, sun);
-            System.out.println(planet.getEccentricity());
-            System.out.println(planet.getSemiMajorAxis());
-            System.out.println(planet.getSpeed());
+            System.out.println("E: " + planet.getEccentricity());
+            System.out.println("a: " + planet.getSemiMajorAxis());
+            System.out.println("speed: " + planet.getSpeed());
             newxandy(planet, sun, 1.0);
-            System.out.println(planet.getXPosition());
-            System.out.println(planet.getYPosition());
-            System.out.println(planet.getRadius());
+            System.out.println("X: " + planet.getXPosition());
+            System.out.println("Y: " + planet.getYPosition());
+            System.out.println("radius: " + planet.getRadius());
         }
     }
 
