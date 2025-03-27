@@ -58,8 +58,10 @@ public class Physics {
     }
 
     public void eccentricityCalc(Planet planet, Star sun){
-        //KeplersThirdLaw(planet, sun);
-        //visViva(planet, sun);
+        KeplersThirdLaw(planet, sun);
+        System.out.println("a: " + planet.getSemiMajorAxis());
+        visViva(planet, sun);
+        System.out.println("speed: " + planet.getSpeed());
         double h = specificAngularMomentum(planet);
         double E = specificOrbitalEnergy(planet, sun);
         double mass1 = sun.getMass();
@@ -110,6 +112,10 @@ public class Physics {
         double G = 6.67e-11;
         double radius = planet.getRadius();
         double a = planet.getSemiMajorAxis();
+
+        System.out.println("a: " + a);
+        System.out.println("m1: " + mass1);
+        System.out.println("radius: " + radius);
 
         double speedAtR = Math.sqrt(G*mass1*((2/radius)-(1/a)));
         planet.setSpeed(speedAtR);
