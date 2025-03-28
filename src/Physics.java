@@ -59,9 +59,7 @@ public class Physics {
 
     public void eccentricityCalc(Planet planet, Star sun){
         KeplersThirdLaw(planet, sun);
-        System.out.println("a: " + planet.getSemiMajorAxis());
         visViva(planet, sun);
-        System.out.println("speed: " + planet.getSpeed());
         double h = specificAngularMomentum(planet);
         double E = specificOrbitalEnergy(planet, sun);
         double mass1 = sun.getMass();
@@ -113,9 +111,6 @@ public class Physics {
         double radius = planet.getRadius();
         double a = planet.getSemiMajorAxis();
 
-        System.out.println("a: " + a);
-        System.out.println("m1: " + mass1);
-        System.out.println("radius: " + radius);
 
         double speedAtR = Math.sqrt(G*mass1*((2/radius)-(1/a)));
         planet.setSpeed(speedAtR);
@@ -181,25 +176,14 @@ public class Physics {
         ArrayList<Planet> planets = solarSystem.getPlanets();
 
         totalForceCalc(planets,sun);
-
         for(Planet planet : planets){
-            System.out.println("name: " + planet.getName());
-            System.out.println("Force direction: " + planet.getForceDirection());
-            System.out.println("Force: " + planet.getForce());
             eccentricityCalc(planet, sun);
-            System.out.println("E: " + planet.getEccentricity());
-            System.out.println("a: " + planet.getSemiMajorAxis());
-            System.out.println("speed: " + planet.getSpeed());
             newxandy(planet, sun, 1.0);
-            System.out.println("X: " + planet.getXPosition());
-            System.out.println("Y: " + planet.getYPosition());
-            System.out.println("radius: " + planet.getRadius());
         }
+
     }
 
-    public Physics(){
-        SolarSystem solarSystem = new SolarSystem();
-        solarSystem.addOurSolarSystem();
+    public Physics(SolarSystem solarSystem){
         runSimulation(solarSystem);
     }
 
