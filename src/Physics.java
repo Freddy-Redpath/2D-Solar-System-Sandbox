@@ -186,8 +186,4 @@ public class Physics {
     public Physics(SolarSystem solarSystem){
         runSimulation(solarSystem);
     }
-
-    public static void main(String[] args) {
-        Physics physics = new Physics();
-        }
 }
