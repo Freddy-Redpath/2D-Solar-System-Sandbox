@@ -76,10 +76,7 @@ public class Physics {
         double radius = planet.getRadius();
         double speed = planet.getSpeed();
 
-        double T = (2*pi*radius)/speed;
-
-        return T; // Orbit length in sec
-
+        return (2*pi*radius)/speed;
     }
 
     public double newtonsLawGrav(Planet planet, double mass1, double radius){
