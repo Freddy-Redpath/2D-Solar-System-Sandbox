@@ -38,7 +38,7 @@ public class UI {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                    System.out.println("space");
+                    //System.out.println("space");
                     Main.simPaused = !Main.simPaused;
                 }
             }
