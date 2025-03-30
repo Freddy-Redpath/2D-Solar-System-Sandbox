@@ -3,13 +3,15 @@ import java.util.ArrayList;
 
 public class SolarSystem {
     // ArrayLists to hold the current orbital bodies
-    public ArrayList<Planet> planetArray = new ArrayList<Planet>();
+    public ArrayList<CelestialBody> CelestialBodies = new ArrayList<CelestialBody>();
 
-    public ArrayList<Star> starArray = new ArrayList<Star>();
+    //public ArrayList<Planet> planetArray = new ArrayList<Planet>();
 
-    public ArrayList<Asteroid> asteroidArray = new ArrayList<Asteroid>();
+    //public ArrayList<Star> starArray = new ArrayList<Star>();
 
-    public ArrayList<BlackHole> blackHoleArray = new ArrayList<BlackHole>();
+   // public ArrayList<Asteroid> asteroidArray = new ArrayList<Asteroid>();
+
+   // public ArrayList<BlackHole> blackHoleArray = new ArrayList<BlackHole>();
 
     // Constructor, nothing is in here as we can instantiate an empty solar system
     public SolarSystem(){
@@ -83,48 +85,37 @@ public class SolarSystem {
 
     // Functions for adding created bodies to the relevant ArrayLists
     public void addPlanet(Planet planet) {
-        this.planetArray.add(planet);
+        this.CelestialBodies.add(planet);
     }
     public void removePlanet(Planet planet) {
-        this.planetArray.remove(planet);
+        this.CelestialBodies.remove(planet);
     }
 
     public void addStar(Star star) {
-        this.starArray.add(star);
+        this.CelestialBodies.add(star);
     }
     public void removeStar(Star star) {
-        this.starArray.remove(star);
+        this.CelestialBodies.remove(star);
     }
 
-    public void addAsteroid(Asteroid asteroid) {
-        this.asteroidArray.add(asteroid);
+   /* public void addAsteroid(Asteroid asteroid) {
+        this.CelestialBodies.add(asteroid);
     }
     public void removeAsteroid(Asteroid asteroid) {
-        this.asteroidArray.remove(asteroid);
+        this.CelestialBodies.remove(asteroid);
     }
 
     public void addBlackHole(BlackHole blackhole){
-        this.blackHoleArray.add(blackhole);
+        this.CelestialBodies.add(blackhole);
     }
     public void removeBlackHole(BlackHole blackhole){
-        this.blackHoleArray.remove(blackhole);
+        this.CelestialBodies.remove(blackhole);
     }
-
+*/
     /*
     Getter functions for returning objects in Solar System
     Can change this to return individual planets quite easily, either by giving the function the name attribute
     or the index
     */
-    public ArrayList<Planet> getPlanets() {
-        return planetArray;
-    }
-    public ArrayList<Star> getStars() {
-        return starArray;
-    }
-    public ArrayList<Asteroid> getAsteroids() {
-        return asteroidArray;
-    }
-    public ArrayList<BlackHole> getBlackHoles() {
-        return blackHoleArray;
-    }
+    public ArrayList<CelestialBody> getCelestialBodies(){return this.CelestialBodies;}
 }

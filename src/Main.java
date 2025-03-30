@@ -15,19 +15,11 @@ public class Main {
             @Override
             public void run() {
                 if (!simPaused) {
-                    Planet earth = solarSystem.getPlanets().get(0);
-                    Planet planet2 = solarSystem.getPlanets().get(1);
-                    Planet planet3 = solarSystem.getPlanets().get(2);
-                    Star sun = solarSystem.getStars().getFirst();
-                    int[] newXY1 = Physics.getNextPosition((int)sun.getXPosition(), (int)sun.getYPosition(), 200,(int) earth.getXPosition(),(int)earth.getYPosition());
-                    earth.setXPosition(newXY1[0]);
-                    earth.setYPosition(newXY1[1]);
-                    int[] newXY2 = Physics.getNextPosition((int)sun.getXPosition(), (int)sun.getYPosition(), 275,(int) planet2.getXPosition(),(int)planet2.getYPosition());
-                    planet2.setXPosition(newXY2[0]);
-                    planet2.setYPosition(newXY2[1]);
-                    int[] newXY3 = Physics.getNextPosition((int)sun.getXPosition(), (int)sun.getYPosition(), 350,(int) planet2.getXPosition(),(int)planet2.getYPosition());
-                    planet3.setXPosition(newXY3[0]);
-                    planet3.setYPosition(newXY3[1]);
+                    for (int i = 0; i <= solarSystem.CelestialBodies.size(); i++) {
+                        CelestialBody cb = solarSystem.CelestialBodies.get(i);
+                        int[] newXY = Physics.
+                        cb.setXPosition();
+                    }
                     ui.solarPanel.repaint();
                 }else {
                 System.out.print("paused");

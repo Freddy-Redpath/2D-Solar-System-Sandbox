@@ -8,6 +8,9 @@ public class Physics {
   //Main.solarSystem.getPlanets().get(1).setXPosition(getNextPosition);
         //}
     }
+
+
+    ///woke to be deleted
     public static int[] getNextPosition(int cx, int cy, int radius, int currentX, int currentY) {
         // Calculate the current angle
         double angle = Math.toDegrees(Math.atan2(currentY - cy, currentX - cx));
