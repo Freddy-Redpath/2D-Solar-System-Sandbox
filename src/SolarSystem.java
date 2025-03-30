@@ -20,52 +20,52 @@ public class SolarSystem {
     // radius(done), eccentricity, period, force, force_direction, semi_major_axis,size
     // Functions for adding pre-set planets from our solar system
     public void addSun(){
-        Star theSun = new Star(0.0, 0.0, 1.989e30, 0.0, 0.0, 1.3927e6, "src/images/Sun.png", "sun");
+        Star theSun = new Star(0.0, 0.0, 1.989e30, 0, 0, 1.3927e6, "src/images/Sun.png", "sun");
         addStar(theSun);
     }
 
     public void addMercury() {
-        Planet mercury = new Planet(69.818E9, 0.0, 0.330e24, 38864.7570, 0.0, 69.818E9, 0.206, 7600521.6, 0.0, 0.0, 57.909E9, 4879.0, "src/images/Mercury.png", "mercury");
+        Planet mercury = new Planet(69, 0.0, 1, 1, 0.0, 69.818E9,  "src/images/Mercury.png", "mercury");
         addPlanet(mercury);
     }
 
     public void addVenus() {
-        Planet venus = new Planet(108.9E9, 0.0, 4.87e24, 34790.1818, 0.0, 108.9E9, 0.007, 19414166.4, 0.0, 0.0, 108.210E9, 12104.0, "src/images/Venus.png", "venus");
+        Planet venus = new Planet(25, 0.0, 1, 1, 10, 108.9E9,  "src/images/Venus.png", "venus");
         addPlanet(venus);
     }
 
     public void addEarth(){
-        Planet earth = new Planet(152.1E9, 0.0, 5.97e24, 29295.1810, 0.0,152.1E9,0.017,31558118.4,0.0,0.0,149.5978707E9, 12756.0 , "src/images/Earth.png", "earth");
+        Planet earth = new Planet(20, 0.0, 1, 1, 0.0,152.1E9,"src/images/Earth.png", "earth");
         addPlanet(earth);
     }
 
     public void addMars() {
-        Planet mars = new Planet(249.3E9, 0.0, 0.642e24, 21974.9314, 0.0, 249.3E9, 0.093, 59355072, 0.0, 0.0, 227.956E9, 6792.0, "src/images/Mars.png", "mars");
+        Planet mars = new Planet(250, 0.0, 1, 1, 0.0, 249.3E9, "src/images/Mars.png", "mars");
         addPlanet(mars);
     }
 
     public void addJupiter() {
-        Planet jupiter = new Planet(816.4E9, 0.0, 1898e24, 12434.5425, 0.0, 816.4E9, 0.049, 374335689.6, 0.0, 0.0, 778.479E9, 142984.0, "src/images/Jupiter.png", "jupiter");
+        Planet jupiter = new Planet(10, 0.0, 1, 2.3, 0.0, 816.4E9,  "src/images/Jupiter.png", "jupiter");
         addPlanet(jupiter);
     }
 
     public void addSaturn() {
-        Planet saturn = new Planet(1506.5E9, 0.0, 568e24, 9100.3757, 0.0, 1506.5E9, 0.056, 929292393.6, 0.0, 0.0, 1432.041E9, 120536.0, "src/images/Saturn.png", "saturn");
+        Planet saturn = new Planet(150, 0.0, 1, 0.5, 0.0, 1506.5E9, "src/images/Saturn.png", "saturn");
         addPlanet(saturn);
     }
 
     public void addUranus() {
-        Planet uranus = new Planet(3001.4E9, 0.0, 86.8e24, 6484.6825, 0.0, 3001.4E9, 0.046, 2651218560.0, 0.0, 0.0, 2867.043E9, 51118.0, "src/images/Uranus.png", "uranus");
+        Planet uranus = new Planet(3001.4E9, 0.0, 1, 3, 0.0, 3001.4E9, "src/images/Uranus.png", "uranus");
         addPlanet(uranus);
     }
 
     public void addNeptune() {
-        Planet neptune = new Planet(4558.9E9, 0.0, 102e24, 5383.9657, 0.0, 4558.9E9, 0.010, 5200331155.2, 0.0, 0.0, 4514.953E9, 49528.0, "src/images/Neptune.png", "neptune");
+        Planet neptune = new Planet(100, 0.0, 1, 1, 0.0, 4558.9E9, "src/images/Neptune.png", "neptune");
         addPlanet(neptune);
     }
 
     public void addPluto() {
-        Planet pluto = new Planet(7375.9E9, 0.0, 0.0130e24, 3676.9789, 0.0, 7375.9E9, 0.248, 7824384000.0, 0.0, 0.0, 5869.656E9, 2376.0, "src/images/Pluto.png", "pluto");
+        Planet pluto = new Planet(50, 0.0, 1, 2, 0.0, 7375.9E9, "src/images/Pluto.png", "pluto");
         addPlanet(pluto);
     }
 

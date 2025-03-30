@@ -8,6 +8,7 @@ public class Main {
         solarSystem = new SolarSystem();
         simPaused = false;
         solarSystem.addOurSolarSystem();
+        Physics physics = new Physics();
         Initialise();
         Timer timer = new Timer();
         int interval = 30;
@@ -15,10 +16,13 @@ public class Main {
             @Override
             public void run() {
                 if (!simPaused) {
-                    for (int i = 0; i <= solarSystem.CelestialBodies.size(); i++) {
-                        CelestialBody cb = solarSystem.CelestialBodies.get(i);
-                        int[] newXY = Physics.
-                        cb.setXPosition();
+                    for (int i = 0; i < solarSystem.getCelestialBodies().size(); i++) {
+                        for (int j = i + 1; j < solarSystem.getCelestialBodies().size(); j++) {
+                            physics.applyGravity(solarSystem.getCelestialBodies().get(i), solarSystem.getCelestialBodies().get(j));
+                        }
+                    }
+                    for (CelestialBody planet : solarSystem.getCelestialBodies()) {
+                        physics.updatePosition(planet, 1.0);
                     }
                     ui.solarPanel.repaint();
                 }else {

@@ -124,7 +124,7 @@ public class UI {
     public JComboBox createPlanetCombo() {
         ArrayList<ImageIcon> planetIcons = new ArrayList<>();
         JComboBox planetSelector = new JComboBox();
-        for (Planet x : solarSystem.getPlanets()) {
+        for (CelestialBody x : solarSystem.getCelestialBodies()) {
             planetSelector.addItem(x.getName());
             // planetIcons.add(new ImageIcon());
             ImageIcon icon = new ImageIcon(x.getImage());

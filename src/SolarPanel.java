@@ -39,18 +39,13 @@ public class SolarPanel extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        for (Planet planet : Main.solarSystem.getPlanets()) {
-            Image img = new ImageIcon(planet.getImage()).getImage();
-            int x = (int) planet.getXPosition() + offsetX;
-            int y = (int) planet.getYPosition() + offsetY;
+        for (CelestialBody body : Main.solarSystem.getCelestialBodies()) {
+            Image img = new ImageIcon(body.getImage()).getImage();
+            int x = (int) body.getXPosition() + offsetX;
+            int y = (int) body.getYPosition() + offsetY;
             g2d.drawImage(img, x, y, 64, 64, this);
         }
 
-        for (Star star : Main.solarSystem.getStars()) {
-            Image img = new ImageIcon(star.getImage()).getImage();
-            int x = (int) star.getXPosition() + offsetX;
-            int y = (int) star.getYPosition() + offsetY;
-            g2d.drawImage(img, x, y, 64, 64, this);
-        }
+
     }
 }
