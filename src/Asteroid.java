@@ -6,7 +6,7 @@ import java.awt.*;
  */
 public class Asteroid {
     private double xPosition;  // X-coordinate of the asteroid
-    private double yPosition;  // Y-coordinate of the asteroid
+    private double yPosition;  // Y-c            oordinate of the asteroid
     private double mass;       // Mass of the asteroid
     private double speed;      // Speed of the asteroid
     private double direction;  // Direction of movement in degrees
