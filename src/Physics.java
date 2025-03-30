@@ -17,17 +17,21 @@ class Physics{
         updateVelocity(p1Index, forceX, forceY, 1.0);
         updateVelocity(p2Index, -forceX, -forceY, 1.0);
     }
-    public void updateVelocity(int i, double netForceX, double netForceY, double deltaTime){
-        //update the planets velocity based on net forces and delta time
+    public void updateVelocity(int i, double netForceX, double netForceY, double deltaTime) {
         CelestialBody body = SolarSystem.CelestialBodies.get(i);
-        double accelerationX = netForceX/body.getMass();
-        double accelerationY = netForceY/body.getMass();
-        double newSpeedX = body.getSpeed() * Math.cos(body.getDirection()) + accelerationX * deltaTime;
-        double newSpeedY = body.getSpeed() * Math.sin(body.getDirection()) + accelerationY * deltaTime;
-        body.setSpeed(Math.sqrt(newSpeedX*newSpeedX+newSpeedY*newSpeedY));
-        body.setDirection(Math.atan2(newSpeedY,newSpeedX));
+        double accelerationX = netForceX / body.getMass();
+        double accelerationY = netForceY / body.getMass();
 
+        // Calculate new velocity components
+        double currentSpeedX = body.getSpeed() * Math.cos(body.getDirection());
+        double currentSpeedY = body.getSpeed() * Math.sin(body.getDirection());
 
+        double newSpeedX = currentSpeedX + accelerationX * deltaTime;
+        double newSpeedY = currentSpeedY + accelerationY * deltaTime;
+
+        // Update speed and direction
+        body.setSpeed(Math.sqrt(newSpeedX * newSpeedX + newSpeedY * newSpeedY));
+        body.setDirection(Math.atan2(newSpeedY, newSpeedX));
     }
     public double[] updatePosition(CelestialBody planet, double deltaTime){
         //update the planets position based on velocity and deltaTime

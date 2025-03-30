@@ -10,7 +10,7 @@ public class UI {
     SolarSystem solarSystem = Main.solarSystem;
     JFrame window = new JFrame("Solar System Sandbox!");
     JFrame createPlanetFrame = new JFrame("Planet Creator!");
-   // SolarGraphics solareGraphics;
+    // SolarGraphics solareGraphics;
     JPanel solarPanel = new JPanel();
     //SolarGraphics solarGraphics = new SolarGraphics();
     SolarPanel solarPanelClass = new SolarPanel();
@@ -94,7 +94,17 @@ public class UI {
         sidePanel.setPreferredSize(new Dimension(200, window.getHeight())); // make panel thin, and as tall as the window
         sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS)); // arrange elements vertically
         JSlider speedSlider = new JSlider(JSlider.HORIZONTAL,
-                0, 1000, 500);
+                1, 120, 30);
+        speedSlider.addChangeListener(e -> {
+            int minSpeed = 1;    // Maximum delay (slowest speed)
+            int maxSpeed = 120;
+            if (!speedSlider.getValueIsAdjusting()) { // Ensures it's only updated when released
+                Main.interval = maxSpeed - speedSlider.getValue() + minSpeed;
+
+                Main.startTimer(); // Restart with new interval
+            }
+        });
+
         // box.createRigidArea adds an invisible componemnt (used as border) to stop components going off screen
         sidePanel.add(Box.createRigidArea(new Dimension(20, 20)));
 
@@ -200,11 +210,6 @@ public class UI {
         createPlanetFrame.pack();
         createPlanetFrame.setLocationRelativeTo(null);
         createPlanetFrame.setVisible(true);
+    }
 }
 
-
-
-
-
-
-}
