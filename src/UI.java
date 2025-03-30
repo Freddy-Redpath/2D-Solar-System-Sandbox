@@ -14,6 +14,8 @@ public class UI {
     JPanel solarPanel = new JPanel();
     //SolarGraphics solarGraphics = new SolarGraphics();
     SolarPanel solarPanelClass = new SolarPanel();
+    JComboBox planetSelector = new JComboBox();
+
     public UI() {
 
 
@@ -123,7 +125,6 @@ public class UI {
 
     public JComboBox createPlanetCombo() {
         ArrayList<ImageIcon> planetIcons = new ArrayList<>();
-        JComboBox planetSelector = new JComboBox();
         for (CelestialBody x : solarSystem.getCelestialBodies()) {
             planetSelector.addItem(x.getName());
             // planetIcons.add(new ImageIcon());
@@ -168,6 +169,7 @@ public class UI {
         JButton focusPlanetBTN = ButtonCreator(null, 0, 0, 110, 50, "Focus on \n selected Planet");
         focusPlanetBTN.addActionListener(e -> {
             System.out.println("focusPlanetBTN pressed");
+            solarPanelClass.focusOnPlanet(planetSelector.getSelectedIndex());
             System.out.println("focus on: " + planetSelector.getSelectedItem());
         });
 
@@ -200,45 +202,9 @@ public class UI {
         createPlanetFrame.setVisible(true);
 }
 
-    public JPanel createPlanetSidePanel() {
-        JPanel createPlanetSidePanel = new JPanel(); // create a new panel
-        createPlanetSidePanel.setLayout(new BoxLayout(createPlanetSidePanel, BoxLayout.Y_AXIS));
 
 
-        JLabel nameLabel = new JLabel("Name:");
-        JTextField nameField = new JTextField(15);
-        nameField.setMaximumSize(new Dimension(Integer.MAX_VALUE, nameField.getPreferredSize().height));
 
-        JLabel massLabel = new JLabel("Mass:");
-        JTextField massField = new JTextField(15);
-        massField.setMaximumSize(new Dimension(Integer.MAX_VALUE, nameField.getPreferredSize().height));
-
-
-        JLabel densityLabel = new JLabel("Density:");
-        JTextField densityField = new JTextField(15);
-        densityField.setMaximumSize(new Dimension(Integer.MAX_VALUE, densityField.getPreferredSize().height));
-
-        JLabel sizeLabel = new JLabel("Size:");
-        JTextField sizeField = new JTextField(15);
-        sizeField.setMaximumSize(new Dimension(Integer.MAX_VALUE, sizeField.getPreferredSize().height));
-
-        createPlanetSidePanel.add(Box.createRigidArea(new Dimension(20, 20)));
-        // Add components to the panel
-        createPlanetSidePanel.add(nameLabel);
-        createPlanetSidePanel.add(nameField);
-        createPlanetSidePanel.add(massLabel);
-        createPlanetSidePanel.add(massField);
-        createPlanetSidePanel.add(densityLabel);
-        createPlanetSidePanel.add(densityField);
-        createPlanetSidePanel.add(sizeLabel);
-        createPlanetSidePanel.add(sizeField);
-
-        return createPlanetSidePanel;
-    }
-
-    public void updateSim(ArrayList<?> bodyArray) {
-
-    }
 
 
 }

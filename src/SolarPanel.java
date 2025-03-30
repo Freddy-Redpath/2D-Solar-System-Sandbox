@@ -5,15 +5,36 @@ import java.awt.event.*;
 public class SolarPanel extends JPanel {
     private int offsetX = 0, offsetY = 0;
     private int prevMouseX, prevMouseY;
-
+    private boolean planetFocussed = false;
+    private int focussedplanetIndex = 0;
+    private double zoomScale = 1.0;
     public SolarPanel() {
         setBackground(Color.black);
 
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+                planetFocussed = false;
                 prevMouseX = e.getX();
                 prevMouseY = e.getY();
+            }
+        });
+        addMouseWheelListener(new MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                planetFocussed = true;
+                int rotation = e.getWheelRotation();
+                double zoomStep = 0.1;
+                System.out.println("rotation: " + rotation);
+                if (rotation < 0) {
+                    zoomScale *= (1 + zoomStep);
+                    System.out.println("zoom in " + zoomScale);
+                } else {
+                    zoomScale /= (1 + zoomStep);
+                    System.out.println("zoom out " + zoomScale);
+                }
+
+                repaint();
             }
         });
 
@@ -34,18 +55,32 @@ public class SolarPanel extends JPanel {
         });
     }
 
+    // Method to focus on a specific planet
+    public void focusOnPlanet(int index) {
+        this.focussedplanetIndex = index;
+        planetFocussed = true;
+        zoomScale = 1.0;
+
+        repaint();
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-
+        if (planetFocussed) {
+            int panelWidth = getWidth();
+            int panelHeight = getHeight();
+            CelestialBody body = SolarSystem.CelestialBodies.get(focussedplanetIndex);
+            // Center the view on the selected planet
+            offsetX = (int) ((panelWidth / 2) - (body.getXPosition() * zoomScale) - (32 * zoomScale));
+            offsetY = (int) ((panelHeight / 2) - (body.getYPosition() * zoomScale) - (32 * zoomScale));
+        }
         for (CelestialBody body : Main.solarSystem.getCelestialBodies()) {
             Image img = new ImageIcon(body.getImage()).getImage();
-            int x = (int) body.getXPosition() + offsetX;
-            int y = (int) body.getYPosition() + offsetY;
-            g2d.drawImage(img, x, y, 64, 64, this);
-        }
-
-
+            int x = (int) (body.getXPosition() * zoomScale) + offsetX;
+            int y = (int) (body.getYPosition() * zoomScale) + offsetY;
+            int size = (int) (64 * zoomScale); // Scale planet size
+            g2d.drawImage(img, x, y, size, size, this);}
     }
 }

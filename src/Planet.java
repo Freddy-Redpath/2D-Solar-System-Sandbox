@@ -7,8 +7,8 @@ public class Planet extends CelestialBody {
      * Constructor to initialize a Planet object.
      */
     public Planet( double xPosition, double yPosition, double mass, double speed,
-                  double speedDirection, double size, String image,String name) {
-        super(xPosition, yPosition, mass, speed, speedDirection, size, image, name);
+                  double direction, double size, String image,String name) {
+        super(xPosition, yPosition, mass, speed, direction, size, image, name);
     }
 
     // Getters

@@ -18,11 +18,16 @@ public class Main {
                 if (!simPaused) {
                     for (int i = 0; i < solarSystem.getCelestialBodies().size(); i++) {
                         for (int j = i + 1; j < solarSystem.getCelestialBodies().size(); j++) {
-                            physics.applyGravity(solarSystem.getCelestialBodies().get(i), solarSystem.getCelestialBodies().get(j));
+                            physics.applyGravity(i,j);
+
                         }
                     }
                     for (CelestialBody planet : solarSystem.getCelestialBodies()) {
-                        physics.updatePosition(planet, 1.0);
+
+                        double[] newXY = physics.updatePosition(planet, 1.0);
+                        planet.setXPosition(newXY[0]);
+                        planet.setYPosition(newXY[1]);
+
                     }
                     ui.solarPanel.repaint();
                 }else {
