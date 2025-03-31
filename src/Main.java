@@ -4,7 +4,8 @@ public class Main {
     public static SolarSystem solarSystem;
     public UI ui;
     public static boolean simPaused;
-    public Main(){
+
+    public Main() {
         solarSystem = new SolarSystem();
         simPaused = false;
         solarSystem.addOurSolarSystem();
@@ -18,7 +19,7 @@ public class Main {
                 if (!simPaused) {
                     for (int i = 0; i < solarSystem.getCelestialBodies().size(); i++) {
                         for (int j = i + 1; j < solarSystem.getCelestialBodies().size(); j++) {
-                            physics.applyGravity(i,j);
+                            physics.applyGravity(i, j);
 
                         }
                     }
@@ -30,13 +31,14 @@ public class Main {
 
                     }
                     ui.solarPanel.repaint();
-                }else {
-                System.out.print("paused");
+                } else {
+                    System.out.print("paused");
                 }
             }
         };
         timer.scheduleAtFixedRate(task, 0, interval);
     }
+
     public void Initialise() {
 
         solarSystem = new SolarSystem();
@@ -46,6 +48,7 @@ public class Main {
 
 
     }
+
     public static void main(String[] args) {
         Main main = new Main();
 

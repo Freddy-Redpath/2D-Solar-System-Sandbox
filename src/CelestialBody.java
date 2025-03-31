@@ -3,9 +3,9 @@
  */
 public class CelestialBody {
     protected String name;
-    protected double xPosition, yPosition; // Coordinates
-    protected double mass, speed, direction, size; // Shared properties
-    protected String image; // Image representation
+    protected double xPosition, yPosition;
+    protected double mass, speed, direction, size;
+    protected String image;
 
     /**
      * Constructor for CelestialBody.
@@ -23,23 +23,67 @@ public class CelestialBody {
         this.name = name;
     }
 
-    // Getters
-    public String getName() { return name; }
-    public double getXPosition() { return xPosition; }
-    public double getYPosition() { return yPosition; }
-    public double getMass() { return mass; }
-    public double getSpeed() { return speed; }
-    public double getDirection() { return direction; }
-    public double getSize() { return size; }
-    public String getImage() { return image; }
+    public String getName() {
+        return name;
+    }
 
-    // Setters
-    public void setName(String name) { this.name = name; }
-    public void setXPosition(double xPosition) { this.xPosition = xPosition; }
-    public void setYPosition(double yPosition) { this.yPosition = yPosition; }
-    public void setMass(double mass) { this.mass = mass; }
-    public void setSpeed(double speed) { this.speed = speed; }
-    public void setDirection(double direction) { this.direction = direction; }
-    public void setSize(double size) { this.size = size; }
-    public void setImage(String image) { this.image = image; }
+    public double getXPosition() {
+        return xPosition;
+    }
+
+    public double getYPosition() {
+        return yPosition;
+    }
+
+    public double getMass() {
+        return mass;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public double getDirection() {
+        return direction;
+    }
+
+    public double getSize() {
+        return size;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setXPosition(double xPosition) {
+        this.xPosition = xPosition;
+    }
+
+    public void setYPosition(double yPosition) {
+        this.yPosition = yPosition;
+    }
+
+    public void setMass(double mass) {
+        this.mass = mass;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    public void setDirection(double direction) {
+        this.direction = direction;
+    }
+
+    public void setSize(double size) {
+        this.size = size;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 }

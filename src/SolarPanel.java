@@ -8,6 +8,7 @@ public class SolarPanel extends JPanel {
     private boolean planetFocussed = false;
     private int focussedplanetIndex = 0;
     private double zoomScale = 1.0;
+
     public SolarPanel() {
         setBackground(Color.black);
 
@@ -81,6 +82,7 @@ public class SolarPanel extends JPanel {
             int x = (int) (body.getXPosition() * zoomScale) + offsetX;
             int y = (int) (body.getYPosition() * zoomScale) + offsetY;
             int size = (int) (64 * zoomScale); // Scale planet size
-            g2d.drawImage(img, x, y, size, size, this);}
+            g2d.drawImage(img, x, y, size, size, this);
+        }
     }
 }

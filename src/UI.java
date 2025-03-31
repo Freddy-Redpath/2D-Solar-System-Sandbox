@@ -10,7 +10,7 @@ public class UI {
     SolarSystem solarSystem = Main.solarSystem;
     JFrame window = new JFrame("Solar System Sandbox!");
     JFrame createPlanetFrame = new JFrame("Planet Creator!");
-   // SolarGraphics solareGraphics;
+    // SolarGraphics solareGraphics;
     JPanel solarPanel = new JPanel();
     //SolarGraphics solarGraphics = new SolarGraphics();
     SolarPanel solarPanelClass = new SolarPanel();
@@ -127,9 +127,7 @@ public class UI {
         ArrayList<ImageIcon> planetIcons = new ArrayList<>();
         for (CelestialBody x : solarSystem.getCelestialBodies()) {
             planetSelector.addItem(x.getName());
-            // planetIcons.add(new ImageIcon());
             ImageIcon icon = new ImageIcon(x.getImage());
-            // Scale image to appropriate size
             Image ScaledImage = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 
             planetIcons.add(new ImageIcon(ScaledImage));
@@ -137,7 +135,7 @@ public class UI {
         }
 
 
-        planetSelector.setPreferredSize(new Dimension(120, 30)); // Set preferred size
+        planetSelector.setPreferredSize(new Dimension(120, 30));
         planetSelector.setMaximumSize(new Dimension(150, 30));
 
         planetSelector.setRenderer(new DefaultListCellRenderer() {
@@ -145,11 +143,9 @@ public class UI {
             public Component getListCellRendererComponent(JList<?> list, Object value, int index,
                                                           boolean isSelected, boolean cellHasFocus) {
                 JLabel planetLabel = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                planetLabel.setHorizontalAlignment(SwingConstants.LEFT); // Align text and icon
-
-                // Set icon based on index
+                planetLabel.setHorizontalAlignment(SwingConstants.LEFT);
                 if (index >= 0 && index < planetIcons.size()) {
-                    planetLabel.setIcon(planetIcons.get(index)); // Use get() instead of array index
+                    planetLabel.setIcon(planetIcons.get(index));
                 }
 
                 return planetLabel;
@@ -200,11 +196,7 @@ public class UI {
         createPlanetFrame.pack();
         createPlanetFrame.setLocationRelativeTo(null);
         createPlanetFrame.setVisible(true);
-}
-
-
-
-
+    }
 
 
 }

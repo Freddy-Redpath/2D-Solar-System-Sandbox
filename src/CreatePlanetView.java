@@ -61,17 +61,17 @@ public class CreatePlanetView extends JPanel {
         });
 
         // Add components to the side panel with spacing
-        sidePanel.add(Box.createRigidArea(new Dimension(20,20)));
+        sidePanel.add(Box.createRigidArea(new Dimension(20, 20)));
         sidePanel.add(nameLabel);
         sidePanel.add(nameField);
         sidePanel.add(colorButton);
-        sidePanel.add(Box.createRigidArea(new Dimension(0,10)));
+        sidePanel.add(Box.createRigidArea(new Dimension(0, 10)));
         sidePanel.add(massLabel);
         sidePanel.add(massField);
-        sidePanel.add(Box.createRigidArea(new Dimension(0,10)));
+        sidePanel.add(Box.createRigidArea(new Dimension(0, 10)));
         sidePanel.add(densityLabel);
         sidePanel.add(densityField);
-        sidePanel.add(Box.createRigidArea(new Dimension(0,10)));
+        sidePanel.add(Box.createRigidArea(new Dimension(0, 10)));
         sidePanel.add(sizeLabel);
         sidePanel.add(sizeField);
         sidePanel.add(Box.createVerticalGlue());
@@ -84,8 +84,9 @@ public class CreatePlanetView extends JPanel {
     private class PreviewPanel extends JPanel {
         private double planetSize = 10;
         private Color planetColour = Color.WHITE;
+
         public PreviewPanel() {
-            setPreferredSize(new Dimension(300,300));
+            setPreferredSize(new Dimension(300, 300));
             setBackground(Color.BLACK);
         }
 
@@ -93,10 +94,12 @@ public class CreatePlanetView extends JPanel {
             this.planetSize = newSize;
             repaint();
         }
+
         public void setPlanetColour(Color color) {
             this.planetColour = color;
             repaint();
         }
+
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
@@ -108,9 +111,9 @@ public class CreatePlanetView extends JPanel {
             // Calculate center of the panel
             int centerX = getWidth() / 2;
             int centerY = getHeight() / 2;
-            int d = (int)(planetSize * 2);
+            int d = (int) (planetSize * 2);
             // Draw a filled circle with center at (centerX, centerY)
-            g2d.fillOval(centerX - (int)planetSize, centerY - (int)planetSize, d, d);
+            g2d.fillOval(centerX - (int) planetSize, centerY - (int) planetSize, d, d);
         }
     }
 }
