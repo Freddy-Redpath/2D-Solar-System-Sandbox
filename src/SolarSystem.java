@@ -7,7 +7,7 @@ public class SolarSystem {
     public SolarSystem() {}
 
     public void addSun() {
-        Star theSun = new Star(640, 400,1.989e30 , 0, 0, 50, "src/images/Sun.png", "sun");
+        Star theSun = new Star(640, 400,300e10 , 0, 0, 50, "src/images/Sun.png", "sun");
         addBody(theSun);
     }
 
@@ -22,7 +22,7 @@ public class SolarSystem {
     }
 
     public void addEarth() {
-        Planet earth = new Planet(640+149e6, 400, 1, 1.0, Math.PI / 2, 15, "src/images/Earth.png", "earth");
+        Planet earth = new Planet(500, 500, 1, 1.0, Math.PI / 2, 15, "src/images/Earth.png", "earth");
         addBody(earth);
     }
 
@@ -65,7 +65,7 @@ public class SolarSystem {
         //addJupiter();
         //addSaturn();
         //addUranus();
-       // addNeptune();
+        // addNeptune();
         //addPluto();
     }
 

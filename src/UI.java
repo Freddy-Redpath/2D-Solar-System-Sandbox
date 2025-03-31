@@ -94,7 +94,17 @@ public class UI {
         sidePanel.setPreferredSize(new Dimension(200, window.getHeight())); // make panel thin, and as tall as the window
         sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS)); // arrange elements vertically
         JSlider speedSlider = new JSlider(JSlider.HORIZONTAL,
-                0, 1000, 500);
+                1, 120, 30);
+        speedSlider.addChangeListener(e -> {
+            int minSpeed = 1;    // Maximum delay (slowest speed)
+            int maxSpeed = 120;
+            if (!speedSlider.getValueIsAdjusting()) { // Ensures it's only updated when released
+                Main.interval = maxSpeed - speedSlider.getValue() + minSpeed;
+
+                Main.startTimer(); // Restart with new interval
+            }
+        });
+
         // box.createRigidArea adds an invisible componemnt (used as border) to stop components going off screen
         sidePanel.add(Box.createRigidArea(new Dimension(20, 20)));
 
@@ -108,6 +118,10 @@ public class UI {
         JButton deletePlanetBTN = ButtonCreator(null, 0, 0, 175, 50, "Delete Planet");
         deletePlanetBTN.addActionListener(e -> {
             System.out.println("Delete planet pressed");
+            CelestialBody selectedBody = SolarSystem.CelestialBodies.get(planetSelector.getSelectedIndex());
+            SolarSystem.CelestialBodies.remove(selectedBody);
+            System.out.println(selectedBody.getName() + " deleted");
+
         });
 
         // add buttons to side panel with Button.add
@@ -127,7 +141,9 @@ public class UI {
         ArrayList<ImageIcon> planetIcons = new ArrayList<>();
         for (CelestialBody x : solarSystem.getCelestialBodies()) {
             planetSelector.addItem(x.getName());
+            // planetIcons.add(new ImageIcon());
             ImageIcon icon = new ImageIcon(x.getImage());
+            // Scale image to appropriate size
             Image ScaledImage = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 
             planetIcons.add(new ImageIcon(ScaledImage));
@@ -135,7 +151,7 @@ public class UI {
         }
 
 
-        planetSelector.setPreferredSize(new Dimension(120, 30));
+        planetSelector.setPreferredSize(new Dimension(120, 30)); // Set preferred size
         planetSelector.setMaximumSize(new Dimension(150, 30));
 
         planetSelector.setRenderer(new DefaultListCellRenderer() {
@@ -143,9 +159,11 @@ public class UI {
             public Component getListCellRendererComponent(JList<?> list, Object value, int index,
                                                           boolean isSelected, boolean cellHasFocus) {
                 JLabel planetLabel = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                planetLabel.setHorizontalAlignment(SwingConstants.LEFT);
+                planetLabel.setHorizontalAlignment(SwingConstants.LEFT); // Align text and icon
+
+                // Set icon based on index
                 if (index >= 0 && index < planetIcons.size()) {
-                    planetLabel.setIcon(planetIcons.get(index));
+                    planetLabel.setIcon(planetIcons.get(index)); // Use get() instead of array index
                 }
 
                 return planetLabel;
@@ -197,6 +215,5 @@ public class UI {
         createPlanetFrame.setLocationRelativeTo(null);
         createPlanetFrame.setVisible(true);
     }
-
-
 }
+
