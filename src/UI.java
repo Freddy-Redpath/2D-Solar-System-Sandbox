@@ -56,6 +56,45 @@ public class UI {
         createPlanetFrame.setVisible(false); // make the window visible
     }
 
+
+
+    public void refreshUI() {
+        // Refresh planet dropdown
+        planetSelector.removeAllItems();
+        ArrayList<ImageIcon> planetIcons = new ArrayList<>();
+
+        for (CelestialBody body : solarSystem.getCelestialBodies()) {
+            planetSelector.addItem(body.getName());
+
+            // Create an image icon for the planet
+            ImageIcon icon = new ImageIcon(body.getImage());
+            Image scaledImage = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+            planetIcons.add(new ImageIcon(scaledImage));
+        }
+
+        // Update the renderer to ensure icons match planets
+        planetSelector.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+                                                          boolean isSelected, boolean cellHasFocus) {
+                JLabel planetLabel = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                planetLabel.setHorizontalAlignment(SwingConstants.LEFT);
+
+                if (index >= 0 && index < planetIcons.size()) {
+                    planetLabel.setIcon(planetIcons.get(index));
+                }
+
+                return planetLabel;
+            }
+        });
+
+        // Revalidate and repaint UI components to reflect changes
+        planetSelector.revalidate();
+        planetSelector.repaint();
+        window.revalidate();
+        window.repaint();
+    }
+
     /**
      * Creates a button with the specified properties.
      *
@@ -120,6 +159,7 @@ public class UI {
             System.out.println("Delete planet pressed");
             CelestialBody selectedBody = SolarSystem.CelestialBodies.get(planetSelector.getSelectedIndex());
             SolarSystem.CelestialBodies.remove(selectedBody);
+            refreshUI();
             System.out.println(selectedBody.getName() + " deleted");
 
         });
@@ -159,11 +199,10 @@ public class UI {
             public Component getListCellRendererComponent(JList<?> list, Object value, int index,
                                                           boolean isSelected, boolean cellHasFocus) {
                 JLabel planetLabel = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                planetLabel.setHorizontalAlignment(SwingConstants.LEFT); // Align text and icon
+                planetLabel.setHorizontalAlignment(SwingConstants.LEFT);
 
-                // Set icon based on index
                 if (index >= 0 && index < planetIcons.size()) {
-                    planetLabel.setIcon(planetIcons.get(index)); // Use get() instead of array index
+                    planetLabel.setIcon(planetIcons.get(index));
                 }
 
                 return planetLabel;
