@@ -59,20 +59,17 @@ public class UI {
 
 
     public void refreshUI() {
-        // Refresh planet dropdown
         planetSelector.removeAllItems();
         ArrayList<ImageIcon> planetIcons = new ArrayList<>();
 
         for (CelestialBody body : solarSystem.getCelestialBodies()) {
             planetSelector.addItem(body.getName());
 
-            // Create an image icon for the planet
             ImageIcon icon = new ImageIcon(body.getImage());
             Image scaledImage = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
             planetIcons.add(new ImageIcon(scaledImage));
         }
 
-        // Update the renderer to ensure icons match planets
         planetSelector.setRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index,
@@ -88,7 +85,6 @@ public class UI {
             }
         });
 
-        // Revalidate and repaint UI components to reflect changes
         planetSelector.revalidate();
         planetSelector.repaint();
         window.revalidate();
