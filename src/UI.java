@@ -1,16 +1,23 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 public class UI {
-    SolarSystem solarSystem;
+
+
+    SolarSystem solarSystem = Main.solarSystem;
     JFrame window = new JFrame("Solar System Sandbox!");
     JFrame createPlanetFrame = new JFrame("Planet Creator!");
-    SolarGraphics solareGraphics;
-    SolarGraphics solarGraphics = new SolarGraphics();
+    // SolarGraphics solareGraphics;
+    JPanel solarPanel = new JPanel();
+    //SolarGraphics solarGraphics = new SolarGraphics();
+    SolarPanel solarPanelClass = new SolarPanel();
+    JComboBox planetSelector = new JComboBox();
+
     public UI() {
-        solarSystem = new SolarSystem();
-        solarSystem.addOurSolarSystem();
+
 
         // this code executes once when an instance of UI is created
     }
@@ -26,25 +33,73 @@ public class UI {
         window.setLayout(new BorderLayout()); // add layout for side/top panels etc.
         window.add(sidePanel(), BorderLayout.WEST);// create (sidePanel()) and display side panel on left hand side of window
         window.add(topPanel(), BorderLayout.NORTH);
-        window.add(solarGraphics.SolarPanelCreator(solarSystem));
+        solarPanel = solarPanelClass;
+
+        //adding space listener for pause
+        window.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    //System.out.println("space");
+                    Main.simPaused = !Main.simPaused;
+                }
+            }
+        });
+
+        window.add(solarPanel);
         window.setLocationRelativeTo(null); // make window centre of screen
         window.setVisible(true); // make the window visible
 
-        createPlanetFrame.setSize((int) (width/1.25),  (int)(height/1.25)); // set size of window
+        createPlanetFrame.setSize((int) (width / 1.25), (int) (height / 1.25)); // set size of window
         createPlanetFrame.setLayout(new BorderLayout()); // add layout for side/top panels etc.
         createPlanetFrame.setLocationRelativeTo(null); // make window centre of screen
         createPlanetFrame.setVisible(false); // make the window visible
+    }
+
+
+
+    public void refreshUI() {
+        planetSelector.removeAllItems();
+        ArrayList<ImageIcon> planetIcons = new ArrayList<>();
+
+        for (CelestialBody body : solarSystem.getCelestialBodies()) {
+            planetSelector.addItem(body.getName());
+
+            ImageIcon icon = new ImageIcon(body.getImage());
+            Image scaledImage = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+            planetIcons.add(new ImageIcon(scaledImage));
+        }
+
+        planetSelector.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+                                                          boolean isSelected, boolean cellHasFocus) {
+                JLabel planetLabel = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                planetLabel.setHorizontalAlignment(SwingConstants.LEFT);
+
+                if (index >= 0 && index < planetIcons.size()) {
+                    planetLabel.setIcon(planetIcons.get(index));
+                }
+
+                return planetLabel;
+            }
+        });
+
+        planetSelector.revalidate();
+        planetSelector.repaint();
+        window.revalidate();
+        window.repaint();
     }
 
     /**
      * Creates a button with the specified properties.
      *
      * @param colour Background color of the button (null for default)
-     * @param xPos X position of button, given it isn't placed in a panel
-     * @param yPos Y position of button, given it isn't placed in a panel
-     * @param width width of button
+     * @param xPos   X position of button, given it isn't placed in a panel
+     * @param yPos   Y position of button, given it isn't placed in a panel
+     * @param width  width of button
      * @param height height of button
-     * @param text text of button
+     * @param text   text of button
      * @return JButton instance with specified properties
      */
     public JButton ButtonCreator(Color colour, int xPos, int yPos, int width, int height, String text) {
@@ -74,7 +129,17 @@ public class UI {
         sidePanel.setPreferredSize(new Dimension(200, window.getHeight())); // make panel thin, and as tall as the window
         sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS)); // arrange elements vertically
         JSlider speedSlider = new JSlider(JSlider.HORIZONTAL,
-                0, 1000, 500);
+                1, 120, 30);
+        speedSlider.addChangeListener(e -> {
+            int minSpeed = 1;    // Maximum delay (slowest speed)
+            int maxSpeed = 120;
+            if (!speedSlider.getValueIsAdjusting()) { // Ensures it's only updated when released
+                Main.interval = maxSpeed - speedSlider.getValue() + minSpeed;
+
+                Main.startTimer(); // Restart with new interval
+            }
+        });
+
         // box.createRigidArea adds an invisible componemnt (used as border) to stop components going off screen
         sidePanel.add(Box.createRigidArea(new Dimension(20, 20)));
 
@@ -88,6 +153,11 @@ public class UI {
         JButton deletePlanetBTN = ButtonCreator(null, 0, 0, 175, 50, "Delete Planet");
         deletePlanetBTN.addActionListener(e -> {
             System.out.println("Delete planet pressed");
+            CelestialBody selectedBody = SolarSystem.CelestialBodies.get(planetSelector.getSelectedIndex());
+            SolarSystem.CelestialBodies.remove(selectedBody);
+            refreshUI();
+            System.out.println(selectedBody.getName() + " deleted");
+
         });
 
         // add buttons to side panel with Button.add
@@ -97,16 +167,15 @@ public class UI {
         sidePanel.add(Box.createVerticalGlue());
 
 
-
         sidePanel.add(createPlanetBTN);
         sidePanel.add(Box.createVerticalStrut(20));
         sidePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         return sidePanel;
     }
+
     public JComboBox createPlanetCombo() {
         ArrayList<ImageIcon> planetIcons = new ArrayList<>();
-        JComboBox planetSelector = new JComboBox();
-        for (Planet x : solarSystem.getPlanets()) {
+        for (CelestialBody x : solarSystem.getCelestialBodies()) {
             planetSelector.addItem(x.getName());
             // planetIcons.add(new ImageIcon());
             ImageIcon icon = new ImageIcon(x.getImage());
@@ -126,11 +195,10 @@ public class UI {
             public Component getListCellRendererComponent(JList<?> list, Object value, int index,
                                                           boolean isSelected, boolean cellHasFocus) {
                 JLabel planetLabel = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                planetLabel.setHorizontalAlignment(SwingConstants.LEFT); // Align text and icon
+                planetLabel.setHorizontalAlignment(SwingConstants.LEFT);
 
-                // Set icon based on index
                 if (index >= 0 && index < planetIcons.size()) {
-                    planetLabel.setIcon(planetIcons.get(index)); // Use get() instead of array index
+                    planetLabel.setIcon(planetIcons.get(index));
                 }
 
                 return planetLabel;
@@ -150,11 +218,15 @@ public class UI {
         JButton focusPlanetBTN = ButtonCreator(null, 0, 0, 110, 50, "Focus on \n selected Planet");
         focusPlanetBTN.addActionListener(e -> {
             System.out.println("focusPlanetBTN pressed");
-            System.out.println("focus on: "+ planetSelector.getSelectedItem());
+            solarPanelClass.focusOnPlanet(planetSelector.getSelectedIndex());
+            System.out.println("focus on: " + planetSelector.getSelectedItem());
         });
 
-
-
+        JButton pauseBTN = ButtonCreator(null, 0, 0, 100, 100, "Pause");
+        pauseBTN.addActionListener(e -> {
+            System.out.println("Pause pressed");
+            Main.simPaused = !Main.simPaused;
+        });
 
         topPanel.add(Box.createRigidArea(new Dimension(20, 20)));
 
@@ -166,51 +238,17 @@ public class UI {
         topPanel.add(focusPlanetBTN);
         topPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
+        topPanel.add(pauseBTN);
+
         return topPanel;
     }
+
     public void OpenPlanetCreator() {
-        createPlanetFrame.add(Box.createRigidArea(new Dimension(20, 20)));
-
-        createPlanetFrame.add(createPlanetSidePanel(), BorderLayout.EAST);
+        createPlanetFrame.getContentPane().removeAll();
+        createPlanetFrame.add(new CreatePlanetView(), BorderLayout.CENTER);
+        createPlanetFrame.pack();
+        createPlanetFrame.setLocationRelativeTo(null);
         createPlanetFrame.setVisible(true);
-
-
-    }
-    public JPanel createPlanetSidePanel() {
-        JPanel createPlanetSidePanel = new JPanel(); // create a new panel
-        createPlanetSidePanel.setLayout(new BoxLayout(createPlanetSidePanel, BoxLayout.Y_AXIS));
-
-
-
-
-        JLabel nameLabel = new JLabel("Name:");
-        JTextField nameField = new JTextField(15);
-        nameField.setMaximumSize(new Dimension(Integer.MAX_VALUE, nameField.getPreferredSize().height));
-
-        JLabel massLabel = new JLabel("Mass:");
-        JTextField massField = new JTextField(15);
-        massField.setMaximumSize(new Dimension(Integer.MAX_VALUE, nameField.getPreferredSize().height));
-
-
-        JLabel densityLabel = new JLabel("Density:");
-        JTextField densityField = new JTextField(15);
-        densityField.setMaximumSize(new Dimension(Integer.MAX_VALUE, densityField.getPreferredSize().height));
-
-        JLabel sizeLabel = new JLabel("Size:");
-        JTextField sizeField = new JTextField(15);
-        sizeField.setMaximumSize(new Dimension(Integer.MAX_VALUE, sizeField.getPreferredSize().height));
-
-        createPlanetSidePanel.add(Box.createRigidArea(new Dimension(20, 20)));
-        // Add components to the panel
-        createPlanetSidePanel.add(nameLabel);
-        createPlanetSidePanel.add(nameField);
-        createPlanetSidePanel.add(massLabel);
-        createPlanetSidePanel.add(massField);
-        createPlanetSidePanel.add(densityLabel);
-        createPlanetSidePanel.add(densityField);
-        createPlanetSidePanel.add(sizeLabel);
-        createPlanetSidePanel.add(sizeField);
-
-        return createPlanetSidePanel;
     }
 }
+
