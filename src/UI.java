@@ -62,10 +62,17 @@ public class UI {
         planetSelector.removeAllItems();
         ArrayList<ImageIcon> planetIcons = new ArrayList<>();
 
-        for (CelestialBody body : solarSystem.getCelestialBodies()) {
-            planetSelector.addItem(body.getName());
+        for (Planet planet : solarSystem.getPlanets()) {
+            planetSelector.addItem(planet.getName());
 
-            ImageIcon icon = new ImageIcon(body.getImage());
+            ImageIcon icon = new ImageIcon(planet.getImage());
+            Image scaledImage = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+            planetIcons.add(new ImageIcon(scaledImage));
+        }
+        for (Star star : solarSystem.getStars()) {
+            planetSelector.addItem(star.getName());
+
+            ImageIcon icon = new ImageIcon(star.getImage());
             Image scaledImage = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
             planetIcons.add(new ImageIcon(scaledImage));
         }
@@ -149,7 +156,7 @@ public class UI {
             System.out.println("Create Planet pressed");
             OpenPlanetCreator();
         });
-
+        /*
         JButton deletePlanetBTN = ButtonCreator(null, 0, 0, 175, 50, "Delete Planet");
         deletePlanetBTN.addActionListener(e -> {
             System.out.println("Delete planet pressed");
@@ -159,11 +166,11 @@ public class UI {
             System.out.println(selectedBody.getName() + " deleted");
 
         });
-
+*/
         // add buttons to side panel with Button.add
         sidePanel.add(Box.createVerticalStrut(20));// add vertical spacing between buttons
         sidePanel.add(speedSlider);
-        sidePanel.add(deletePlanetBTN);
+        //sidePanel.add(deletePlanetBTN);
         sidePanel.add(Box.createVerticalGlue());
 
 
@@ -175,7 +182,7 @@ public class UI {
 
     public JComboBox createPlanetCombo() {
         ArrayList<ImageIcon> planetIcons = new ArrayList<>();
-        for (CelestialBody x : solarSystem.getCelestialBodies()) {
+        for (Planet x : solarSystem.getPlanets()) {
             planetSelector.addItem(x.getName());
             // planetIcons.add(new ImageIcon());
             ImageIcon icon = new ImageIcon(x.getImage());

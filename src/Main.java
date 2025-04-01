@@ -32,19 +32,18 @@ public class Main {
             @Override
             public void run() {
                 if (!simPaused) {
-                    for (int i = 0; i < solarSystem.getCelestialBodies().size(); i++) {
-                        for (int j = i + 1; j < solarSystem.getCelestialBodies().size(); j++) {
-                            physics.applyGravity(i,j);
+                    physics.runSimulation(solarSystem);
 
-                        }
-                    }
-                    for (CelestialBody planet : solarSystem.getCelestialBodies()) {
 
-                        double[] newXY = physics.updatePosition(planet, 1.0);
+/*
+                    for (Planet planet : solarSystem.getPlanets()) {
+
+                        double[] newXY = physics.runSimulation(solarSystem);
                         planet.setXPosition(newXY[0]);
                         planet.setYPosition(newXY[1]);
 
                     }
+ */
                     ui.solarPanel.repaint();
                 }else {
                     System.out.print("paused");

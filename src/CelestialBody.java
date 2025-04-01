@@ -1,15 +1,10 @@
-/**
- * The CelestialBody class is a parent class for all space objects like stars and planets.
- */
+/*
 public class CelestialBody {
     protected String name;
     protected double xPosition, yPosition;
     protected double mass, speed, direction, size;
     protected String image;
 
-    /**
-     * Constructor for CelestialBody.
-     */
     public CelestialBody(double xPosition, double yPosition, double mass,
                          double speed, double direction, double size, String image, String name) {
 
@@ -87,3 +82,4 @@ public class CelestialBody {
         this.image = image;
     }
 }
+*/

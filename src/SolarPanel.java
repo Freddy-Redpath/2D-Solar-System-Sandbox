@@ -72,15 +72,22 @@ public class SolarPanel extends JPanel {
         if (planetFocussed) {
             int panelWidth = getWidth();
             int panelHeight = getHeight();
-            CelestialBody body = SolarSystem.CelestialBodies.get(focussedplanetIndex);
+            Planet body = Main.solarSystem.getPlanets().get(focussedplanetIndex);
             // Center the view on the selected planet
             offsetX = (int) ((panelWidth / 2) - (body.getXPosition() * zoomScale) - (32 * zoomScale));
             offsetY = (int) ((panelHeight / 2) - (body.getYPosition() * zoomScale) - (32 * zoomScale));
         }
-        for (CelestialBody body : Main.solarSystem.getCelestialBodies()) {
+        for (Planet body : Main.solarSystem.getPlanets()) {
             Image img = new ImageIcon(body.getImage()).getImage();
-            int x = (int) (body.getXPosition() * zoomScale) + offsetX;
-            int y = (int) (body.getYPosition() * zoomScale) + offsetY;
+            int x = (int) (((body.getXPosition() * zoomScale/1e9) )+offsetX);
+            int y = (int) (((body.getYPosition() * zoomScale/1e9) )+offsetY);
+            int size = (int) (64 * zoomScale); // Scale planet size
+            g2d.drawImage(img, x, y, size, size, this);
+        }
+        for (Star star : Main.solarSystem.getStars()) {
+            Image img = new ImageIcon(star.getImage()).getImage();
+            int x = (int) (star.getXPosition() * zoomScale) + offsetX;
+            int y = (int) (star.getYPosition() * zoomScale) + offsetY;
             int size = (int) (64 * zoomScale); // Scale planet size
             g2d.drawImage(img, x, y, size, size, this);
         }
