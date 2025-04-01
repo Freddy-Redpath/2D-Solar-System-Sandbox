@@ -33,7 +33,7 @@ public class Main {
                 if (!simPaused) {
                    // System.out.println(solarSystem.getPlanets().get(0).getXPosition());
                    // System.out.println(solarSystem.getPlanets().get(0).getYPosition());
-                    int x = physics.runSimulation(solarSystem);
+                    physics.runSimulation(solarSystem, 1000.0);
 
 
 /*

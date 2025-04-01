@@ -1,202 +1,86 @@
 import java.util.ArrayList;
 
-
 public class Physics {
 
-    public void totalForceCalc(ArrayList<Planet> planetArray, Star sun) {
+    private static final double G = 6.67e-11; // Gravitational constant
+
+    public static void totalForceCalc(ArrayList<Planet> planetArray, Star sun) {
         for (Planet planet : planetArray) {
-            double x = planet.getXPosition();
-            double y = planet.getYPosition();
+            Vector2D totalForce = new Vector2D(0, 0);
 
-            ArrayList<Double> forceList = new ArrayList<>();
-
-            double mass1 = sun.getMass();
-
-            double forcePlanetToSun = newtonsLawGrav(planet, mass1, -1);
-
-            forceList.add(forcePlanetToSun);
-
-            ArrayList<Double> forceDirectionList = new ArrayList<>();
-            double x2 = sun.getXPosition();
-            double y2 = sun.getYPosition();
-            double radiusDirectionPlanetToSun = radiusDirectionCalc(x, y, x2, y2);
-            forceDirectionList.add(radiusDirectionPlanetToSun);
-
-            for (Planet planet2 : planetArray) {
-                if (planet2 != planet) {
-                    x2 = planet2.getXPosition();
-                    y2 = planet2.getYPosition();
-                    double radiusPlanetToPlanet2 = radiusCalc(x, y, x2, y2);
-                    mass1 = planet2.getMass();
-
-                    double forcePlanetToPlanet2 = newtonsLawGrav(planet, mass1, radiusPlanetToPlanet2);
-                    forceList.add(forcePlanetToPlanet2);
-
-                    double radiusDirectionPlanetToPlanet2 = radiusDirectionCalc(x, y, x2, y2);
-                    forceDirectionList.add(radiusDirectionPlanetToPlanet2);
+            // Force due to Sun
+            totalForce = totalForce.add(gravitationalForce(planet, sun.getMass(), sun.getXPosition(), sun.getYPosition()));
+            // Forces due to other planets
+            for (Planet otherPlanet : planetArray) {
+                if (otherPlanet != planet) {
+                    totalForce = totalForce.add(gravitationalForce(planet, otherPlanet.getMass(), otherPlanet.getXPosition(), otherPlanet.getYPosition()));
                 }
             }
 
-            double forceTotalX = 0, forceTotalY = 0;
-            for (int i = 0; i < forceDirectionList.size(); i++) {
-                forceTotalX += forceList.get(i) * Math.cos(forceDirectionList.get(i));
-                forceTotalY += forceList.get(i) * Math.sin(forceDirectionList.get(i));
+            // Set force values on the planet
+            if (planet.getName().equals("mercury")) {
+                System.out.println(totalForce.x + " " + totalForce.y);
             }
-            double forceTotal = Math.sqrt(forceTotalX * forceTotalX + forceTotalY * forceTotalY);
-            planet.setForceDirection(Math.atan2(forceTotalY, forceTotalX));
-            planet.setForce(forceTotal);
+            planet.setForce(totalForce.magnitude());
+            planet.setForceDirection(totalForce.angle());
         }
     }
 
-    public double radiusDirectionCalc(double x, double y, double x2, double y2) {
-        return Math.atan2((y - y2), (x - x2));
+    private static Vector2D gravitationalForce(Planet planet, double mass, double x2, double y2) {
+        double x1 = planet.getXPosition();
+        double y1 = planet.getYPosition();
+        double distance = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+
+        if (distance == 0) return new Vector2D(0, 0); // Avoid divide by zero
+
+        double force = (G * planet.getMass() * mass) / (distance * distance);
+        double angle = Math.atan2(y2 - y1, x2 - x1);
+
+        return new Vector2D(force * Math.cos(angle), force * Math.sin(angle));
     }
 
-    // Calculates distance between two objects based on coordinates
-    public double radiusCalc(double x, double y, double x2, double y2) {
-        return Math.sqrt(Math.pow(x - x2, 2) + Math.pow(y - y2, 2));
+    public static void newxandy(Planet planet, double deltaT) {
+        double acceleration = planet.getForce() / planet.getMass();
+        double forceAngle = planet.getForceDirection();
+
+        Vector2D initialVelocity = new Vector2D(planet.getSpeed() * Math.cos(planet.getSpeedDirection()),planet.getSpeed() * Math.sin(planet.getSpeedDirection()));
+
+        Vector2D accelerationVector = new Vector2D(acceleration * Math.cos(forceAngle), acceleration * Math.sin(forceAngle));
+
+        Vector2D finalVelocity = initialVelocity.add(accelerationVector.scale(deltaT));
+        Vector2D newPosition = new Vector2D(planet.getXPosition(), planet.getYPosition()).add(finalVelocity.scale(deltaT));
+
+        planet.setXPosition(newPosition.x);
+        planet.setYPosition(newPosition.y);
+        planet.setSpeed(finalVelocity.magnitude());
+        planet.setSpeedDirection(finalVelocity.angle());
     }
 
-    public void eccentricityCalc(Planet planet, Star sun) {
-        KeplersThirdLaw(planet, sun);
-        visViva(planet, sun);
-        double h = specificAngularMomentum(planet);
-        double E = specificOrbitalEnergy(planet, sun);
-        double mass1 = sun.getMass();
-        double G = 6.67e-11;
-
-
-        double e = Math.sqrt(1 + (2 * E * h * h) / (G * G * mass1 * mass1));
-        planet.setEccentricity(e);
-        // Used to calc eccentricity but factsheet has for existing planets
-    }
-
-    public static void periodCalc(Planet planet, double mass1) {
-        double pi = Math.PI;
-        double radius = planet.getRadius();
-        double G = 6.67e-11;
-        double speed = planet.getSpeed();
-        double a = (G * mass1)/(((2*G*mass1)/radius)-(speed*speed));
-        planet.setSemiMajorAxis(a);
-        planet.setPeriod((2 * pi) * Math.sqrt((Math.pow(a, 3)) / (G * mass1)));
-    }
-
-    public double newtonsLawGrav(Planet planet, double mass1, double radius) {
-        double mass2 = planet.getMass();
-        if (radius == -1) {
-            radius = planet.getRadius();
-        }
-        double G = 6.67e-11;
-
-
-        // check if correct equation for context
-        return (G * mass1 * mass2) / radius; // Force in Newtons
-    }
-
-    public void KeplersThirdLaw(Planet planet, Star sun) {
-        double mass1 = sun.getMass();
-        double pi = Math.PI;
-        double G = 6.67e-11;
-
-        double period = planet.getPeriod(); //check on direction? (based on angular velocity)
-        double a = Math.cbrt((period * period * G * mass1) / (4 * pi * pi));
-
-        planet.setSemiMajorAxis(a);
-    }
-
-    public void visViva(Planet planet, Star sun) {
-        double mass1 = sun.getMass();
-        double G = 6.67e-11;
-        double radius = planet.getRadius();
-        double a = planet.getSemiMajorAxis();
-
-
-        double speedAtR = Math.sqrt(G * mass1 * ((2 / radius) - (1 / a)));
-        planet.setSpeed(speedAtR);
-        // Used to calc speed at a given distance from star in secure orbit
-    }
-
-    public double specificAngularMomentum(Planet planet) {
-        double radius1 = planet.getRadius();
-        double speed = planet.getSpeed();
-
-        return radius1 * speed;
-    }
-
-    public double specificOrbitalEnergy(Planet planet, Star sun) {
-        double speed = planet.getSpeed();
-        double radius = planet.getRadius();
-        double mass1 = sun.getMass();
-        double G = 6.67e-11;
-
-        return (speed * speed) / 2 - (G * mass1) / radius;
-    }
-
-
-    public void newxandy(Planet planet, Star sun, double deltaT) {
-        double mass1 = sun.getMass();
-        double mass2 = planet.getMass();
-        double x_star = sun.getXPosition();
-        double y_star = sun.getYPosition();
-        double x = planet.getXPosition();
-        double y = planet.getYPosition();
-        double radius = planet.getRadius();
-        double force = planet.getForce();
-        double forceDirection = planet.getForceDirection();
-
-
-        double acceleration = force/mass2;
-
-        double V0 = planet.getSpeed();
-        double theta1 = planet.getSpeedDirection();
-
-        double Va = acceleration * deltaT;
-
-        double Vtx = V0 * Math.sin(theta1) + Va * Math.sin(forceDirection);
-        double Vty = V0 * Math.cos(theta1) + Va * Math.cos(forceDirection);
-
-        if (planet.getName().equals("mercury")){
-            System.out.println("vtx: " + planet.getXPosition() + ", vty:" + planet.getYPosition());
-            System.out.println("force: " + planet.getForce() + ", forceDirection:" + planet.getForceDirection());
-            System.out.println("radius: " + planet.getRadius() + ", v0:" + planet.getSpeed());
-        }
-
-        double Vt = Math.sqrt(Vtx * Vtx + Vty * Vty);
-        double velocityDirection = Math.atan2(Vty, Vtx);
-
-        // Position update using velocity
-        double x_new = x + Vtx * deltaT;
-        double y_new = y + Vty * deltaT;
-
-        //Set values
-        planet.setXPosition(x_new);
-        planet.setYPosition(y_new);
-        planet.setRadius(radiusCalc(x_new, y_new, x_star, y_star));
-        planet.setSpeed(Vt);
-        planet.setSpeedDirection(velocityDirection);
-    }
-
-    public int runSimulation(SolarSystem solarSystem) {
-
-
+    public static void runSimulation(SolarSystem solarSystem, double deltaT) {
         Star sun = solarSystem.getStars().get(0);
-
         ArrayList<Planet> planets = solarSystem.getPlanets();
 
         totalForceCalc(planets, sun);
+
         for (Planet planet : planets) {
-            if (planet.getName().equals("mercury")){
-                //System.out.println("Phys X:" + planet.getXPosition() + ", Phys Y:" + planet.getYPosition());
-            }
             eccentricityCalc(planet, sun);
-            newxandy(planet, sun, 1.0);
+            newxandy(planet, deltaT);
         }
-        return 1;
-
     }
 
-    public Physics() {
-        //runSimulation(solarSystem);
+    public static void eccentricityCalc(Planet planet, Star sun) {
+        double h = specificAngularMomentum(planet);
+        double E = specificOrbitalEnergy(planet, sun);
+        double e = Math.sqrt(1 + (2 * E * h * h) / (G * G * sun.getMass() * sun.getMass()));
+
+        planet.setEccentricity(e);
     }
 
+    public static double specificAngularMomentum(Planet planet) {
+        return planet.getRadius() * planet.getSpeed();
+    }
+
+    public static double specificOrbitalEnergy(Planet planet, Star sun) {
+        return (planet.getSpeed() * planet.getSpeed()) / 2 - (G * sun.getMass()) / planet.getRadius();
+    }
 }
