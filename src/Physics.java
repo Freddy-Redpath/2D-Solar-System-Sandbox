@@ -18,9 +18,6 @@ public class Physics {
             }
 
             // Set force values on the planet
-            if (planet.getName().equals("mercury")) {
-                System.out.println(totalForce.x + " " + totalForce.y);
-            }
             planet.setForce(totalForce.magnitude());
             planet.setForceDirection(totalForce.angle());
         }
@@ -39,7 +36,7 @@ public class Physics {
         return new Vector2D(force * Math.cos(angle), force * Math.sin(angle));
     }
 
-    public static void newxandy(Planet planet, double deltaT) {
+    public static void newxandy(Planet planet, Star sun, double deltaT) {
         double acceleration = planet.getForce() / planet.getMass();
         double forceAngle = planet.getForceDirection();
 
@@ -49,6 +46,9 @@ public class Physics {
 
         Vector2D finalVelocity = initialVelocity.add(accelerationVector.scale(deltaT));
         Vector2D newPosition = new Vector2D(planet.getXPosition(), planet.getYPosition()).add(finalVelocity.scale(deltaT));
+
+        double newRadius = Math.sqrt(Math.pow(newPosition.x - sun.getXPosition(), 2) + Math.pow(newPosition.y - sun.getYPosition(), 2));
+        planet.setRadius(newRadius);
 
         planet.setXPosition(newPosition.x);
         planet.setYPosition(newPosition.y);
@@ -63,8 +63,12 @@ public class Physics {
         totalForceCalc(planets, sun);
 
         for (Planet planet : planets) {
+            if (planet.getName().equals("mercury")) {
+                System.out.println("radius:  " + planet.getRadius() + "e:  " + planet.getEccentricity());
+            }
             eccentricityCalc(planet, sun);
-            newxandy(planet, deltaT);
+            newxandy(planet, sun, deltaT);
+
         }
     }
 
@@ -82,5 +86,68 @@ public class Physics {
 
     public static double specificOrbitalEnergy(Planet planet, Star sun) {
         return (planet.getSpeed() * planet.getSpeed()) / 2 - (G * sun.getMass()) / planet.getRadius();
+    }
+
+    //Functions for creating (need to be developed)
+
+    public void eccentricityCalcOld(Planet planet, Star sun) {
+        //if (planet.getCreated() == true)
+        KeplersThirdLaw(planet, sun);
+        visViva(planet, sun);
+        double h = specificAngularMomentum(planet);
+        double E = specificOrbitalEnergy(planet, sun);
+        double mass1 = sun.getMass();
+        double G = 6.67e-11;
+
+
+        double e = Math.sqrt(1 + (2 * E * h * h) / (G * G * mass1 * mass1));
+        planet.setEccentricity(e);
+        // Used to calc eccentricity but factsheet has for existing planets
+    }
+
+
+    public static void visViva(Planet planet, Star sun) {
+        double mass1 = sun.getMass();
+        double G = 6.67e-11;
+        double radius = planet.getRadius();
+        double a = planet.getSemiMajorAxis();
+
+
+        double speedAtR = Math.sqrt(G * mass1 * ((2 / radius) - (1 / a)));
+        planet.setSpeed(speedAtR);
+        // Used to calc speed at a given distance from star in secure orbit
+    }
+
+    public static void KeplersThirdLaw(Planet planet, Star sun) {
+        double mass1 = sun.getMass();
+        double pi = Math.PI;
+        double G = 6.67e-11;
+
+        double period = planet.getPeriod(); //check on direction? (based on angular velocity)
+        double a = Math.cbrt((period * period * G * mass1) / (4 * pi * pi));
+
+        planet.setSemiMajorAxis(a);
+    }
+
+    public static double newtonsLawGrav(Planet planet, double mass1, double radius) {
+        double mass2 = planet.getMass();
+        if (radius == -1) {
+            radius = planet.getRadius();
+        }
+        double G = 6.67e-11;
+
+
+        // check if correct equation for context
+        return (G * mass1 * mass2) / radius; // Force in Newtons
+    }
+
+    public static void periodCalc(Planet planet, double mass1) {
+        double pi = Math.PI;
+        double radius = planet.getRadius();
+        double G = 6.67e-11;
+        double speed = planet.getSpeed();
+        double a = (G * mass1)/(((2*G*mass1)/radius)-(speed*speed));
+        planet.setSemiMajorAxis(a);
+        planet.setPeriod((2 * pi) * Math.sqrt((Math.pow(a, 3)) / (G * mass1)));
     }
 }
