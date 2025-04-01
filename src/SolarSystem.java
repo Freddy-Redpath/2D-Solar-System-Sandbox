@@ -23,7 +23,7 @@ public class SolarSystem {
     }
 
     public void addMercury() {
-        Planet mercury = new Planet(69.818E9, 100.0E9, 0.330e24, 38864.7570, 0.0, 69.818E9, 0.206, 7600521.6, 0.0, 0.0, 57.909E9, 4879.0, "src/images/Mercury.png", "mercury");
+        Planet mercury = new Planet(69.818E9, 0.0, 0.330e24, 38864.7570, 0.0, 69.818E9, 0.206, 7600521.6, 0.0, 0.0, 57.909E9, 4879.0, "src/images/Mercury.png", "mercury");
         addPlanet(mercury);
     }
 

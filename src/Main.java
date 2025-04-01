@@ -21,7 +21,6 @@ public class Main {
 
     }
     public static void startTimer(){
-        System.out.println(interval);
         if (timer != null) {
             timer.cancel();
             timer.purge();
@@ -32,10 +31,13 @@ public class Main {
             @Override
             public void run() {
                 if (!simPaused) {
-                    physics.runSimulation(solarSystem);
+                   // System.out.println(solarSystem.getPlanets().get(0).getXPosition());
+                   // System.out.println(solarSystem.getPlanets().get(0).getYPosition());
+                    int x = physics.runSimulation(solarSystem);
 
 
 /*
+
                     for (Planet planet : solarSystem.getPlanets()) {
 
                         double[] newXY = physics.runSimulation(solarSystem);

@@ -43,13 +43,13 @@ public class Physics {
                 forceTotalY += forceList.get(i) * Math.sin(forceDirectionList.get(i));
             }
             double forceTotal = Math.sqrt(forceTotalX * forceTotalX + forceTotalY * forceTotalY);
-            planet.setForceDirection(Math.asin(forceTotalY / forceTotal));
+            planet.setForceDirection(Math.atan2(forceTotalY, forceTotalX));
             planet.setForce(forceTotal);
         }
     }
 
     public double radiusDirectionCalc(double x, double y, double x2, double y2) {
-        return Math.atan((Math.abs(x - x2) / Math.abs(y - y2)));
+        return Math.atan2((y - y2), (x - x2));
     }
 
     // Calculates distance between two objects based on coordinates
@@ -140,20 +140,24 @@ public class Physics {
         double x = planet.getXPosition();
         double y = planet.getYPosition();
         double radius = planet.getRadius();
-        double force = newtonsLawGrav(planet, mass1, radius);
+        double force = planet.getForce();
+        double forceDirection = planet.getForceDirection();
 
-        double ax = -force * (x / radius) / mass2;
-        double ay = -force * (y / radius) / mass2;
 
-        double acceleration = Math.sqrt(ax * ax + ay * ay);
-        double theta2 = planet.getForceDirection();
+        double acceleration = force/mass2;
+
         double V0 = planet.getSpeed();
         double theta1 = planet.getSpeedDirection();
 
         double Va = acceleration * deltaT;
 
-        double Vtx = V0 * Math.sin(theta1) + Va * Math.sin(theta2);
-        double Vty = V0 * Math.cos(theta1) + Va * Math.cos(theta2);
+        double Vtx = V0 * Math.sin(theta1) + Va * Math.sin(forceDirection);
+        double Vty = V0 * Math.cos(theta1) + Va * Math.cos(forceDirection);
+
+        if (planet.getName().equals("mercury")){
+            System.out.println("vtx: " + planet.getXPosition() + ", vty:" + planet.getYPosition());
+            System.out.println("force: " + planet.getForce() + ", forceDirection:" + planet.getForceDirection());
+        }
 
         double Vt = Math.sqrt(Vtx * Vtx + Vty * Vty);
         double velocityDirection = Math.atan2(Vty, Vtx);
@@ -169,17 +173,22 @@ public class Physics {
         planet.setSpeedDirection(velocityDirection);
     }
 
-    public void runSimulation(SolarSystem solarSystem) {
+    public int runSimulation(SolarSystem solarSystem) {
 
 
         Star sun = solarSystem.getStars().get(0);
+
         ArrayList<Planet> planets = solarSystem.getPlanets();
 
         totalForceCalc(planets, sun);
         for (Planet planet : planets) {
-            //eccentricityCalc(planet, sun);
+            if (planet.getName().equals("mercury")){
+                //System.out.println("Phys X:" + planet.getXPosition() + ", Phys Y:" + planet.getYPosition());
+            }
+            eccentricityCalc(planet, sun);
             newxandy(planet, sun, 1.0);
         }
+        return 1;
 
     }
 

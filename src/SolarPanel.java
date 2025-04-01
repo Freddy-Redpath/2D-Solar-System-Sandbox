@@ -77,10 +77,16 @@ public class SolarPanel extends JPanel {
             offsetX = (int) ((panelWidth / 2) - (body.getXPosition() * zoomScale) - (32 * zoomScale));
             offsetY = (int) ((panelHeight / 2) - (body.getYPosition() * zoomScale) - (32 * zoomScale));
         }
-        for (Planet body : Main.solarSystem.getPlanets()) {
-            Image img = new ImageIcon(body.getImage()).getImage();
-            int x = (int) (((body.getXPosition() * zoomScale/1e9) )+offsetX);
-            int y = (int) (((body.getYPosition() * zoomScale/1e9) )+offsetY);
+        for (Planet planet : Main.solarSystem.getPlanets()) {
+
+            Image img = new ImageIcon(planet.getImage()).getImage();
+            int x = (int) (((planet.getXPosition() * zoomScale)/1e9)+offsetX);
+            int y = (int) (((planet.getYPosition() * zoomScale)/1e9)+offsetY);
+            /*
+            if (planet.getName().equals("mercury")) {
+                System.out.println("Drawn x: " + x + ", y: " + y);
+            }
+            */
             int size = (int) (64 * zoomScale); // Scale planet size
             g2d.drawImage(img, x, y, size, size, this);
         }
