@@ -58,7 +58,6 @@ public class Physics {
     }
 
     public void eccentricityCalc(Planet planet, Star sun) {
-        //if (planet.getCreated() == true)
         KeplersThirdLaw(planet, sun);
         visViva(planet, sun);
         double h = specificAngularMomentum(planet);
@@ -137,6 +136,8 @@ public class Physics {
     public void newxandy(Planet planet, Star sun, double deltaT) {
         double mass1 = sun.getMass();
         double mass2 = planet.getMass();
+        double x_star = sun.getXPosition();
+        double y_star = sun.getYPosition();
         double x = planet.getXPosition();
         double y = planet.getYPosition();
         double radius = planet.getRadius();
@@ -157,6 +158,7 @@ public class Physics {
         if (planet.getName().equals("mercury")){
             System.out.println("vtx: " + planet.getXPosition() + ", vty:" + planet.getYPosition());
             System.out.println("force: " + planet.getForce() + ", forceDirection:" + planet.getForceDirection());
+            System.out.println("radius: " + planet.getRadius() + ", v0:" + planet.getSpeed());
         }
 
         double Vt = Math.sqrt(Vtx * Vtx + Vty * Vty);
@@ -169,6 +171,7 @@ public class Physics {
         //Set values
         planet.setXPosition(x_new);
         planet.setYPosition(y_new);
+        planet.setRadius(radiusCalc(x_new, y_new, x_star, y_star));
         planet.setSpeed(Vt);
         planet.setSpeedDirection(velocityDirection);
     }
