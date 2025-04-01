@@ -80,8 +80,8 @@ public class SolarPanel extends JPanel {
         for (Planet planet : Main.solarSystem.getPlanets()) {
 
             Image img = new ImageIcon(planet.getImage()).getImage();
-            int x = (int) (((planet.getXPosition() * zoomScale)/1e9)+offsetX);
-            int y = (int) (((planet.getYPosition() * zoomScale)/1e9)+offsetY);
+            int x = (int) (((planet.getXPosition() * zoomScale)/1e8)+offsetX);
+            int y = (int) (((planet.getYPosition() * zoomScale)/1e8)+offsetY);
             /*
             if (planet.getName().equals("mercury")) {
                 System.out.println("Drawn x: " + x + ", y: " + y);
