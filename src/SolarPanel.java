@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class SolarPanel extends JPanel {
@@ -83,15 +84,33 @@ public class SolarPanel extends JPanel {
 
             int x = (int) (((planet.getXPosition() * zoomScale)/5e8)+offsetX);
             int y = (int) (((planet.getYPosition() * zoomScale)/5e8)+offsetY);
-            /*
 
-            if (planet.getName().equals("mercury")) {
-                System.out.println("Drawn x: " + x + ", y: " + y);
-            }
-            */
+
+
+
+
             int size = (int) (64 * zoomScale); // Scale planet size
             g2d.drawImage(img, x, y, size, size, this);
+            Color semiOpaque=new Color(0.1f,0.1f,0.1f,.7f );
+            g.fillOval(x - size / 2, y - size / 2, size, size);
+            if(planet.getShowInfoTile()){
+                int panelWidth = 120;
+                int panelHeight = 75;
+                int panelX = x + size / 2+5;
+                int panelY = y - size / 2 - 10;
+                g2d.setColor(semiOpaque);
+                g2d.fillRect(panelX, panelY, panelWidth, panelHeight);
+                DecimalFormat df = new DecimalFormat("#.##");
 
+                g2d.setColor(Color.WHITE);
+                g2d.drawString("Mass: " + planet.getMass(), x + size / 2 + 5, y - size / 2);
+                g2d.drawString("Speed: " +df.format(planet.getSpeed()), x + size / 2 + 5, y - size / 2 + 15);
+                g2d.drawString("Direction: " + df.format(planet.getDirection()), x + size / 2 + 5, y - size / 2 + 30);
+                g2d.drawString("Size: " + df.format(planet.getSize()), x + size / 2 + 5, y - size / 2 + 45);
+                Color color = planet.getColour();
+                String stringColor = ("[" + color.getRed() + ", " + color.getGreen() + ", " + color.getBlue() + "]");
+                g2d.drawString("Color: " + stringColor, x + size / 2 + 5, y - size / 2 + 60);
+            }
 
 
 

@@ -39,7 +39,7 @@ public class Planet {
      * @param size           Size of the planet
      * @param image          Image representation of the planet
      */
-    public Planet(double xPosition, double yPosition, double mass, double speed, double speedDirection, double radius, double eccentricity, double period, double force, double forceDirection, double semiMajorAxis, double size, String image, String name) {
+    public Planet(double xPosition, double yPosition, double mass, double speed, double speedDirection, double radius, double eccentricity, double period, double force, double forceDirection, double semiMajorAxis, double size, String image, String name, boolean showInfoTile) {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.mass = mass;
@@ -54,6 +54,7 @@ public class Planet {
         this.size = size;
         this.image = image;
         this.name = name;
+        this.showInfoTile = false;
     }
 
     // Getter methods to retrieve planet properties
@@ -170,4 +171,6 @@ public class Planet {
     public void setName(String name) {
         this.name = name;
     }
+
+    public void getShowInfoTile() {return showInfoTile;}
 }
