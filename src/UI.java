@@ -136,12 +136,12 @@ public class UI {
         sidePanel.setPreferredSize(new Dimension(200, window.getHeight())); // make panel thin, and as tall as the window
         sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS)); // arrange elements vertically
         JSlider speedSlider = new JSlider(JSlider.HORIZONTAL,
-                1, 120, 30);
+                100, 1000000, 100000);
         speedSlider.addChangeListener(e -> {
-            int minSpeed = 1;    // Maximum delay (slowest speed)
-            int maxSpeed = 120;
+            int minSpeed = 100;    // Maximum delay (slowest speed)
+            int maxSpeed = 1000000;
             if (!speedSlider.getValueIsAdjusting()) { // Ensures it's only updated when released
-                Main.interval = maxSpeed - speedSlider.getValue() + minSpeed;
+                Main.deltaT = maxSpeed - speedSlider.getValue() + minSpeed;
 
                 Main.startTimer(); // Restart with new interval
             }

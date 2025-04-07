@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class SolarPanel extends JPanel {
     private int offsetX = 0, offsetY = 0;
@@ -23,7 +24,6 @@ public class SolarPanel extends JPanel {
         addMouseWheelListener(new MouseWheelListener() {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
-                planetFocussed = true;
                 int rotation = e.getWheelRotation();
                 double zoomStep = 0.1;
                 System.out.println("rotation: " + rotation);
@@ -74,21 +74,28 @@ public class SolarPanel extends JPanel {
             int panelHeight = getHeight();
             Planet body = Main.solarSystem.getPlanets().get(focussedplanetIndex);
             // Center the view on the selected planet
-            offsetX = (int) ((panelWidth / 2) - (body.getXPosition() * zoomScale) - (32 * zoomScale));
-            offsetY = (int) ((panelHeight / 2) - (body.getYPosition() * zoomScale) - (32 * zoomScale));
+            offsetX = (int) ((panelWidth / 2) - ((body.getXPosition() * zoomScale)/ 5e8) - (32 * zoomScale));
+            offsetY = (int) ((panelHeight / 2) - ((body.getYPosition() * zoomScale)/5e8) - (32 * zoomScale));
         }
         for (Planet planet : Main.solarSystem.getPlanets()) {
 
             Image img = new ImageIcon(planet.getImage()).getImage();
+
             int x = (int) (((planet.getXPosition() * zoomScale)/5e8)+offsetX);
             int y = (int) (((planet.getYPosition() * zoomScale)/5e8)+offsetY);
             /*
+
             if (planet.getName().equals("mercury")) {
                 System.out.println("Drawn x: " + x + ", y: " + y);
             }
             */
             int size = (int) (64 * zoomScale); // Scale planet size
             g2d.drawImage(img, x, y, size, size, this);
+
+
+
+
+
         }
         for (Star star : Main.solarSystem.getStars()) {
             Image img = new ImageIcon(star.getImage()).getImage();
@@ -97,5 +104,6 @@ public class SolarPanel extends JPanel {
             int size = (int) (64 * zoomScale); // Scale planet size
             g2d.drawImage(img, x, y, size, size, this);
         }
+
     }
 }

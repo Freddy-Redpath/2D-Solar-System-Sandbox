@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Physics {
@@ -63,9 +64,7 @@ public class Physics {
         totalForceCalc(planets, sun);
 
         for (Planet planet : planets) {
-            if (planet.getName().equals("mercury")) {
-                System.out.println("radius:  " + planet.getRadius() + "e:  " + planet.getEccentricity());
-            }
+
             eccentricityCalc(planet, sun);
             newxandy(planet, sun, deltaT);
 
@@ -87,6 +86,7 @@ public class Physics {
     public static double specificOrbitalEnergy(Planet planet, Star sun) {
         return (planet.getSpeed() * planet.getSpeed()) / 2 - (G * sun.getMass()) / planet.getRadius();
     }
+
 
     //Functions for creating (need to be developed)
 

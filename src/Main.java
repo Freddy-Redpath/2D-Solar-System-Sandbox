@@ -9,7 +9,7 @@ public class Main {
     public static boolean simPaused;
     public static Timer timer;
     private static Physics physics = new Physics(); // Ensure physics object is available
-
+    public static int deltaT = 10000;
     public Main(){
         solarSystem = new SolarSystem();
         simPaused = false;
@@ -33,7 +33,7 @@ public class Main {
                 if (!simPaused) {
                    // System.out.println(solarSystem.getPlanets().get(0).getXPosition());
                    // System.out.println(solarSystem.getPlanets().get(0).getYPosition());
-                    physics.runSimulation(solarSystem, 1000.0);
+                    physics.runSimulation(solarSystem, deltaT);
 
 
 /*
