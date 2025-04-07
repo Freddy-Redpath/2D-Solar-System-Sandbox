@@ -19,6 +19,7 @@ public class Planet {
     private double semiMajorAxis;     // Semi Major axis of the orbit of the planet
     private double size;              // Size of the planet
     private String image;             // Image representation of the planet
+    private boolean showInfoTile;
 
 
     /**
@@ -54,7 +55,7 @@ public class Planet {
         this.size = size;
         this.image = image;
         this.name = name;
-        this.showInfoTile = false;
+        this.showInfoTile = showInfoTile;
     }
 
     // Getter methods to retrieve planet properties
@@ -114,6 +115,8 @@ public class Planet {
         return name;
     }
 
+    public boolean getShowInfoTile() {return showInfoTile;
+    }
 
     // Setter methods to modify planet properties
     public void setImage(String image) {
@@ -172,5 +175,6 @@ public class Planet {
         this.name = name;
     }
 
-    public void getShowInfoTile() {return showInfoTile;}
+    public void setShowInfoTile(boolean showInfoTile) { this.showInfoTile = showInfoTile;}
+
 }

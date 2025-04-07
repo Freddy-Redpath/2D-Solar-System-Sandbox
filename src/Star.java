@@ -13,20 +13,21 @@ public class Star {
     private double direction;  // Direction of movement in degrees
     private double size;       // Size of the star
     private String image;       // Image representation of the star
+    private boolean showInfoTile;
 
     /**
      * Constructor to initialize a star object.
      *
-     * @param name       Label for the star
-     * @param xPosition  Initial X-coordinate
-     * @param yPosition  Initial Y-coordinate
-     * @param mass       Mass of the star
-     * @param speed      Speed of the star
-     * @param direction  Direction of movement in degrees
-     * @param size       Size of the star
-     * @param image      Image representation of the star
+     * @param name      Label for the star
+     * @param xPosition Initial X-coordinate
+     * @param yPosition Initial Y-coordinate
+     * @param mass      Mass of the star
+     * @param speed     Speed of the star
+     * @param direction Direction of movement in degrees
+     * @param size      Size of the star
+     * @param image     Image representation of the star
      */
-    public Star(double xPosition, double yPosition, double mass, double speed, double direction, double size, String image, String name) {
+    public Star(double xPosition, double yPosition, double mass, double speed, double direction, double size, String image, String name, boolean showInfoTile) {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.mass = mass;
@@ -35,6 +36,7 @@ public class Star {
         this.size = size;
         this.image = image;
         this.name = name;
+        this.showInfoTile = showInfoTile;
     }
 
     // Getter methods to retrieve star properties
@@ -62,11 +64,17 @@ public class Star {
         return size;
     }
 
+    public boolean getShowInfoTile() {
+        return showInfoTile;
+    }
+
     public String getImage() {
         return image;
     }
 
-    public String getName() {return name;}
+    public String getName() {
+        return name;
+    }
 
     // Setter methods to modify star properties
     public void setImage(String image) {
@@ -97,5 +105,11 @@ public class Star {
         this.direction = direction;
     }
 
-    public void setName(String name) { this.name = name;}
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setShowInfoTile(boolean showInfoTile) {
+        this.showInfoTile = showInfoTile;
+    }
 }

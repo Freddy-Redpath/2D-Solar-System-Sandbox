@@ -17,9 +17,55 @@ public class SolarPanel extends JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                planetFocussed = false;
-                prevMouseX = e.getX();
-                prevMouseY = e.getY();
+                if (e.getButton() == MouseEvent.BUTTON1) {
+                    planetFocussed = false;
+                    prevMouseX = e.getX();
+                    prevMouseY = e.getY();
+                    for (Planet planet : Main.solarSystem.getPlanets()) {
+                        // Calculate the on-screen position
+                        int x = (int) (((planet.getXPosition() * zoomScale) / 5e8) + offsetX);
+                        int y = (int) (((planet.getYPosition() * zoomScale) / 5e8) + offsetY);
+                        int size = (int) (64 * zoomScale);
+                        int radius = size / 2;
+
+                        // Center of the planet image
+                        int centerX = x + radius;
+                        int centerY = y + radius;
+
+                        double dx = e.getX() - centerX;
+                        double dy = e.getY() - centerY;
+                        double distance = Math.sqrt(dx * dx + dy * dy);
+
+                        if (distance <= radius) {
+                            planet.setShowInfoTile(!planet.getShowInfoTile());
+
+                            break;
+                        }
+                    }
+
+                    for (Star planet : Main.solarSystem.getStars()) {
+                        // Calculate the on-screen position
+                        int x = (int) (((planet.getXPosition() * zoomScale) / 5e8) + offsetX);
+                        int y = (int) (((planet.getYPosition() * zoomScale) / 5e8) + offsetY);
+                        int size = (int) (64 * zoomScale);
+                        int radius = size / 2;
+
+                        // Center of the planet image
+                        int centerX = x + radius;
+                        int centerY = y + radius;
+
+                        double dx = e.getX() - centerX;
+                        double dy = e.getY() - centerY;
+                        double distance = Math.sqrt(dx * dx + dy * dy);
+
+                        if (distance <= radius) {
+                            planet.setShowInfoTile(!planet.getShowInfoTile());
+
+                            break;
+                        }
+                    }
+
+                }
             }
         });
         addMouseWheelListener(new MouseWheelListener() {
@@ -91,25 +137,22 @@ public class SolarPanel extends JPanel {
 
             int size = (int) (64 * zoomScale); // Scale planet size
             g2d.drawImage(img, x, y, size, size, this);
-            Color semiOpaque=new Color(0.1f,0.1f,0.1f,.7f );
-            g.fillOval(x - size / 2, y - size / 2, size, size);
+            Color semiOpaque=new Color(0.2f,0.2f,0.2f,.8f );
             if(planet.getShowInfoTile()){
-                int panelWidth = 120;
+                int panelWidth = 130;
                 int panelHeight = 75;
-                int panelX = x + size / 2+5;
-                int panelY = y - size / 2 - 10;
+                int panelX = x + size+10;
+                int panelY = y ;
                 g2d.setColor(semiOpaque);
                 g2d.fillRect(panelX, panelY, panelWidth, panelHeight);
                 DecimalFormat df = new DecimalFormat("#.##");
 
                 g2d.setColor(Color.WHITE);
-                g2d.drawString("Mass: " + planet.getMass(), x + size / 2 + 5, y - size / 2);
-                g2d.drawString("Speed: " +df.format(planet.getSpeed()), x + size / 2 + 5, y - size / 2 + 15);
-                g2d.drawString("Direction: " + df.format(planet.getDirection()), x + size / 2 + 5, y - size / 2 + 30);
-                g2d.drawString("Size: " + df.format(planet.getSize()), x + size / 2 + 5, y - size / 2 + 45);
-                Color color = planet.getColour();
-                String stringColor = ("[" + color.getRed() + ", " + color.getGreen() + ", " + color.getBlue() + "]");
-                g2d.drawString("Color: " + stringColor, x + size / 2 + 5, y - size / 2 + 60);
+                g2d.drawString("Mass: " + planet.getMass()+" kg", panelX+2, panelY+ 15);
+                g2d.drawString("Speed: " +df.format(planet.getSpeed())+" km/s", panelX+2, panelY+ 30);
+                g2d.drawString("Direction: " + df.format(planet.getSpeedDirection())+ " radians", panelX+2, panelY+ 45);
+                g2d.drawString("Radius: " + df.format(planet.getSize()) + "m", panelX+2, panelY + 60);
+
             }
 
 
@@ -120,8 +163,32 @@ public class SolarPanel extends JPanel {
             Image img = new ImageIcon(star.getImage()).getImage();
             int x = (int) (star.getXPosition() * zoomScale) + offsetX;
             int y = (int) (star.getYPosition() * zoomScale) + offsetY;
-            int size = (int) (64 * zoomScale); // Scale planet size
+            int size = (int) (64 * zoomScale);
             g2d.drawImage(img, x, y, size, size, this);
+
+
+
+
+
+
+            g2d.drawImage(img, x, y, size, size, this);
+            Color semiOpaque=new Color(0.2f,0.2f,0.2f,.8f );
+            if(star.getShowInfoTile()){
+                int panelWidth = 130;
+                int panelHeight = 75;
+                int panelX = x + size+10;
+                int panelY = y - size/2+20;
+                g2d.setColor(semiOpaque);
+                g2d.fillRect(panelX, panelY, panelWidth, panelHeight);
+                DecimalFormat df = new DecimalFormat("#.##");
+
+                g2d.setColor(Color.WHITE);
+                g2d.drawString("Mass: " + star.getMass()+" kg", panelX+2, panelY+ 15);
+                g2d.drawString("Speed: " +df.format(star.getSpeed())+" km/s", panelX+2, panelY+ 30);
+                g2d.drawString("Direction: " + df.format(star.getDirection())+ " radians", panelX+2, panelY+ 45);
+                g2d.drawString("Radius: " + df.format(star.getSize()) + "m", panelX+2, panelY + 60);
+
+            }
         }
 
     }

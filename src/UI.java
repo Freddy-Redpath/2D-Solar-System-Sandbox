@@ -109,11 +109,24 @@ public class UI {
      * @param text   text of button
      * @return JButton instance with specified properties
      */
-    public JButton ButtonCreator(Color colour, int xPos, int yPos, int width, int height, String text) {
-        JButton button = new JButton("<html><center>" + text.replace("\n", "<br>") + "</center></html>");
-
+    public JButton ButtonCreator(Color colour,String imagePath, int xPos, int yPos, int width, int height, String text) {
+        JButton button = new JButton();
+        if(text != null) {
+            button.setText("<html><center>" + text.replace("\n", "<br>") + "</center></html>");
+        }
         if (colour != null) {
             button.setBackground(colour);
+        }
+
+        if (imagePath != null) {
+            ImageIcon icon = new ImageIcon(imagePath);
+            Image img = icon.getImage();
+            Image scaledImg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            button.setIcon(new ImageIcon(scaledImg));
+
+            button.setBorderPainted(false);
+            button.setFocusPainted(false);
+            button.setContentAreaFilled(false);
         }
 
         if (width != 0 && height != 0) {
@@ -121,6 +134,7 @@ public class UI {
             button.setMaximumSize(new Dimension(width, height));
             button.setMinimumSize(new Dimension(width, height));
         }
+
 
         return button;
     }
@@ -132,51 +146,101 @@ public class UI {
      * @return JPanel with buttons and spacing
      */
     public JPanel sidePanel() {
-        JPanel sidePanel = new JPanel(new BorderLayout());// create a new panel
-        sidePanel.setPreferredSize(new Dimension(200, window.getHeight())); // make panel thin, and as tall as the window
-        sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS)); // arrange elements vertically
-        JSlider speedSlider = new JSlider(JSlider.HORIZONTAL,
-                100, 1000000, 100000);
-        speedSlider.addChangeListener(e -> {
-            int minSpeed = 100;    // Maximum delay (slowest speed)
-            int maxSpeed = 1000000;
-            if (!speedSlider.getValueIsAdjusting()) { // Ensures it's only updated when released
-                Main.deltaT = maxSpeed - speedSlider.getValue() + minSpeed;
+        JPanel sidePanel = new JPanel(new BorderLayout());
+        sidePanel.setPreferredSize(new Dimension(200, window.getHeight()));
 
-                Main.startTimer(); // Restart with new interval
-            }
+        sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
+
+        JPanel speedPanel = new JPanel();
+        speedPanel.setLayout(new BoxLayout(speedPanel, BoxLayout.X_AXIS));
+        speedPanel.add(Box.createHorizontalGlue());
+        JButton normalSpeedButton = ButtonCreator(null, "src/images/playBTN.png", 0, 0, 30, 30, null);
+        normalSpeedButton.addActionListener(e -> {
+            System.out.println("normal speed pressed");
+            Main.deltaT = 10000;
+            Main.simPaused = false;
+
         });
 
-        // box.createRigidArea adds an invisible componemnt (used as border) to stop components going off screen
-        sidePanel.add(Box.createRigidArea(new Dimension(20, 20)));
+        JButton speedUpBTN = ButtonCreator(null, "src/images/speedUpBTN.png", 0, 0, 30, 30, null);
+        speedUpBTN.addActionListener(e -> {
+            System.out.println("speed UP pressed");
+            if (Main.deltaT + 10000 <= 1000000) {
+                Main.deltaT += 10000;
+            }
+            Main.simPaused = false;
+        });
 
-        // create buttons with specified values
-        JButton createPlanetBTN = ButtonCreator(null, 0, 0, 150, 50, "Create Planet");
+        JButton slowDownBTN = ButtonCreator(null, "src/images/slowDownBTN.png", 0, 0, 30, 30, null);
+        slowDownBTN.addActionListener(e -> {
+            System.out.println("slow down pressed");
+            if (Main.deltaT - 1000 >= 1) {
+                Main.deltaT -= 1000;
+            }
+            Main.simPaused = false;
+        });
+
+        JButton pauseBTN = ButtonCreator(null, "src/images/pauseBTN.png", 0, 0, 30, 30, null);
+        pauseBTN.addActionListener(e -> {
+            System.out.println("PAUSE pressed");
+            Main.simPaused = true;
+        });
+
+        speedPanel.add(slowDownBTN);
+        speedPanel.add(Box.createVerticalStrut(5));
+        speedPanel.add(pauseBTN);
+        speedPanel.add(normalSpeedButton);
+        speedPanel.add(Box.createVerticalStrut(5));
+
+        speedPanel.add(normalSpeedButton);
+
+        speedPanel.add(Box.createVerticalStrut(5));
+        speedPanel.add(speedUpBTN);
+        speedPanel.add(Box.createHorizontalGlue()); // To push buttons to the left
+
+        // Create the speed slider
+        JSlider speedSlider = new JSlider(JSlider.HORIZONTAL, 100, 1000000, 100000);
+        speedSlider.addChangeListener(e -> {
+            Main.deltaT = speedSlider.getValue();
+        });
+
+        // Create the "Create Planet" button
+        JButton createPlanetBTN = ButtonCreator(null, null, 0, 0, 150, 50, "Create Planet");
         createPlanetBTN.addActionListener(e -> {
             System.out.println("Create Planet pressed");
             OpenPlanetCreator();
-        });
-        /*
-        JButton deletePlanetBTN = ButtonCreator(null, 0, 0, 175, 50, "Delete Planet");
-        deletePlanetBTN.addActionListener(e -> {
-            System.out.println("Delete planet pressed");
-            CelestialBody selectedBody = SolarSystem.CelestialBodies.get(planetSelector.getSelectedIndex());
-            SolarSystem.CelestialBodies.remove(selectedBody);
             refreshUI();
-            System.out.println(selectedBody.getName() + " deleted");
-
         });
-*/
-        // add buttons to side panel with Button.add
-        sidePanel.add(Box.createVerticalStrut(20));// add vertical spacing between buttons
-        sidePanel.add(speedSlider);
-        //sidePanel.add(deletePlanetBTN);
-        sidePanel.add(Box.createVerticalGlue());
+        JButton deletePlanetBTN = ButtonCreator(null, null, 0, 0, 150, 50, "Delete focussed Planet");
+        deletePlanetBTN.addActionListener(e -> {
+            System.out.println("delete Planet pressed");
+            if (planetSelector.getSelectedIndex() <= Main.solarSystem.getPlanets().size()) {
+               Main.solarSystem.removePlanet( Main.solarSystem.getPlanets().get(planetSelector.getSelectedIndex()));;
+               refreshUI();
 
 
-        sidePanel.add(createPlanetBTN);
+
+
+            }
+        });
+        JPanel sidePlanetPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        sidePlanetPanel.add(createPlanetBTN);
+        sidePlanetPanel.add(deletePlanetBTN);
+
+        // Add components to the side panel
         sidePanel.add(Box.createVerticalStrut(20));
+        sidePanel.add(speedPanel);
+        sidePanel.add(Box.createVerticalStrut(20));
+        sidePanel.add(speedSlider);
+        sidePanel.add(Box.createVerticalGlue());
+        sidePanel.add(sidePlanetPanel);
+
+
+
+
+        // Set the border
         sidePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
         return sidePanel;
     }
 
@@ -184,9 +248,15 @@ public class UI {
         ArrayList<ImageIcon> planetIcons = new ArrayList<>();
         for (Planet x : solarSystem.getPlanets()) {
             planetSelector.addItem(x.getName());
-            // planetIcons.add(new ImageIcon());
             ImageIcon icon = new ImageIcon(x.getImage());
-            // Scale image to appropriate size
+            Image ScaledImage = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+
+            planetIcons.add(new ImageIcon(ScaledImage));
+
+        }
+        for (Star x : solarSystem.getStars()) {
+            planetSelector.addItem(x.getName());
+            ImageIcon icon = new ImageIcon(x.getImage());
             Image ScaledImage = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 
             planetIcons.add(new ImageIcon(ScaledImage));
@@ -222,14 +292,14 @@ public class UI {
         JLabel dropDownLabel = new JLabel("Select Planet:");
         JComboBox planetSelector = createPlanetCombo();
 
-        JButton focusPlanetBTN = ButtonCreator(null, 0, 0, 110, 50, "Focus on \n selected Planet");
+        JButton focusPlanetBTN = ButtonCreator(null, null,0, 0, 110, 50, "Focus on \n selected Planet");
         focusPlanetBTN.addActionListener(e -> {
             System.out.println("focusPlanetBTN pressed");
             solarPanelClass.focusOnPlanet(planetSelector.getSelectedIndex());
             System.out.println("focus on: " + planetSelector.getSelectedItem());
         });
 
-        JButton pauseBTN = ButtonCreator(null, 0, 0, 100, 100, "Pause");
+        JButton pauseBTN = ButtonCreator(null, null,0, 0, 100, 100, "Pause");
         pauseBTN.addActionListener(e -> {
             System.out.println("Pause pressed");
             Main.simPaused = !Main.simPaused;
