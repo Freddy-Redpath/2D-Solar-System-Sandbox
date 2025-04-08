@@ -24,6 +24,73 @@ public class Physics {
         }
     }
 
+    private static void handleCollision(SolarSystem solarSystem) {
+        ArrayList<Planet> toDelete = new ArrayList<>();
+        for (Planet planet1 : solarSystem.getPlanets()) {
+            for (Planet planet2 : solarSystem.getPlanets()) {
+                double dx = (planet1.getXPosition() - planet2.getXPosition())/5e8;
+                double dy = (planet1.getYPosition() - planet2.getYPosition())/5e8;
+                double distance = Math.sqrt(dx * dx + dy * dy);
+                double dir1 = planet1.getSpeedDirection();
+                double dir2 = planet2.getSpeedDirection();
+                if (planet2 == planet1) {
+                    break;
+                }
+                System.out.println("Distance: " + distance);
+                System.out.println("planet1 size " + planet1.getSize());
+                System.out.println("planet2 size " + planet2.getSize());
+                if (distance < (64)) {
+                    System.out.println("Collision Detected between " + planet1.getName()+ " and " + planet2.getName());
+                    double angleBetween = Math.atan2(dy, dx); // Angle from planet1 to planet2 (collision axis)
+
+                    double relativeAngle1 = Math.abs(angleBetween - planet1.getSpeedDirection());
+                    double relativeAngle2 = Math.abs(angleBetween - planet2.getSpeedDirection());
+
+                    System.out.println("angleBetween: " + angleBetween);
+                    System.out.println("relativeAngle1: " + relativeAngle1);
+                    System.out.println("calculate check " + (Math.PI * 0.75) + " to "+Math.PI * 1.25);
+                    System.out.println("relativeAngle2: " + relativeAngle2);
+
+                    boolean isHeadOn = (relativeAngle1 > Math.PI * 0.75 && relativeAngle2 < Math.PI * 1.25);
+
+
+
+
+                    if (isHeadOn) {
+                        double newMass = planet1.getMass() + planet2.getMass();
+                        double vx = (planet1.getSpeed() * Math.cos(dir1) * planet1.getMass() +
+                                planet2.getSpeed() * Math.cos(dir2) * planet2.getMass()) / newMass;
+                        double vy = (planet1.getSpeed() * Math.sin(dir1) * planet1.getMass() +
+                                planet2.getSpeed() * Math.sin(dir2) * planet2.getMass()) / newMass;
+
+                        planet1.setMass(newMass);
+                        planet1.setSpeed(Math.sqrt(vx * vx + vy * vy));
+                        planet1.setSpeedDirection(Math.atan2(vy, vx));
+
+                        planet1.setSize(planet1.getSize() * 1.2);
+
+                        toDelete.add(planet2);
+
+                    } else {
+
+                        double lostMass = planet1.getMass() * 0.1;
+                        planet1.setMass(planet1.getMass() - lostMass);
+                        planet2.setMass(planet2.getMass() - lostMass);
+
+
+                        planet1.setSpeedDirection(-planet1.getSpeedDirection());
+                        planet2.setSpeedDirection(-planet1.getSpeedDirection());
+
+                    }
+                }
+            }
+        }
+        for (Planet planet : toDelete) {
+            solarSystem.removePlanet(planet);
+        }
+    }
+
+
     private static Vector2D gravitationalForce(Planet planet, double mass, double x2, double y2) {
         double x1 = planet.getXPosition();
         double y1 = planet.getYPosition();
@@ -37,7 +104,7 @@ public class Physics {
         return new Vector2D(force * Math.cos(angle), force * Math.sin(angle));
     }
 
-    public static void newxandy(Planet planet, Star sun, double deltaT) {
+    public static void newxandy(Planet planet,Star sun,  double deltaT) {
         double acceleration = planet.getForce() / planet.getMass();
         double forceAngle = planet.getForceDirection();
 
@@ -57,11 +124,14 @@ public class Physics {
         planet.setSpeedDirection(finalVelocity.angle());
     }
 
+
+
     public static void runSimulation(SolarSystem solarSystem, double deltaT) {
         Star sun = solarSystem.getStars().get(0);
         ArrayList<Planet> planets = solarSystem.getPlanets();
 
         totalForceCalc(planets, sun);
+        handleCollision(solarSystem);
 
         for (Planet planet : planets) {
 

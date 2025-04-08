@@ -221,6 +221,9 @@ public class UI {
 
 
 
+            }else{
+                Main.solarSystem.removeStar( Main.solarSystem.getStars().get(0));;
+                refreshUI();
             }
         });
         JPanel sidePlanetPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
