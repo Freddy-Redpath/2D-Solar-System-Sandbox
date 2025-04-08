@@ -30,12 +30,12 @@ public class SolarSystem {
     }
 
     public void addVenus() {
-        Planet venus = new Planet(108.9E9, 0.0, 4.87e24, 34790.1818, +Math.PI/2, 108.9E9, 0.007, 19414166.4, 0.0, 0.0, 108.210E9, 12104.0, "src/images/Venus.png", "venus", false);
+        Planet venus = new Planet(108.9E9, 0.0, 4.87e24, 34790.1818, +(11*Math.PI)/6, 108.9E9, 0.007, 19414166.4, 0.0, 0.0, 108.210E9, 12104.0, "src/images/Venus.png", "venus", false);
         addPlanet(venus);
     }
 
     public void addEarth(){
-        Planet earth = new Planet(108.9E9, 58.9E9, 5.97e24, 29295.1810, -Math.PI/2,152.1E9,0.017,31558118.4,0.0,0.0,149.5978707E9, 12756.0 , "src/images/Earth.png", "earth", false);
+        Planet earth = new Planet(108.9E9, 58.9E9, 5.97e24, 29295.1810, -(2*Math.PI)/6,152.1E9,0.017,31558118.4,0.0,0.0,149.5978707E9, 12756.0 , "src/images/Earth.png", "earth", false);
         addPlanet(earth);
     }
 

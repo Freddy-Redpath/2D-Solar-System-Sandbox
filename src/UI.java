@@ -40,7 +40,6 @@ public class UI {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                    //System.out.println("space");
                     Main.simPaused = !Main.simPaused;
                 }
             }
@@ -156,7 +155,7 @@ public class UI {
         speedPanel.add(Box.createHorizontalGlue());
         JButton normalSpeedButton = ButtonCreator(null, "src/images/playBTN.png", 0, 0, 30, 30, null);
         normalSpeedButton.addActionListener(e -> {
-            System.out.println("normal speed pressed");
+
             Main.deltaT = 10000;
             Main.simPaused = false;
 
@@ -164,7 +163,6 @@ public class UI {
 
         JButton speedUpBTN = ButtonCreator(null, "src/images/speedUpBTN.png", 0, 0, 30, 30, null);
         speedUpBTN.addActionListener(e -> {
-            System.out.println("speed UP pressed");
             if (Main.deltaT + 10000 <= 1000000) {
                 Main.deltaT += 10000;
             }
@@ -173,7 +171,6 @@ public class UI {
 
         JButton slowDownBTN = ButtonCreator(null, "src/images/slowDownBTN.png", 0, 0, 30, 30, null);
         slowDownBTN.addActionListener(e -> {
-            System.out.println("slow down pressed");
             if (Main.deltaT - 1000 >= 1) {
                 Main.deltaT -= 1000;
             }
@@ -182,7 +179,6 @@ public class UI {
 
         JButton pauseBTN = ButtonCreator(null, "src/images/pauseBTN.png", 0, 0, 30, 30, null);
         pauseBTN.addActionListener(e -> {
-            System.out.println("PAUSE pressed");
             Main.simPaused = true;
         });
 
@@ -207,13 +203,11 @@ public class UI {
         // Create the "Create Planet" button
         JButton createPlanetBTN = ButtonCreator(null, null, 0, 0, 150, 50, "Create Planet");
         createPlanetBTN.addActionListener(e -> {
-            System.out.println("Create Planet pressed");
             OpenPlanetCreator();
             refreshUI();
         });
         JButton deletePlanetBTN = ButtonCreator(null, null, 0, 0, 150, 50, "Delete focussed Planet");
         deletePlanetBTN.addActionListener(e -> {
-            System.out.println("delete Planet pressed");
             if (planetSelector.getSelectedIndex() <= Main.solarSystem.getPlanets().size()) {
                Main.solarSystem.removePlanet( Main.solarSystem.getPlanets().get(planetSelector.getSelectedIndex()));;
                refreshUI();
@@ -297,14 +291,11 @@ public class UI {
 
         JButton focusPlanetBTN = ButtonCreator(null, null,0, 0, 110, 50, "Focus on \n selected Planet");
         focusPlanetBTN.addActionListener(e -> {
-            System.out.println("focusPlanetBTN pressed");
             solarPanelClass.focusOnPlanet(planetSelector.getSelectedIndex());
-            System.out.println("focus on: " + planetSelector.getSelectedItem());
         });
 
         JButton pauseBTN = ButtonCreator(null, null,0, 0, 100, 100, "Pause");
         pauseBTN.addActionListener(e -> {
-            System.out.println("Pause pressed");
             Main.simPaused = !Main.simPaused;
         });
 

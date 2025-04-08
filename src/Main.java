@@ -4,12 +4,15 @@ import java.util.*;
 
 public class Main {
     public static SolarSystem solarSystem;
+
     public static  UI ui;
     public static int interval = 30; // Default simulation interval (ms)
     public static boolean simPaused;
     public static Timer timer;
     private static Physics physics = new Physics(); // Ensure physics object is available
     public static int deltaT = 10000;
+    public static ArrayList<Debris> debrisList = new ArrayList<>();
+
     public Main(){
         solarSystem = new SolarSystem();
         simPaused = false;
@@ -31,8 +34,7 @@ public class Main {
             @Override
             public void run() {
                 if (!simPaused) {
-                   // System.out.println(solarSystem.getPlanets().get(0).getXPosition());
-                   // System.out.println(solarSystem.getPlanets().get(0).getYPosition());
+
                     physics.runSimulation(solarSystem, deltaT);
 
 
@@ -48,7 +50,6 @@ public class Main {
  */
                     ui.solarPanel.repaint();
                 }else {
-                    System.out.print("paused");
                 }
             }
         };

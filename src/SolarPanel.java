@@ -73,13 +73,10 @@ public class SolarPanel extends JPanel {
             public void mouseWheelMoved(MouseWheelEvent e) {
                 int rotation = e.getWheelRotation();
                 double zoomStep = 0.1;
-                System.out.println("rotation: " + rotation);
                 if (rotation < 0) {
                     zoomScale *= (1 + zoomStep);
-                    System.out.println("zoom in " + zoomScale);
                 } else {
                     zoomScale /= (1 + zoomStep);
-                    System.out.println("zoom out " + zoomScale);
                 }
 
                 repaint();
@@ -190,6 +187,28 @@ public class SolarPanel extends JPanel {
 
             }
         }
+        ArrayList<Debris> toRemove = new ArrayList<>();
+        for (Debris p : Main.debrisList) {
+
+            p.update();
+            if (!p.isAlive()) {
+                toRemove.add(p);
+                continue;
+            }
+            g2d.setColor(new Color(0.2f,0.2f,0.2f, (float) p.lifespan /100));
+
+            int drawX = (int) ((p.x * zoomScale / 5e8) + offsetX);
+            int drawY = (int) ((p.y * zoomScale / 5e8) + offsetY);
+            int size = (p.lifespan* p.size);
+            //g2d.setColor(p.color);
+            g2d.fillOval(drawX, drawY, size, size); // tiny dot for particle
+            size = (p.size);
+            g2d.setColor(new Color(0.2f,0.2f,0.2f, (float) Math.random()));
+
+            g2d.fillOval(drawX, drawY, size, size); // tiny dot for particle
+
+        }
+        Main.debrisList.removeAll(toRemove);
 
     }
 }

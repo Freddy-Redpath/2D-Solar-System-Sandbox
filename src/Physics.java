@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Physics {
 
@@ -36,20 +37,14 @@ public class Physics {
                 if (planet2 == planet1) {
                     break;
                 }
-                System.out.println("Distance: " + distance);
-                System.out.println("planet1 size " + planet1.getSize());
-                System.out.println("planet2 size " + planet2.getSize());
+
                 if (distance < (64)) {
-                    System.out.println("Collision Detected between " + planet1.getName()+ " and " + planet2.getName());
-                    double angleBetween = Math.atan2(dy, dx); // Angle from planet1 to planet2 (collision axis)
+                      double angleBetween = Math.atan2(dy, dx); // Angle from planet1 to planet2 (collision axis)
 
                     double relativeAngle1 = Math.abs(angleBetween - planet1.getSpeedDirection());
                     double relativeAngle2 = Math.abs(angleBetween - planet2.getSpeedDirection());
 
-                    System.out.println("angleBetween: " + angleBetween);
-                    System.out.println("relativeAngle1: " + relativeAngle1);
-                    System.out.println("calculate check " + (Math.PI * 0.75) + " to "+Math.PI * 1.25);
-                    System.out.println("relativeAngle2: " + relativeAngle2);
+
 
                     boolean isHeadOn = (relativeAngle1 > Math.PI * 0.75 && relativeAngle2 < Math.PI * 1.25);
 
@@ -68,7 +63,8 @@ public class Physics {
                         planet1.setSpeedDirection(Math.atan2(vy, vx));
 
                         planet1.setSize(planet1.getSize() * 1.2);
-
+                        generateDebris(planet1.getXPosition(), planet1.getYPosition());
+                        generateDebris(planet2.getXPosition(), planet2.getYPosition());
                         toDelete.add(planet2);
 
                     } else {
@@ -84,12 +80,78 @@ public class Physics {
                     }
                 }
             }
+            for (Star star : solarSystem.getStars()) {
+                double dx = (planet1.getXPosition() - star.getXPosition())/5e8;
+                double dy = (planet1.getYPosition() - star.getYPosition())/5e8;
+                double distance = Math.sqrt(dx * dx + dy * dy);
+                double dir1 = planet1.getSpeedDirection();
+                double dir2 = 0;
+
+
+                if (distance < (64)) {
+                    double angleBetween = Math.atan2(dy, dx); // Angle from planet1 to planet2 (collision axis)
+
+                    double relativeAngle1 = Math.abs(angleBetween - planet1.getSpeedDirection());
+                    double relativeAngle2 = Math.abs(angleBetween);
+
+
+
+                    boolean isHeadOn = (relativeAngle1 > Math.PI * 0.75 && relativeAngle2 < Math.PI * 1.25);
+
+
+
+
+                    if (isHeadOn) {
+                        double newMass = planet1.getMass() + star.getMass();
+                        double vx = (planet1.getSpeed() * Math.cos(dir1) * planet1.getMass() +
+                                star.getSpeed() * Math.cos(dir2) * star.getMass()) / newMass;
+                        double vy = (planet1.getSpeed() * Math.sin(dir1) * planet1.getMass() +
+                                star.getSpeed() * Math.sin(dir2) * star.getMass()) / newMass;
+
+                        planet1.setMass(newMass);
+                        planet1.setSpeed(Math.sqrt(vx * vx + vy * vy));
+                        planet1.setSpeedDirection(Math.atan2(vy, vx));
+
+                        planet1.setSize(planet1.getSize() * 1.2);
+                        generateDebris(planet1.getXPosition(), planet1.getYPosition());
+                        generateDebris(star.getXPosition(), star.getYPosition());
+                        toDelete.add(planet1);
+
+                    } else {
+
+                        double lostMass = planet1.getMass() * 0.1;
+                        planet1.setMass(planet1.getMass() - lostMass);
+                        star.setMass(star.getMass() - lostMass);
+
+
+                        planet1.setSpeedDirection(-planet1.getSpeedDirection());
+
+                    }
+                }
+
+
+            }
         }
         for (Planet planet : toDelete) {
             solarSystem.removePlanet(planet);
+            Main.ui.refreshUI();
         }
     }
 
+    private static void generateDebris(double x, double y) {
+        Random rand = new Random();
+        for (int i = 0; i < 20; i++) {
+            double angle = rand.nextDouble() * 2 * Math.PI;
+            double speed = rand.nextDouble() * 3e9; // adjust for visual effect
+            double dx = speed * Math.cos(angle);
+            double dy = speed * Math.sin(angle);
+            int lifespan = 500 + rand.nextInt(300);
+            int size = 10 + rand.nextInt(10);
+            Color color = Color.GRAY;
+
+            Main.debrisList.add(new Debris(x, y, dx, dy, size, size, color));
+        }
+    }
 
     private static Vector2D gravitationalForce(Planet planet, double mass, double x2, double y2) {
         double x1 = planet.getXPosition();
