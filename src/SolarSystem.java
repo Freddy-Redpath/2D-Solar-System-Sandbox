@@ -17,7 +17,7 @@ public class SolarSystem {
     public SolarSystem(){
     }
 
-    // radius(done), eccentricity, period, force, force_direction, semi_major_axis,size
+    // radius(done), eccentricity, eriod, force, force_direction, semi_major_axis,size
     // Functions for adding pre-set planets from our solar system
     public void addSun(){
         Star theSun = new Star(0.0, 0.0, 1.989e30, 0.0, 0.0, 1.3927e6, "src/images/Sun.png", "sun", false);
