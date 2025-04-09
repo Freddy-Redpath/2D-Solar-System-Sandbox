@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class SolarPanel extends JPanel {
     private int offsetX = 0, offsetY = 0;
@@ -11,6 +12,8 @@ public class SolarPanel extends JPanel {
     private int focussedplanetIndex = 0;
     private double zoomScale = 1.0;
     private java.util.List<Point> starPlacements = new java.util.ArrayList<>();
+
+    private java.util.List<Color> starColours = new java.util.ArrayList<>();
     private boolean starsgenerated = false;
     // In class
     private final int STAR_RANGE = 90000; // Simulated world-space size, in "pixels"
@@ -90,18 +93,30 @@ public class SolarPanel extends JPanel {
 
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
+
             public void mouseDragged(MouseEvent e) {
                 int dx = e.getX() - prevMouseX;
                 int dy = e.getY() - prevMouseY;
-                if ((0< e.getX() && e.getX()<getWidth()) && (0<e.getY() && e.getY()<getHeight()) ) {
-                    offsetX += dx;
-                    offsetY += dy;
-                }
+
+                offsetX += dx;
+                offsetY += dy;
+
+                // Clamp based on zoom and world boundaries
+                double scaledRange = STAR_RANGE * zoomScale * 0.15; // use parallax factor if needed
+                int minOffsetX = (int) (-scaledRange - getWidth());
+                int maxOffsetX = (int) (scaledRange);
+                int minOffsetY = (int) (-scaledRange - getHeight());
+                int maxOffsetY = (int) (scaledRange);
+
+                offsetX = Math.max(minOffsetX, Math.min(offsetX, maxOffsetX));
+                offsetY = Math.max(minOffsetY, Math.min(offsetY, maxOffsetY));
+
                 prevMouseX = e.getX();
                 prevMouseY = e.getY();
 
                 repaint();
             }
+
         });
     }
     @Override
@@ -114,6 +129,7 @@ public class SolarPanel extends JPanel {
                 int starX = (int) (Math.random() * STAR_RANGE - STAR_RANGE / 2);
                 int starY = (int) (Math.random() * STAR_RANGE - STAR_RANGE / 2);
                 starPlacements.add(new Point(starX, starY));
+
             }
         }
     }
@@ -141,12 +157,13 @@ public class SolarPanel extends JPanel {
         }
 
 
-
-
-        g2d.setColor(Color.WHITE);
+        g2d.setColor(new Color(238, 230,197));
         for (Point p : starPlacements) {
-            // Parallax effect (stars move slower relative to planets)
-            double panParallaxFactor = 0.15;
+
+
+
+                    // Parallax effect (stars move slower relative to planets)
+            double panParallaxFactor = 0.05;
             double parallaxFactor = 0.95;
             int drawX = (int) ((p.x * (Math.max(zoomScale,0.05)) * parallaxFactor) + (offsetX * panParallaxFactor));
             int drawY = (int) ((p.y * (Math.max(zoomScale,0.05)) * parallaxFactor) + (offsetY * panParallaxFactor));
