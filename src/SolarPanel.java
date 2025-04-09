@@ -12,6 +12,10 @@ public class SolarPanel extends JPanel {
     private double zoomScale = 1.0;
     private java.util.List<Point> starPlacements = new java.util.ArrayList<>();
     private boolean starsgenerated = false;
+    // In class
+    private final int STAR_RANGE = 90000; // Simulated world-space size, in "pixels"
+
+
     public SolarPanel() {
         setBackground(Color.black);
 
@@ -100,20 +104,20 @@ public class SolarPanel extends JPanel {
             }
         });
     }
+    @Override
     public void addNotify() {
         super.addNotify();
         if (!starsgenerated) {
             starsgenerated = true;
-            int w =(int)((getWidth()+10000)*zoomScale);
-            int h = (int)((getHeight()+10000)*zoomScale);
             int numStars = 6500;
             for (int i = 0; i < numStars; i++) {
-                int starX = (int)(Math.random() * w);
-                int starY = (int)(Math.random() * h);
+                int starX = (int) (Math.random() * STAR_RANGE - STAR_RANGE / 2);
+                int starY = (int) (Math.random() * STAR_RANGE - STAR_RANGE / 2);
                 starPlacements.add(new Point(starX, starY));
             }
         }
     }
+
     // Method to focus on a specific planet
     public void focusOnPlanet(int index) {
         this.focussedplanetIndex = index;
@@ -141,13 +145,18 @@ public class SolarPanel extends JPanel {
 
         g2d.setColor(Color.WHITE);
         for (Point p : starPlacements) {
+            // Parallax effect (stars move slower relative to planets)
+            double parallaxFactor = 0.25;
 
-            int staroffsetX = (int) ((0) - ((p.x * zoomScale)*0.25)+(offsetX*0.25));
-            int staroffsetY = (int) ((0) - ((p.y * zoomScale)*0.25)+(offsetY*0.25));
+            int drawX = (int) ((p.x * (zoomScale) * parallaxFactor) + offsetX * parallaxFactor);
+            int drawY = (int) ((p.y * (zoomScale) * parallaxFactor) + offsetY * parallaxFactor);
 
-
-            g2d.fillOval((int)(p.x*(zoomScale)+staroffsetX), (int)(p.y*(zoomScale)+staroffsetY), 2, 2);
+            // Only draw stars that are within view
+            if (drawX >= -5 && drawX <= getWidth() + 5 && drawY >= -5 && drawY <= getHeight() + 5) {
+                g2d.fillOval(drawX, drawY, 2, 2);
+            }
         }
+
 
 
 
