@@ -10,7 +10,8 @@ public class SolarPanel extends JPanel {
     private boolean planetFocussed = false;
     private int focussedplanetIndex = 0;
     private double zoomScale = 1.0;
-
+    private java.util.List<Point> starPlacements = new java.util.ArrayList<>();
+    private boolean starsgenerated = false;
     public SolarPanel() {
         setBackground(Color.black);
 
@@ -99,7 +100,20 @@ public class SolarPanel extends JPanel {
             }
         });
     }
-
+    public void addNotify() {
+        super.addNotify();
+        if (!starsgenerated) {
+            starsgenerated = true;
+            int w =(int)((getWidth()+10000)*zoomScale);
+            int h = (int)((getHeight()+10000)*zoomScale);
+            int numStars = 6500;
+            for (int i = 0; i < numStars; i++) {
+                int starX = (int)(Math.random() * w);
+                int starY = (int)(Math.random() * h);
+                starPlacements.add(new Point(starX, starY));
+            }
+        }
+    }
     // Method to focus on a specific planet
     public void focusOnPlanet(int index) {
         this.focussedplanetIndex = index;
@@ -121,6 +135,22 @@ public class SolarPanel extends JPanel {
             offsetX = (int) ((panelWidth / 2) - ((body.getXPosition() * zoomScale)/ 5e8) - (32 * zoomScale));
             offsetY = (int) ((panelHeight / 2) - ((body.getYPosition() * zoomScale)/5e8) - (32 * zoomScale));
         }
+
+
+
+
+        g2d.setColor(Color.WHITE);
+        for (Point p : starPlacements) {
+
+            int staroffsetX = (int) ((0) - ((p.x * zoomScale)*0.25)+(offsetX*0.25));
+            int staroffsetY = (int) ((0) - ((p.y * zoomScale)*0.25)+(offsetY*0.25));
+
+
+            g2d.fillOval((int)(p.x*(zoomScale)+staroffsetX), (int)(p.y*(zoomScale)+staroffsetY), 2, 2);
+        }
+
+
+
         for (Planet planet : Main.solarSystem.getPlanets()) {
 
             Image img = new ImageIcon(planet.getImage()).getImage();
