@@ -93,10 +93,10 @@ public class SolarPanel extends JPanel {
             public void mouseDragged(MouseEvent e) {
                 int dx = e.getX() - prevMouseX;
                 int dy = e.getY() - prevMouseY;
-
-                offsetX += dx;
-                offsetY += dy;
-
+                if ((0< e.getX() && e.getX()<getWidth()) && (0<e.getY() && e.getY()<getHeight()) ) {
+                    offsetX += dx;
+                    offsetY += dy;
+                }
                 prevMouseX = e.getX();
                 prevMouseY = e.getY();
 
@@ -109,7 +109,7 @@ public class SolarPanel extends JPanel {
         super.addNotify();
         if (!starsgenerated) {
             starsgenerated = true;
-            int numStars = 6500;
+            int numStars = 99999;
             for (int i = 0; i < numStars; i++) {
                 int starX = (int) (Math.random() * STAR_RANGE - STAR_RANGE / 2);
                 int starY = (int) (Math.random() * STAR_RANGE - STAR_RANGE / 2);
@@ -146,10 +146,10 @@ public class SolarPanel extends JPanel {
         g2d.setColor(Color.WHITE);
         for (Point p : starPlacements) {
             // Parallax effect (stars move slower relative to planets)
-            double parallaxFactor = 0.25;
-
-            int drawX = (int) ((p.x * (zoomScale) * parallaxFactor) + offsetX * parallaxFactor);
-            int drawY = (int) ((p.y * (zoomScale) * parallaxFactor) + offsetY * parallaxFactor);
+            double panParallaxFactor = 0.15;
+            double parallaxFactor = 0.95;
+            int drawX = (int) ((p.x * (Math.max(zoomScale,0.05)) * parallaxFactor) + (offsetX * panParallaxFactor));
+            int drawY = (int) ((p.y * (Math.max(zoomScale,0.05)) * parallaxFactor) + (offsetY * panParallaxFactor));
 
             // Only draw stars that are within view
             if (drawX >= -5 && drawX <= getWidth() + 5 && drawY >= -5 && drawY <= getHeight() + 5) {
