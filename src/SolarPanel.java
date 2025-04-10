@@ -12,9 +12,12 @@ public class SolarPanel extends JPanel {
     private int focussedplanetIndex = 0;
     private double zoomScale = 1.0;
     private java.util.List<Point> starPlacements = new java.util.ArrayList<>();
+    private java.util.List<RandomPlanets> randomPlanetPlacements = new java.util.ArrayList<>();
+    private java.util.List<Color> randomPlanetColours = new java.util.ArrayList<>();
 
     private java.util.List<Color> starColours = new java.util.ArrayList<>();
     private boolean starsgenerated = false;
+    private boolean randomPlanetsGenerated = false;
     // In class
     private final int STAR_RANGE = 90000; // Simulated world-space size, in "pixels"
 
@@ -132,6 +135,22 @@ public class SolarPanel extends JPanel {
 
             }
         }
+        if (!randomPlanetsGenerated) {
+            randomPlanetsGenerated = true;
+            int numPlanets = 39999;
+            for (int i = 0; i < numPlanets; i++) {
+                int planetX = (int) (Math.random() * STAR_RANGE - STAR_RANGE / 2);
+                int planetY = (int) (Math.random() * STAR_RANGE - STAR_RANGE / 2);
+                Random rnd = new Random();
+                int size = rnd.nextInt(8) + 1;
+                int red = rnd.nextInt(75);
+                int green = rnd.nextInt(44);
+                int blue = rnd.nextInt(66);
+                Color color = new Color(red, green, blue);
+
+                randomPlanetPlacements.add(new RandomPlanets(new Point(planetX, planetY), size, color));
+            }
+        }
     }
 
     // Method to focus on a specific planet
@@ -147,6 +166,7 @@ public class SolarPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
+
         if (planetFocussed) {
             int panelWidth = getWidth();
             int panelHeight = getHeight();
@@ -154,13 +174,13 @@ public class SolarPanel extends JPanel {
             // Center the view on the selected planet
             offsetX = (int) ((panelWidth / 2) - ((body.getXPosition() * zoomScale)/ 5e8) - (32 * zoomScale));
             offsetY = (int) ((panelHeight / 2) - ((body.getYPosition() * zoomScale)/5e8) - (32 * zoomScale));
+
+
         }
 
 
         g2d.setColor(new Color(238, 230,197));
         for (Point p : starPlacements) {
-
-
 
                     // Parallax effect (stars move slower relative to planets)
             double panParallaxFactor = 0.05;
@@ -173,6 +193,35 @@ public class SolarPanel extends JPanel {
                 g2d.fillOval(drawX, drawY, 2, 2);
             }
         }
+
+
+        g2d.setColor(new Color(238, 230,197));
+        for (Point p : starPlacements) {
+
+            // Parallax effect (stars move slower relative to planets)
+            double panParallaxFactor = 0.05;
+            double parallaxFactor = 0.95;
+            int drawX = (int) ((p.x * (Math.max(zoomScale,0.05)) * parallaxFactor) + (offsetX * panParallaxFactor));
+            int drawY = (int) ((p.y * (Math.max(zoomScale,0.05)) * parallaxFactor) + (offsetY * panParallaxFactor));
+
+            // Only draw stars that are within view
+            if (drawX >= -5 && drawX <= getWidth() + 5 && drawY >= -5 && drawY <= getHeight() + 5) {
+                g2d.fillOval(drawX, drawY, 2, 2);
+            }
+        }
+
+        // Draw distant (random) planets
+        for (RandomPlanets rp : randomPlanetPlacements) {
+            double panParallaxFactor = 0.05;
+            double parallaxFactor = 0.95; // Use full scaling for distant planets, so no parallax reduction
+            int drawX = (int) ((rp.getPosition().x * Math.max(zoomScale, 0.05) * parallaxFactor) + (offsetX* panParallaxFactor));
+            int drawY = (int) ((rp.getPosition().y * Math.max(zoomScale, 0.05) * parallaxFactor) + (offsetY* panParallaxFactor));
+            if (drawX >= -5 && drawX <= getWidth() + 5 && drawY >= -5 && drawY <= getHeight() + 5) {
+                g2d.setColor(rp.getColor());
+                g2d.fillOval(drawX, drawY, rp.getSize(), rp.getSize());
+            }
+        }
+
 
 
 
