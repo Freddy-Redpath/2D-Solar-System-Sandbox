@@ -16,13 +16,12 @@ public class SolarPanel extends JPanel {
     private ArrayList<RandomPlanets> randomPlanetPlacements = new ArrayList<>();
     private boolean starsgenerated = false;
     private boolean randomPlanetsGenerated = false;
-    private final int STAR_RANGE = 90000; // Simulated world-space size, in "pixels"
+    private final int STAR_RANGE = 90000;
     private BufferedImage gasCloudTexture;
-    private BufferedImage galaxyTexture; // galaxy texture variable
+    private BufferedImage galaxyTexture; // (Pre‑generated version, not used now)
 
     public SolarPanel() {
         setBackground(Color.black);
-
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -31,31 +30,29 @@ public class SolarPanel extends JPanel {
                     prevMouseX = e.getX();
                     prevMouseY = e.getY();
                     for (Planet planet : Main.solarSystem.getPlanets()) {
-                        int x = (int) (((planet.getXPosition() * zoomScale) / 5e8) + offsetX);
-                        int y = (int) (((planet.getYPosition() * zoomScale) / 5e8) + offsetY);
-                        int size = (int) (64 * zoomScale);
+                        int x = (int)(((planet.getXPosition() * zoomScale) / 5e8) + offsetX);
+                        int y = (int)(((planet.getYPosition() * zoomScale) / 5e8) + offsetY);
+                        int size = (int)(64 * zoomScale);
                         int radius = size / 2;
                         int centerX = x + radius;
                         int centerY = y + radius;
                         double dx = e.getX() - centerX;
                         double dy = e.getY() - centerY;
-                        double distance = Math.sqrt(dx * dx + dy * dy);
-                        if (distance <= radius) {
+                        if (Math.sqrt(dx * dx + dy * dy) <= radius) {
                             planet.setShowInfoTile(!planet.getShowInfoTile());
                             break;
                         }
                     }
                     for (Star planet : Main.solarSystem.getStars()) {
-                        int x = (int) (((planet.getXPosition() * zoomScale) / 5e8) + offsetX);
-                        int y = (int) (((planet.getYPosition() * zoomScale) / 5e8) + offsetY);
-                        int size = (int) (64 * zoomScale);
+                        int x = (int)(((planet.getXPosition() * zoomScale) / 5e8) + offsetX);
+                        int y = (int)(((planet.getYPosition() * zoomScale) / 5e8) + offsetY);
+                        int size = (int)(64 * zoomScale);
                         int radius = size / 2;
                         int centerX = x + radius;
                         int centerY = y + radius;
                         double dx = e.getX() - centerX;
                         double dy = e.getY() - centerY;
-                        double distance = Math.sqrt(dx * dx + dy * dy);
-                        if (distance <= radius) {
+                        if (Math.sqrt(dx * dx + dy * dy) <= radius) {
                             planet.setShowInfoTile(!planet.getShowInfoTile());
                             break;
                         }
@@ -84,10 +81,10 @@ public class SolarPanel extends JPanel {
                 offsetX += dx;
                 offsetY += dy;
                 double scaledRange = STAR_RANGE * zoomScale * 0.15;
-                int minOffsetX = (int) (-scaledRange - getWidth());
-                int maxOffsetX = (int) (scaledRange);
-                int minOffsetY = (int) (-scaledRange - getHeight());
-                int maxOffsetY = (int) (scaledRange);
+                int minOffsetX = (int)(-scaledRange - getWidth());
+                int maxOffsetX = (int)(scaledRange);
+                int minOffsetY = (int)(-scaledRange - getHeight());
+                int maxOffsetY = (int)(scaledRange);
                 offsetX = Math.max(minOffsetX, Math.min(offsetX, maxOffsetX));
                 offsetY = Math.max(minOffsetY, Math.min(offsetY, maxOffsetY));
                 prevMouseX = e.getX();
@@ -104,32 +101,33 @@ public class SolarPanel extends JPanel {
             starsgenerated = true;
             int numStars = 99999;
             for (int i = 0; i < numStars; i++) {
-                int starX = (int) (Math.random() * STAR_RANGE - STAR_RANGE / 2);
-                int starY = (int) (Math.random() * STAR_RANGE - STAR_RANGE / 2);
+                int starX = (int)(Math.random() * STAR_RANGE - STAR_RANGE / 2);
+                int starY = (int)(Math.random() * STAR_RANGE - STAR_RANGE / 2);
                 starPlacements.add(new Point(starX, starY));
             }
         }
         if (!randomPlanetsGenerated) {
             randomPlanetsGenerated = true;
-            int numPlanets = 39999;
+            int numPlanets = 33999;
             Random rnd = new Random();
             for (int i = 0; i < numPlanets; i++) {
-                int planetX = (int) (Math.random() * STAR_RANGE - STAR_RANGE / 2);
-                int planetY = (int) (Math.random() * STAR_RANGE - STAR_RANGE / 2);
-                int size = rnd.nextInt(8) + 1;
+                int planetX = (int)(Math.random() * STAR_RANGE - STAR_RANGE / 2);
+                int planetY = (int)(Math.random() * STAR_RANGE - STAR_RANGE / 2);
+                int size = rnd.nextInt(6) + 1;
                 int red = rnd.nextInt(75);
                 int green = rnd.nextInt(44);
-                int blue = rnd.nextInt(66);
+                int blue = rnd.nextInt(76);
                 Color color = new Color(red, green, blue);
                 randomPlanetPlacements.add(new RandomPlanets(new Point(planetX, planetY), size, color));
             }
         }
         int panelWidth = getWidth() > 0 ? getWidth() : 1000;
         int panelHeight = getHeight() > 0 ? getHeight() : 1000;
-        galaxyTexture = generateGalaxyTexture(panelWidth, panelHeight, 0.5, offsetX, offsetY, zoomScale);
+        galaxyTexture = generateGalaxyTexture(panelWidth, panelHeight, 10.0, offsetX, offsetY, zoomScale);
+
+        // galaxyTexture is now generated dynamically in paintComponent
     }
 
-    // Changed: Modified the signature to accept six parameters.
     public BufferedImage generateGalaxyTexture(int width, int height, double scale, int offX, int offY, double zoom) {
         if (width <= 0 || height <= 0) {
             width = getPreferredSize().width > 0 ? getPreferredSize().width : 800;
@@ -137,21 +135,21 @@ public class SolarPanel extends JPanel {
         }
         BufferedImage galaxyImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         PerlinNoise noiseGen = new PerlinNoise();
-        double threshold = 0.75;
-        int maxAlpha = 150;
+        double threshold = 0.85;
+        int maxAlpha = 430;
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                double nx = (((i - offX) / (double) width) / zoom) * scale;
-                double ny = (((j - offY) / (double) height) / zoom) * scale;
-                double noiseVal = noiseGen.noise(nx, ny);
+                double nx = (((i - offX) / (double)width) / zoom) * scale;
+                double ny = (((j - offY) / (double)height) / zoom) * scale;
+                double noiseVal = noiseGen.noise(nx * scale * 2, ny * scale * 2);
                 if (noiseVal < threshold) {
                     galaxyImage.setRGB(i, j, 0x00000000);
                 } else {
                     double t = (noiseVal - threshold) / (1.0 - threshold);
-                    int alpha = (int) (t * maxAlpha);
-                    float hue = 0.65f + (float) t * 0.15f;
+                    int alpha = (int)(t * maxAlpha);
+                    float hue = 0.60f + (float)t * 0.05f;
                     float saturation = 0.8f;
-                    float brightness = 0.4f + (float) t * 0.2f;
+                    float brightness = 0.3f + (float)t * 0.15f;
                     Color c = Color.getHSBColor(hue, saturation, brightness);
                     int rgba = (alpha << 24) | (c.getRGB() & 0x00FFFFFF);
                     galaxyImage.setRGB(i, j, rgba);
@@ -200,23 +198,24 @@ public class SolarPanel extends JPanel {
                 }
             }
         }
+
         g2d.drawImage(noiseBG, 0, 0, w, h, null);
-        // Generate dynamic galaxy texture with scrolling/zoom offset
+        // Generate and draw galaxy texture dynamically using current offset and zoom
         BufferedImage dynamicGalaxy = generateGalaxyTexture(w, h, 0.5, offsetX, offsetY, zoomScale);
         g2d.drawImage(dynamicGalaxy, 0, 0, w, h, null);
         if (planetFocussed) {
             int panelWidth = getWidth();
             int panelHeight = getHeight();
             Planet body = Main.solarSystem.getPlanets().get(focussedplanetIndex);
-            offsetX = (int)((panelWidth / 2) - ((body.getXPosition() * zoomScale) / 0.05) - (32 * zoomScale));
-            offsetY = (int)((panelHeight / 2) - ((body.getYPosition() * zoomScale) / 0.05) - (32 * zoomScale));
+            offsetX = (int)((panelWidth / 2) - ((body.getXPosition() * zoomScale) / 0.02) - (32 * zoomScale));
+            offsetY = (int)((panelHeight / 2) - ((body.getYPosition() * zoomScale) / 0.02) - (32 * zoomScale));
         }
-        g2d.setColor(new Color(238, 230,197));
+        g2d.setColor(new Color(238,230,197));
         for (Point p : starPlacements) {
             double panParallaxFactor = 0.05;
-            double parallaxFactor = 0.95;
-            int drawX = (int)((p.x * Math.max(zoomScale, 0.05) * parallaxFactor) + (offsetX * panParallaxFactor));
-            int drawY = (int)((p.y * Math.max(zoomScale, 0.05) * parallaxFactor) + (offsetY * panParallaxFactor));
+            double parallaxFactor = 0.90;
+            int drawX = (int)((p.x * Math.max(zoomScale,0.05) * parallaxFactor) + (offsetX * panParallaxFactor));
+            int drawY = (int)((p.y * Math.max(zoomScale,0.05) * parallaxFactor) + (offsetY * panParallaxFactor));
             if (drawX >= -5 && drawX <= getWidth() + 5 && drawY >= -5 && drawY <= getHeight() + 5) {
                 g2d.fillOval(drawX, drawY, 2, 2);
             }
@@ -224,8 +223,8 @@ public class SolarPanel extends JPanel {
         for (RandomPlanets rp : randomPlanetPlacements) {
             double panParallaxFactor = 0.05;
             double parallaxFactor = 0.95;
-            int drawX = (int)((rp.getPosition().x * Math.max(zoomScale, 0.05) * parallaxFactor) + (offsetX * panParallaxFactor));
-            int drawY = (int)((rp.getPosition().y * Math.max(zoomScale, 0.05) * parallaxFactor) + (offsetY * panParallaxFactor));
+            int drawX = (int)((rp.getPosition().x * Math.max(zoomScale,0.05) * parallaxFactor) + (offsetX * panParallaxFactor));
+            int drawY = (int)((rp.getPosition().y * Math.max(zoomScale,0.05) * parallaxFactor) + (offsetY * panParallaxFactor));
             if (drawX >= -5 && drawX <= getWidth() + 5 && drawY >= -5 && drawY <= getHeight() + 5) {
                 g2d.setColor(rp.getColor());
                 g2d.fillOval(drawX, drawY, rp.getSize(), rp.getSize());
@@ -233,8 +232,8 @@ public class SolarPanel extends JPanel {
         }
         for (Planet planet : Main.solarSystem.getPlanets()) {
             Image img = new ImageIcon(planet.getImage()).getImage();
-            int x = (int)(((planet.getXPosition() * zoomScale) / 0.05) + offsetX);
-            int y = (int)(((planet.getYPosition() * zoomScale) / 0.05) + offsetY);
+            int x = (int)(((planet.getXPosition() * zoomScale) / 5e8) + offsetX);
+            int y = (int)(((planet.getYPosition() * zoomScale) / 5e8) + offsetY);
             int size = (int)(64 * zoomScale);
             g2d.drawImage(img, x, y, size, size, this);
             Color semiOpaque = new Color(0.2f, 0.2f, 0.2f, .8f);
