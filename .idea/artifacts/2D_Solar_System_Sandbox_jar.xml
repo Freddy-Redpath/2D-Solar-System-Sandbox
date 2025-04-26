@@ -3,6 +3,20 @@
     <output-path>$PROJECT_DIR$/out/artifacts/2D_Solar_System_Sandbox_jar</output-path>
     <root id="archive" name="2D Solar System Sandbox.jar">
       <element id="module-output" name="2D Solar System Sandbox" />
+      <element id="dir-copy" path="$PROJECT_DIR$/src/images" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/images/Earth.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/images/Jupiter.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/images/Mars.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/images/Mercury.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/images/Neptune.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/images/pauseBTN.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/images/playBTN.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/images/Saturn.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/images/slowDownBTN.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/images/speedUpBTN.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/images/Sun.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/images/Uranus.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/images/Venus.png" />
     </root>
   </artifact>
 </component>
