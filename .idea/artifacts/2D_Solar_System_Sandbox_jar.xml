@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="2D Solar System Sandbox:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/2D_Solar_System_Sandbox_jar</output-path>
+    <root id="archive" name="2D Solar System Sandbox.jar">
+      <element id="module-output" name="2D Solar System Sandbox" />
+    </root>
+  </artifact>
+</component>
