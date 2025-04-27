@@ -1,28 +1,26 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 
 public class CreatePlanetView extends JPanel {
     private Color selectedColor;
 
-    // This class now contains both the preview area and the side panel controls
     public CreatePlanetView() {
-        // Use BorderLayout so we can place the preview area and side panel separately
-        setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(500, 300));
+        setLayout(new BorderLayout()); // layout manager to split preview and controls
+        setPreferredSize(new Dimension(500, 300)); // size of the panel
 
-        // Create the preview area (a black panel with a white circle and stars)
-        PreviewPanel preview = new PreviewPanel();
+        PreviewPanel preview = new PreviewPanel(); // create area for previewing planet
         add(preview, BorderLayout.CENTER);
 
-        // Create the side panel with labels and controls
-        JPanel sidePanel = new JPanel();
+        JPanel sidePanel = new JPanel(); // panel for sliders, dropdowns, etc.
         sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
         sidePanel.setPreferredSize(new Dimension(200, 300));
         sidePanel.setBackground(Color.LIGHT_GRAY);
-        selectedColor = Color.WHITE;
-        JButton colorButton = new JButton("Select Color");
 
+        selectedColor = Color.WHITE;
+
+        JButton colorButton = new JButton("Select Color");
         colorButton.addActionListener(e -> {
             Color newColor = JColorChooser.showDialog(this, "Choose Planet Color", selectedColor);
             if (newColor != null) {
@@ -31,12 +29,26 @@ public class CreatePlanetView extends JPanel {
                 preview.setPlanetColour(selectedColor);
             }
         });
-        // Create labels and controls
+
         JLabel nameLabel = new JLabel("Name:");
-        JTextField nameField = new JTextField(15);
+        JTextField nameField = new JTextField(15); // user enters planet name
         nameField.setMaximumSize(new Dimension(Integer.MAX_VALUE, nameField.getPreferredSize().height));
 
-        // Create a slider for Mass (range 1-1000, initial 100)
+        JLabel planetSelectLabel = new JLabel("Base Planet:");
+        String[] planetOptions = {"Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"};
+        JComboBox<String> planetCombo = new JComboBox<>(planetOptions); // dropdown to pick planet texture
+        planetCombo.setMaximumSize(new Dimension(Integer.MAX_VALUE, planetCombo.getPreferredSize().height));
+        planetCombo.addActionListener(e -> preview.setBasePlanet((String) planetCombo.getSelectedItem()));
+        sidePanel.add(planetSelectLabel);
+        sidePanel.add(planetCombo);
+
+        JButton addPlanetButton = new JButton("Add Planet");
+        addPlanetButton.addActionListener(e -> {
+            preview.setBasePlanet(""); // reset preview back to white circle when adding
+            preview.setPlanetColour(Color.WHITE);
+        });
+        sidePanel.add(addPlanetButton);
+
         JLabel massLabel = new JLabel("Mass:");
         JSlider massSlider = new JSlider(JSlider.HORIZONTAL, 1, 1000, 100);
         massSlider.setMajorTickSpacing(100);
@@ -45,10 +57,9 @@ public class CreatePlanetView extends JPanel {
         massSlider.setPaintLabels(false);
         massSlider.addChangeListener(e -> {
             int massValue = massSlider.getValue();
-
+            // value could be linked later if needed
         });
 
-        // Create a slider for Speed (range 1-1000, initial 100)
         JLabel speedLabel = new JLabel("Speed:");
         JSlider speedSlider = new JSlider(JSlider.HORIZONTAL, 1, 1000, 100);
         speedSlider.setMajorTickSpacing(100);
@@ -59,7 +70,6 @@ public class CreatePlanetView extends JPanel {
             int speedValue = speedSlider.getValue();
         });
 
-        // Create a slider for Size (range 1-100, initial 10)
         JLabel sizeLabel = new JLabel("Size:");
         JSlider sizeSlider = new JSlider(JSlider.HORIZONTAL, 1, 100, 10);
         sizeSlider.setMajorTickSpacing(10);
@@ -71,7 +81,6 @@ public class CreatePlanetView extends JPanel {
             preview.setPlanetSize(value);
         });
 
-        // Add components to the side panel with spacing
         sidePanel.add(Box.createRigidArea(new Dimension(20, 20)));
         sidePanel.add(nameLabel);
         sidePanel.add(nameField);
@@ -87,24 +96,34 @@ public class CreatePlanetView extends JPanel {
         sidePanel.add(sizeSlider);
         sidePanel.add(Box.createVerticalGlue());
 
-        // Add the side panel to the EAST of this panel
         add(sidePanel, BorderLayout.EAST);
     }
 
-    // Inner class for the preview area that draws a white circle on a black background with stars
     private class PreviewPanel extends JPanel {
         private double planetSize = 10;
         private Color planetColour = Color.WHITE;
-        // Area to store star positions
         private java.util.List<Point> starPlacements = new java.util.ArrayList<>();
         private boolean starsgenerated = false;
+        private String basePlanet = "";
+        private Image baseImage;
+        private BufferedImage gasTexture;
+
+        private Image adjustPlanetHue(Image base, Color hueColor) {
+            BufferedImage img = new BufferedImage(base.getWidth(null), base.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2 = img.createGraphics();
+            g2.drawImage(base, 0, 0, null);
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 0.3f)); // blend color softly over planet
+            g2.setColor(hueColor);
+            g2.fillRect(0, 0, img.getWidth(), img.getHeight());
+            g2.dispose();
+            return img;
+        }
 
         public PreviewPanel() {
             setPreferredSize(new Dimension(300, 300));
             setBackground(Color.BLACK);
         }
 
-        // Generate star positions only once using actual dimensions (or fallback to preferred size)
         @Override
         public void addNotify() {
             super.addNotify();
@@ -116,7 +135,7 @@ public class CreatePlanetView extends JPanel {
                 for (int i = 0; i < numStars; i++) {
                     int starX = (int)(Math.random() * w);
                     int starY = (int)(Math.random() * h);
-                    starPlacements.add(new Point(starX, starY));
+                    starPlacements.add(new Point(starX, starY)); // randomly scatter stars
                 }
             }
         }
@@ -131,25 +150,66 @@ public class CreatePlanetView extends JPanel {
             repaint();
         }
 
+        public void setBasePlanet(String name) {
+            this.basePlanet = name;
+            if (name.equals("Sun") || name.equals("Mercury") || name.equals("Venus") || name.equals("Earth") || name.equals("Mars") || name.equals("Jupiter") || name.equals("Saturn") || name.equals("Uranus") || name.equals("Neptune")) {
+                try {
+                    baseImage = new ImageIcon(getClass().getResource("/images/" + name + ".png")).getImage(); // load planet image
+                } catch (Exception ex) {
+                    baseImage = null;
+                }
+            } else {
+                baseImage = null;
+            }
+            repaint();
+        }
+
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            // Convert to Graphics2D for smoother drawing
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-            // Draw background stars using stored positions
-            g2d.setColor(Color.WHITE);
+            if (gasTexture == null) {
+                int w = getWidth(), h = getHeight();
+                gasTexture = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+                PerlinNoise noiseGen = new PerlinNoise();
+                double scale = 2.0, threshold = 0.4;
+                for (int x = 0; x < w; x++) {
+                    for (int y = 0; y < h; y++) {
+                        double nx = x / (double)w / scale;
+                        double ny = y / (double)h / scale;
+                        double v = noiseGen.noise(nx, ny);
+                        if (v < threshold) {
+                            gasTexture.setRGB(x, y, 0x00000000); // transparent background areas
+                        } else {
+                            double t = (v - threshold) / (1 - threshold);
+                            int a = (int)(t * 80);
+                            float hue = 0.65f + (float)t * 0.15f;
+                            float sat = 0.8f, bri = 0.5f + (float)t * 0.3f;
+                            Color c = Color.getHSBColor(hue, sat, bri);
+                            gasTexture.setRGB(x, y, (a<<24)|(c.getRGB()&0x00FFFFFF)); // colored gas cloud
+                        }
+                    }
+                }
+            }
+            g2d.drawImage(gasTexture, 0, 0, null);
+
+            g2d.setColor(new Color(238, 230, 197));
             for (Point p : starPlacements) {
-                g2d.fillOval(p.x, p.y, 2, 2);
+                g2d.fillOval(p.x, p.y, 2, 2); // draw stars
             }
 
-            // Draw the planet (a filled circle) in the center
-            g2d.setColor(planetColour);
-            int centerX = getWidth() / 2;
-            int centerY = getHeight() / 2;
-            int d = (int) (planetSize * 2);
-            g2d.fillOval(centerX - (int)planetSize, centerY - (int)planetSize, d, d);
+            int cx = getWidth()/2, cy = getHeight()/2;
+            int d = (int)(planetSize * 2);
+            if (baseImage != null) {
+                g2d.drawImage(baseImage, cx-d/2, cy-d/2, d, d, this);
+                Image tinted = adjustPlanetHue(baseImage, planetColour);
+                g2d.drawImage(tinted, cx-d/2, cy-d/2, d, d, this);
+            } else {
+                g2d.setColor(planetColour);
+                g2d.fillOval(cx-d/2, cy-d/2, d, d); // draw plain circle if no base planet
+            }
         }
     }
 }
