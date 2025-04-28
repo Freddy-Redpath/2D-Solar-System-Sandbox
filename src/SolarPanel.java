@@ -7,6 +7,8 @@ import java.util.Random;
 import java.awt.image.BufferedImage;
 
 public class SolarPanel extends JPanel {
+    private Planet selectedPlanet = null;
+    private Point dragStart = null;
     private int offsetX = 0, offsetY = 0;
     private int prevMouseX, prevMouseY;
     private boolean planetFocussed = false;
@@ -32,8 +34,7 @@ public class SolarPanel extends JPanel {
                     for (Planet planet : Main.solarSystem.getPlanets()) {
                         int x = (int)(((planet.getXPosition() * zoomScale) / 5e8) + offsetX);
                         int y = (int)(((planet.getYPosition() * zoomScale) / 5e8) + offsetY);
-                        int size = (int)(planet.getSize() * zoomScale);
-
+                        int size = (planet.getSize() > 500) ? (int)(64 * zoomScale) : (int)(planet.getSize() * zoomScale);
                         int radius = size / 2;
                         int centerX = x + radius;
                         int centerY = y + radius;
@@ -58,6 +59,64 @@ public class SolarPanel extends JPanel {
                             break;
                         }
                     }
+                } else if (e.getButton() == MouseEvent.BUTTON3) { // right-click
+                    for (Planet planet : Main.solarSystem.getPlanets()) {
+                        int x = (int)(((planet.getXPosition() * zoomScale) / 5e8) + offsetX);
+                        int y = (int)(((planet.getYPosition() * zoomScale) / 5e8) + offsetY);
+                        int size = (planet.getSize() > 500) ? (int)(64 * zoomScale) : (int)(planet.getSize() * zoomScale);
+                        int radius = size / 2;
+                        int centerX = x + radius;
+                        int centerY = y + radius;
+                        double dx = e.getX() - centerX;
+                        double dy = e.getY() - centerY;
+                        if (Math.sqrt(dx * dx + dy * dy) <= radius) {
+                            selectedPlanet = planet;
+                            dragStart = e.getPoint();
+                            break;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON3 && selectedPlanet != null) {
+                    selectedPlanet = null;
+                    dragStart = null;
+                }
+            }
+        });
+
+        addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                if (SwingUtilities.isRightMouseButton(e) && selectedPlanet != null) {
+                    Point dragEnd = e.getPoint();
+                    double dx = dragEnd.x - dragStart.x;
+                    double dy = dragEnd.y - dragStart.y;
+
+                    double newSpeed = Math.sqrt(dx * dx + dy * dy) * 1e2; // adjust scaling factor if needed
+                    double newDirection = Math.atan2(dy, dx);
+
+                    selectedPlanet.setSpeed(newSpeed);
+                    selectedPlanet.setSpeedDirection(newDirection);
+
+                    repaint();
+                } else {
+                    int dx = e.getX() - prevMouseX;
+                    int dy = e.getY() - prevMouseY;
+                    offsetX += dx;
+                    offsetY += dy;
+                    double scaledRange = STAR_RANGE * zoomScale * 0.15;
+                    int minOffsetX = (int)(-scaledRange - getWidth());
+                    int maxOffsetX = (int)(scaledRange);
+                    int minOffsetY = (int)(-scaledRange - getHeight());
+                    int maxOffsetY = (int)(scaledRange);
+                    offsetX = Math.max(minOffsetX, Math.min(offsetX, maxOffsetX));
+                    offsetY = Math.max(minOffsetY, Math.min(offsetY, maxOffsetY));
+                    prevMouseX = e.getX();
+                    prevMouseY = e.getY();
+                    repaint();
                 }
             }
         });
@@ -74,25 +133,7 @@ public class SolarPanel extends JPanel {
                 repaint();
             }
         });
-        addMouseMotionListener(new MouseMotionAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                int dx = e.getX() - prevMouseX;
-                int dy = e.getY() - prevMouseY;
-                offsetX += dx;
-                offsetY += dy;
-                double scaledRange = STAR_RANGE * zoomScale * 0.15;
-                int minOffsetX = (int)(-scaledRange - getWidth());
-                int maxOffsetX = (int)(scaledRange);
-                int minOffsetY = (int)(-scaledRange - getHeight());
-                int maxOffsetY = (int)(scaledRange);
-                offsetX = Math.max(minOffsetX, Math.min(offsetX, maxOffsetX));
-                offsetY = Math.max(minOffsetY, Math.min(offsetY, maxOffsetY));
-                prevMouseX = e.getX();
-                prevMouseY = e.getY();
-                repaint();
-            }
-        });
+
     }
 
     @Override
