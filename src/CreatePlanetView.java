@@ -78,6 +78,7 @@ public class CreatePlanetView extends JPanel {
         addPlanetButton.addActionListener(e -> {
             double baseOrbitRadius = 2.0e11 + (Main.solarSystem.getPlanets().size() * 1e9);
 
+
 // Random angle around the Sun
             double angle = Math.random() * 2 * Math.PI;
 
