@@ -42,13 +42,6 @@ public class CreatePlanetView extends JPanel {
         sidePanel.add(planetSelectLabel);
         sidePanel.add(planetCombo);
 
-        JButton addPlanetButton = new JButton("Add Planet");
-        addPlanetButton.addActionListener(e -> {
-            preview.setBasePlanet(""); // reset preview back to white circle when adding
-            preview.setPlanetColour(Color.WHITE);
-        });
-        sidePanel.add(addPlanetButton);
-
         JLabel massLabel = new JLabel("Mass:");
         JSlider massSlider = new JSlider(JSlider.HORIZONTAL, 1, 1000, 100);
         massSlider.setMajorTickSpacing(100);
@@ -80,6 +73,60 @@ public class CreatePlanetView extends JPanel {
             int value = sizeSlider.getValue();
             preview.setPlanetSize(value);
         });
+
+        JButton addPlanetButton = new JButton("Add Planet");
+        addPlanetButton.addActionListener(e -> {
+            double baseOrbitRadius = 2.0e11 + (Main.solarSystem.getPlanets().size() * 1e9);
+
+// Random angle around the Sun
+            double angle = Math.random() * 2 * Math.PI;
+
+// Set starting position based on that angle
+            double xPosition = baseOrbitRadius * Math.cos(angle);
+            double yPosition = baseOrbitRadius * Math.sin(angle);
+
+// Speed direction should be 90 degrees (π/2) rotated from position
+            double speedDirection = angle + (Math.PI / 2);
+
+            double mass = massSlider.getValue();
+            double speed = speedSlider.getValue();
+            double radius = baseOrbitRadius;
+            double eccentricity = 0.0;
+            double period = 0.0;
+            double force = 0.0;
+            double forceDirection = 0.0;
+            double semiMajorAxis = radius;
+            double size = sizeSlider.getValue();
+            String planetName = nameField.getText();
+            if (planetName == null || planetName.isEmpty()) {
+                planetName = "New Planet " + (Main.solarSystem.getPlanets().size() + 1);
+            }
+            String planetImage = (preview.basePlanet.isEmpty()) ? "src/images/testImageShrunk.png" : "src/images/" + preview.basePlanet + ".png";
+
+            Planet newPlanet = new Planet(
+                    xPosition,
+                    yPosition,
+                    mass,
+                    speed,
+                    speedDirection,
+                    radius,
+                    eccentricity,
+                    period,
+                    force,
+                    forceDirection,
+                    semiMajorAxis,
+                    size,
+                    planetImage,
+                    planetName,
+                    false
+            );
+
+            Main.solarSystem.addPlanet(newPlanet);
+            Main.ui.refreshUI();
+            Main.ui.solarPanel.repaint();
+        });
+
+        sidePanel.add(addPlanetButton);
 
         sidePanel.add(Box.createRigidArea(new Dimension(20, 20)));
         sidePanel.add(nameLabel);
