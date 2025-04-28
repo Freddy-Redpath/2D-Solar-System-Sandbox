@@ -32,7 +32,8 @@ public class SolarPanel extends JPanel {
                     for (Planet planet : Main.solarSystem.getPlanets()) {
                         int x = (int)(((planet.getXPosition() * zoomScale) / 5e8) + offsetX);
                         int y = (int)(((planet.getYPosition() * zoomScale) / 5e8) + offsetY);
-                        int size = (int)(64 * zoomScale);
+                        int size = (int)(planet.getSize() * zoomScale);
+
                         int radius = size / 2;
                         int centerX = x + radius;
                         int centerY = y + radius;
@@ -234,7 +235,19 @@ public class SolarPanel extends JPanel {
             Image img = new ImageIcon(planet.getImage()).getImage();
             int x = (int)(((planet.getXPosition() * zoomScale) / 5e8) + offsetX);
             int y = (int)(((planet.getYPosition() * zoomScale) / 5e8) + offsetY);
-            int size = (int)(64 * zoomScale);
+
+
+            int size;
+            if (planet.getSize() > 500) { // if it's a real large planet like Earth (size > 500 km)
+                size = (int)(64 * zoomScale); // draw it as normal 64px
+            } else {
+                size = (int)(planet.getSize() * zoomScale); // else use custom slider size
+            }
+
+
+
+
+
             g2d.drawImage(img, x, y, size, size, this);
             Color semiOpaque = new Color(0.2f, 0.2f, 0.2f, .8f);
             if (planet.getShowInfoTile()) {
