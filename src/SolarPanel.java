@@ -249,8 +249,9 @@ public class SolarPanel extends JPanel {
             int panelWidth = getWidth();
             int panelHeight = getHeight();
             Planet body = Main.solarSystem.getPlanets().get(focussedplanetIndex);
-            offsetX = (int)((panelWidth / 2) - ((body.getXPosition() * zoomScale) / 0.02) - (32 * zoomScale));
-            offsetY = (int)((panelHeight / 2) - ((body.getYPosition() * zoomScale) / 0.02) - (32 * zoomScale));
+            offsetX = (int) ((panelWidth / 2) - ((body.getXPosition() * zoomScale)/ 5e8) - (32 * zoomScale));
+            offsetY = (int) ((panelHeight / 2) - ((body.getYPosition() * zoomScale)/5e8) - (32 * zoomScale));
+
         }
         g2d.setColor(new Color(238,230,197));
         for (Point p : starPlacements) {
