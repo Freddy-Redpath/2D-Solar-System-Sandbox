@@ -28,14 +28,15 @@ public class SolarSystem {
         Planet mercury = new Planet(69.818E9, 0.0, 0.330e24, 38864.7570, -Math.PI/2, 69.818E9, 0.206, 7600521.6, 0.0, 0.0, 57.909E9, 4879.0, "src/images/Mercury.png", "mercury", false);
         addPlanet(mercury);
     }
+    
 
     public void addVenus() {
-        Planet venus = new Planet(108.9E9, 0.0, 4.87e24, 34790.1818, +(11*Math.PI)/6, 108.9E9, 0.007, 19414166.4, 0.0, 0.0, 108.210E9, 12104.0, "src/images/Venus.png", "venus", false);
+        Planet venus = new Planet(108.9E9, 0.0, 4.87e24, 34790.1818, -Math.PI/2, 108.9E9, 0.007, 19414166.4, 0.0, 0.0, 108.210E9, 12104.0, "src/images/Venus.png", "venus", false);
         addPlanet(venus);
     }
 
     public void addEarth(){
-        Planet earth = new Planet(108.9E9, 58.9E9, 5.97e24, 29295.1810, -(2*Math.PI)/6,152.1E9,0.017,31558118.4,0.0,0.0,149.5978707E9, 12756.0 , "src/images/Earth.png", "earth", false);
+        Planet earth = new Planet(152.1E9, 0.0, 5.97e24, 29295.1810, -Math.PI/2,152.1E9,0.017,31558118.4,0.0,0.0,149.5978707E9, 12756.0 , "src/images/Earth.png", "earth", false);
         addPlanet(earth);
     }
 
@@ -63,12 +64,8 @@ public class SolarSystem {
         Planet neptune = new Planet(4558.9E9, 0.0, 102e24, 5383.9657, -Math.PI/2, 4558.9E9, 0.010, 5200331155.2, 0.0, 0.0, 4514.953E9, 49528.0, "src/images/Neptune.png", "neptune", false);
         addPlanet(neptune);
     }
-/*
-    public void addPluto() {
-        Planet pluto = new Planet(7375.9E9, 0.0, 0.0130e24, 3676.9789, 0.0, 7375.9E9, 0.248, 7824384000.0, 0.0, 0.0, 5869.656E9, 2376.0, "src/images/Pluto.png", "pluto");
-        addPlanet(pluto);
-    }
-*/
+
+
     // Function for adding all of our solar system at once
     public void addOurSolarSystem(){
         addSun();
