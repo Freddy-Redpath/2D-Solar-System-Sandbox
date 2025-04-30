@@ -252,6 +252,8 @@ public class UI {
 
         }
         for (Star x : solarSystem.getStars()) {
+            System.out.println("Stars start at index: " + planetSelector.getItemCount());
+            System.out.println("planet max index:" + solarSystem.getPlanets().size());
             planetSelector.addItem(x.getName());
             ImageIcon icon = new ImageIcon(x.getImage());
             Image ScaledImage = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
@@ -291,6 +293,7 @@ public class UI {
 
         JButton focusPlanetBTN = ButtonCreator(null, null,0, 0, 110, 50, "Focus on \n selected Planet");
         focusPlanetBTN.addActionListener(e -> {
+
             solarPanelClass.focusOnPlanet(planetSelector.getSelectedIndex());
         });
 

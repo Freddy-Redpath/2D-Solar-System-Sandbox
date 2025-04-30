@@ -39,19 +39,7 @@ public class Physics {
                 }
 
                 if (distance < (64)) {
-                      double angleBetween = Math.atan2(dy, dx); // Angle from planet1 to planet2 (collision axis)
 
-                    double relativeAngle1 = Math.abs(angleBetween - planet1.getSpeedDirection());
-                    double relativeAngle2 = Math.abs(angleBetween - planet2.getSpeedDirection());
-
-
-
-                    boolean isHeadOn = (relativeAngle1 > Math.PI * 0.75 && relativeAngle2 < Math.PI * 1.25);
-
-
-
-
-                    if (isHeadOn) {
                         double newMass = planet1.getMass() + planet2.getMass();
                         double vx = (planet1.getSpeed() * Math.cos(dir1) * planet1.getMass() +
                                 planet2.getSpeed() * Math.cos(dir2) * planet2.getMass()) / newMass;
@@ -67,18 +55,9 @@ public class Physics {
                         generateDebris(planet2.getXPosition(), planet2.getYPosition());
                         toDelete.add(planet2);
 
-                    } else {
-
-                        double lostMass = planet1.getMass() * 0.1;
-                        planet1.setMass(planet1.getMass() - lostMass);
-                        planet2.setMass(planet2.getMass() - lostMass);
-
-
-                        planet1.setSpeedDirection(-planet1.getSpeedDirection());
-                        planet2.setSpeedDirection(-planet1.getSpeedDirection());
 
                     }
-                }
+
             }
             for (Star star : solarSystem.getStars()) {
                 double dx = (planet1.getXPosition() - star.getXPosition())/5e8;
