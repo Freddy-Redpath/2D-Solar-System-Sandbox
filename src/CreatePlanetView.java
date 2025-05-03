@@ -11,19 +11,26 @@ public class CreatePlanetView extends JPanel {
         setPreferredSize(new Dimension(500, 300)); // size of the panel
 
         PreviewPanel preview = new PreviewPanel(); // create area for previewing planet
-        add(preview, BorderLayout.CENTER);
-
-        JPanel sidePanel = new JPanel(); // panel for sliders, dropdowns, etc.
-        sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
-        sidePanel.setPreferredSize(new Dimension(200, 300));
-        sidePanel.setBackground(Color.LIGHT_GRAY);
 
         JCheckBox stableOrbitCheckBox = new JCheckBox("Create stable Orbit");
         stableOrbitCheckBox.setAlignmentX(Component.LEFT_ALIGNMENT);
         stableOrbitCheckBox.addItemListener(e -> {
             createStableOrbit = (e.getStateChange() == ItemEvent.SELECTED);
         });
-        sidePanel.add(stableOrbitCheckBox);
+
+        JPanel orbitBoxWrapper = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        orbitBoxWrapper.setOpaque(false);
+        orbitBoxWrapper.add(stableOrbitCheckBox);
+
+        JPanel previewContainer = new JPanel(new BorderLayout());
+        previewContainer.add(preview, BorderLayout.CENTER);
+        previewContainer.add(orbitBoxWrapper, BorderLayout.SOUTH);
+        add(previewContainer, BorderLayout.CENTER);
+
+        JPanel sidePanel = new JPanel(); // panel for sliders, dropdowns, etc.
+        sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
+        sidePanel.setPreferredSize(new Dimension(200, 300));
+        sidePanel.setBackground(Color.LIGHT_GRAY);
 
 
         JButton colorButton = new JButton("Select Color");
