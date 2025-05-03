@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 
 public class CreatePlanetView extends JPanel {
     private Color selectedColor;
-
+    private boolean createStableOrbit = false;
     public CreatePlanetView() {
         setLayout(new BorderLayout()); // layout manager to split preview and controls
         setPreferredSize(new Dimension(500, 300)); // size of the panel
@@ -18,7 +18,13 @@ public class CreatePlanetView extends JPanel {
         sidePanel.setPreferredSize(new Dimension(200, 300));
         sidePanel.setBackground(Color.LIGHT_GRAY);
 
-        selectedColor = Color.WHITE;
+        JCheckBox stableOrbitCheckBox = new JCheckBox("Create stable Orbit");
+        stableOrbitCheckBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+        stableOrbitCheckBox.addItemListener(e -> {
+            createStableOrbit = (e.getStateChange() == ItemEvent.SELECTED);
+        });
+        sidePanel.add(stableOrbitCheckBox);
+
 
         JButton colorButton = new JButton("Select Color");
         colorButton.addActionListener(e -> {
@@ -145,6 +151,12 @@ public class CreatePlanetView extends JPanel {
 
         add(sidePanel, BorderLayout.EAST);
     }
+
+    // stable orbit checkbox return value <----
+    public boolean isCreateStableOrbitSelected() {
+        return createStableOrbit;
+    }
+
 
     private class PreviewPanel extends JPanel {
         private double planetSize = 10;
