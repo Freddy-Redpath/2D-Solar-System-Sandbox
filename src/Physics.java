@@ -177,6 +177,9 @@ public class Physics {
     }
 
 
+    public static double radiusCalc(double x, double y, Star sun) {
+        return (Math.sqrt(Math.pow(x - sun.getXPosition(), 2) + Math.pow(y - sun.getYPosition(), 2)));
+    }
 
     public static void runSimulation(SolarSystem solarSystem, double deltaT) {
         Star sun = solarSystem.getStars().get(0);
@@ -187,7 +190,7 @@ public class Physics {
 
         for (Planet planet : planets) {
 
-            eccentricityCalc(planet, sun);
+            //eccentricityCalc(planet, sun);
             newxandy(planet, sun, deltaT);
 
         }
@@ -196,8 +199,8 @@ public class Physics {
     public static void eccentricityCalc(Planet planet, Star sun) {
         double h = specificAngularMomentum(planet);
         double E = specificOrbitalEnergy(planet, sun);
-        double e = Math.sqrt(1 + (2 * E * h * h) / (G * G * sun.getMass() * sun.getMass()));
-
+        //double e = Math.sqrt(1 + ((2 * E * h * h) / (G * G * sun.getMass() * sun.getMass())));
+        double e = Math.sqrt(1 - ((h*h)/(G*sun.getMass()*planet.getSemiMajorAxis())));
         planet.setEccentricity(e);
     }
 
@@ -209,38 +212,57 @@ public class Physics {
         return (planet.getSpeed() * planet.getSpeed()) / 2 - (G * sun.getMass()) / planet.getRadius();
     }
 
-    public static void createPlanetPhysics(Planet newPlanet) {
+    public static void createPlanetPhysics(Planet newPlanet, SolarSystem solarSystem) {
+        Star sun = solarSystem.getStars().get(0);
+        double x = newPlanet.getXPosition();
+        double y = newPlanet.getYPosition();
+        double xs = sun.getXPosition();
+        double ys = sun.getYPosition();
 
+        double diffX = x - xs;
+        double diffY = y - ys;
+        System.out.println("x" +x);
+        System.out.println("y" +y);
+        double radius = Math.sqrt(diffX * diffX + diffY * diffY);
+        newPlanet.setRadius(radius);
+        System.out.println("radius" +radius);
 
+        // STEP 1: Set perpendicular velocity direction
+        double angleToSun = Math.atan2(diffY, diffX);
+        double perpendicularAngle = angleToSun + Math.PI / 2;  // Tangential direction
+        newPlanet.setSpeedDirection(perpendicularAngle);
+        System.out.println("direction" +perpendicularAngle);
+
+        // STEP 2: Set exact circular speed
+        double massSun = sun.getMass();
+        double speed = Math.sqrt(G * massSun / radius);
+        newPlanet.setSpeed(speed);
+        System.out.println("speed" +speed);
+
+        // STEP 3: Semi-major axis = radius (for circle)
+        newPlanet.setSemiMajorAxis(radius);
+        System.out.println("radius" +radius);
+        // STEP 4: Compute period from Kepler's Third Law
+        double pi = Math.PI;
+        double period = 2 * pi * Math.sqrt((radius * radius * radius) / (G * massSun));
+        newPlanet.setPeriod(period);
+        System.out.println("period" +period);
+
+        // STEP 5: Optional — recompute eccentricity (should be 0)
+        eccentricityCalc(newPlanet, sun);
+        System.out.println("eccentricity" + newPlanet.getEccentricity());
     }
 
-
-    //Functions for creating (need to be developed)
-
-    public void eccentricityCalcOld(Planet planet, Star sun) {
-        //if (planet.getCreated() == true)
-        KeplersThirdLaw(planet, sun);
-        visViva(planet, sun);
-        double h = specificAngularMomentum(planet);
-        double E = specificOrbitalEnergy(planet, sun);
-        double mass1 = sun.getMass();
-        double G = 6.67e-11;
-
-
-        double e = Math.sqrt(1 + (2 * E * h * h) / (G * G * mass1 * mass1));
-        planet.setEccentricity(e);
-        // Used to calc eccentricity but factsheet has for existing planets
-    }
-
+    //Functions for creating
 
     public static void visViva(Planet planet, Star sun) {
         double mass1 = sun.getMass();
-        double G = 6.67e-11;
         double radius = planet.getRadius();
         double a = planet.getSemiMajorAxis();
 
 
-        double speedAtR = Math.sqrt(G * mass1 * ((2 / radius) - (1 / a)));
+        //double speedAtR = Math.sqrt(G * mass1 * ((2 / radius) - (1 / a)));
+        double speedAtR = Math.sqrt((G*mass1)/radius);
         planet.setSpeed(speedAtR);
         // Used to calc speed at a given distance from star in secure orbit
     }
@@ -248,7 +270,6 @@ public class Physics {
     public static void KeplersThirdLaw(Planet planet, Star sun) {
         double mass1 = sun.getMass();
         double pi = Math.PI;
-        double G = 6.67e-11;
 
         double period = planet.getPeriod(); //check on direction? (based on angular velocity)
         double a = Math.cbrt((period * period * G * mass1) / (4 * pi * pi));
@@ -261,20 +282,26 @@ public class Physics {
         if (radius == -1) {
             radius = planet.getRadius();
         }
-        double G = 6.67e-11;
 
 
         // check if correct equation for context
         return (G * mass1 * mass2) / radius; // Force in Newtons
     }
 
-    public static void periodCalc(Planet planet, double mass1) {
+    public static void periodCalc(Planet planet, Star sun) {
         double pi = Math.PI;
         double radius = planet.getRadius();
-        double G = 6.67e-11;
-        double speed = planet.getSpeed();
-        double a = (G * mass1)/(((2*G*mass1)/radius)-(speed*speed));
-        planet.setSemiMajorAxis(a);
-        planet.setPeriod((2 * pi) * Math.sqrt((Math.pow(a, 3)) / (G * mass1)));
+        double mass1 = sun.getMass();
+        double mass2 = planet.getMass();
+        double x2 = sun.getXPosition();
+        double y2 = sun.getYPosition();
+
+        Vector2D totalForce =gravitationalForce(planet, mass1, x2, y2);
+        planet.setForce(totalForce.magnitude());
+        planet.setForceDirection(totalForce.angle());
+        double force_from_sun = planet.getForce();
+
+        double period = Math.sqrt((4*pi*pi*mass2*radius)/force_from_sun);
+        planet.setPeriod(period);
     }
 }
