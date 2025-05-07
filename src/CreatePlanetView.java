@@ -134,9 +134,18 @@ public class CreatePlanetView extends JPanel {
                     false
             );
 
-            Main.solarSystem.addPlanet(newPlanet);
-            Main.ui.refreshUI();
-            Main.ui.solarPanel.repaint();
+            if (createStableOrbit) {
+                Main.simPaused = true;
+                Main.ui.mousePlacement(newPlanet);
+            }
+            else {
+                Main.solarSystem.addPlanet(newPlanet);
+                Main.ui.refreshUI();
+                Main.ui.solarPanel.repaint();
+                Main.ui.createPlanetFrame.setVisible(false);
+                Main.ui.createPlanetFrame.dispose();
+            }
+
         });
 
         sidePanel.add(addPlanetButton);

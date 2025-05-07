@@ -21,7 +21,28 @@ public class SolarPanel extends JPanel {
     private final int STAR_RANGE = 90000;
     private BufferedImage gasCloudTexture;
     private BufferedImage galaxyTexture; // (Pre‑generated version, not used now)
+    private Planet previewPlanet = null;
 
+    public void setPreviewPlanet(Planet p) {
+        this.previewPlanet = p;
+        repaint();
+    }
+    public double getZoomScale() {
+        return zoomScale;
+    }
+
+    public int getOffsetX() {
+        return offsetX;
+    }
+
+    public int getOffsetY() {
+        return offsetY;
+    }
+
+    public void clearPreviewPlanet() {
+        this.previewPlanet = null;
+        repaint();
+    }
     public SolarPanel() {
         setBackground(Color.black);
         addMouseListener(new MouseAdapter() {
@@ -239,7 +260,21 @@ public class SolarPanel extends JPanel {
                     noiseBG.setRGB(sx, sy, rgba);
                 }
             }
+
+
+
+
         }
+
+        if (previewPlanet != null) {
+            int px = (int)((previewPlanet.getXPosition() * zoomScale / 5e8) + offsetX);
+            int py = (int)((previewPlanet.getYPosition() * zoomScale / 5e8) + offsetY);
+            int size = (int)(previewPlanet.getSize() * zoomScale);
+
+            g2d.setColor(Color.CYAN);
+            g2d.drawOval(px - size / 2, py - size / 2, size, size);
+        }
+
 
         g2d.drawImage(noiseBG, 0, 0, w, h, null);
         // Generate and draw galaxy texture dynamically using current offset and zoom

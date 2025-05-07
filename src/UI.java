@@ -2,7 +2,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.util.ArrayList;
+
 
 public class UI {
 
@@ -321,5 +328,46 @@ public class UI {
         createPlanetFrame.setLocationRelativeTo(null);
         createPlanetFrame.setVisible(true);
     }
+
+
+
+    public void mousePlacement(Planet planet) {
+        Main.simPaused = true;
+        JPanel panel = solarPanel;
+
+        MouseMotionListener moveListener = new MouseMotionAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                double simX = ((e.getX() + 510 - panel.getWidth() / 2.0) - solarPanelClass.getOffsetX()) * 5e8 / solarPanelClass.getZoomScale();
+                double simY = ((e.getY() + 250 - panel.getHeight() / 2.0) - solarPanelClass.getOffsetY()) * 5e8 / solarPanelClass.getZoomScale();
+
+                planet.setXPosition(simX);
+                planet.setYPosition(simY);
+                solarPanelClass.setPreviewPlanet(planet);
+                panel.repaint();
+            }
+        };
+
+        MouseAdapter clickListener = new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (SwingUtilities.isRightMouseButton(e)) {
+                    panel.removeMouseMotionListener(this);
+                    panel.removeMouseListener(this);
+                    panel.removeMouseMotionListener(moveListener);
+
+                    solarPanelClass.clearPreviewPlanet();
+                    Main.solarSystem.addPlanet(planet);
+                    Main.simPaused = false;
+                    panel.repaint();
+                }
+            }
+        };
+
+        panel.addMouseMotionListener(moveListener);
+        panel.addMouseListener(clickListener);
+    }
+
+
 }
 

@@ -23,6 +23,7 @@ public class Main {
 
 
     }
+
     public static void startTimer(){
         if (timer != null) {
             timer.cancel();
@@ -56,6 +57,7 @@ public class Main {
         timer.scheduleAtFixedRate(task, 0, interval);
 
     }
+
 
     public static void main(String[] args) {
         Main main = new Main();
