@@ -278,6 +278,22 @@ public class SolarPanel extends JPanel {
             if (showDirectionLine) {
                 g.setColor(Color.CYAN);
                 g.drawLine((int) lineStartX, (int) lineStartY, (int) lineEndX, (int) lineEndY);
+
+                // Calculate the angle of the line
+                double angle = Math.atan2(lineEndY - lineStartY, lineEndX - lineStartX);
+
+                // Length of the arrowhead
+                int arrowSize = 10;
+
+                // Calculate the two points that form the arrowhead
+                int arrowX1 = (int) (lineEndX - arrowSize * Math.cos(angle - Math.PI / 6));
+                int arrowY1 = (int) (lineEndY - arrowSize * Math.sin(angle - Math.PI / 6));
+                int arrowX2 = (int) (lineEndX - arrowSize * Math.cos(angle + Math.PI / 6));
+                int arrowY2 = (int) (lineEndY - arrowSize * Math.sin(angle + Math.PI / 6));
+
+                // Draw the arrowhead
+                g.drawLine((int) lineEndX, (int) lineEndY, arrowX1, arrowY1);
+                g.drawLine((int) lineEndX, (int) lineEndY, arrowX2, arrowY2);
             }
 
 
