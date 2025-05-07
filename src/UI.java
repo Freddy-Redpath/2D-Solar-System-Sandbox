@@ -268,10 +268,16 @@ public class UI {
                     panel.removeMouseListener(this);
                     panel.removeMouseMotionListener(moveListener);
 
+                    //double simX = ((e.getX() - panel.getWidth() / 2.0)) * 5e8 / solarPanelClass.getZoomScale();
+                    //double simY = ((e.getY() - panel.getHeight() / 2.0)) * 5e8 / solarPanelClass.getZoomScale();
+                    //planet.setXPosition(simX);
+                    //planet.setYPosition(simY);
+
                     if (!stableOrbit) {
                         startVelocityDirectionPhase(panel, planet);
                     } else {
                         solarPanelClass.clearPreviewPlanet();
+                        Physics.createPlanetPhysics(planet, solarSystem);
                         Main.solarSystem.addPlanet(planet);
                         Main.simPaused = false;
                         panel.repaint();

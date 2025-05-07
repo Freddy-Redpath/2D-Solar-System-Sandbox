@@ -229,7 +229,7 @@ public class Physics {
 
         // STEP 1: Set perpendicular velocity direction
         double angleToSun = Math.atan2(diffY, diffX);
-        double perpendicularAngle = angleToSun + Math.PI / 2;  // Tangential direction
+        double perpendicularAngle = angleToSun - Math.PI / 2;  // Tangential direction
         newPlanet.setSpeedDirection(perpendicularAngle);
         System.out.println("direction" +perpendicularAngle);
 
