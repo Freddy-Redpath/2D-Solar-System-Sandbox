@@ -22,6 +22,20 @@ public class SolarPanel extends JPanel {
     private BufferedImage gasCloudTexture;
     private BufferedImage galaxyTexture; // (Pre‑generated version, not used now)
     private Planet previewPlanet = null;
+    private boolean showDirectionLine = false;
+    private double lineStartX, lineStartY, lineEndX, lineEndY;
+
+    public void setDirectionLine(double startX, double startY, double endX, double endY) {
+        this.showDirectionLine = true;
+        this.lineStartX = startX;
+        this.lineStartY = startY;
+        this.lineEndX = endX;
+        this.lineEndY = endY;
+    }
+
+    public void clearDirectionLine() {
+        this.showDirectionLine = false;
+    }
 
     public void setPreviewPlanet(Planet p) {
         this.previewPlanet = p;
@@ -259,6 +273,11 @@ public class SolarPanel extends JPanel {
                     int rgba = (alpha << 24) | (c.getRGB() & 0x00FFFFFF);
                     noiseBG.setRGB(sx, sy, rgba);
                 }
+
+            }
+            if (showDirectionLine) {
+                g.setColor(Color.CYAN);
+                g.drawLine((int) lineStartX, (int) lineStartY, (int) lineEndX, (int) lineEndY);
             }
 
 

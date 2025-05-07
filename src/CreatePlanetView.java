@@ -6,6 +6,11 @@ import java.awt.image.BufferedImage;
 public class CreatePlanetView extends JPanel {
     private Color selectedColor;
     private boolean createStableOrbit = false;
+    private static int lastUsedSpeed = 100;
+
+    public static int getLastUsedSpeed() {
+        return lastUsedSpeed;
+    }
     public CreatePlanetView() {
         setLayout(new BorderLayout()); // layout manager to split preview and controls
         setPreferredSize(new Dimension(500, 300)); // size of the panel
@@ -63,7 +68,6 @@ public class CreatePlanetView extends JPanel {
         massSlider.setPaintLabels(false);
         massSlider.addChangeListener(e -> {
             int massValue = massSlider.getValue();
-            // value could be linked later if needed
         });
 
         JLabel speedLabel = new JLabel("Speed:");
@@ -74,6 +78,7 @@ public class CreatePlanetView extends JPanel {
         speedSlider.setPaintLabels(false);
         speedSlider.addChangeListener(e -> {
             int speedValue = speedSlider.getValue();
+            lastUsedSpeed = speedValue;
         });
 
         JLabel sizeLabel = new JLabel("Size:");
@@ -134,20 +139,10 @@ public class CreatePlanetView extends JPanel {
                     false
             );
 
-            if (createStableOrbit) {
-                Main.simPaused = true;
-                Main.ui.mousePlacement(newPlanet);
-                Physics.createPlanetPhysics(newPlanet);
-                Main.simPaused = false;
+            Main.simPaused = true;
+            Main.ui.mousePlacement(newPlanet, createStableOrbit, speed);
 
-            }
-            else {
-                Main.solarSystem.addPlanet(newPlanet);
-                Main.ui.refreshUI();
-                Main.ui.solarPanel.repaint();
-                Main.ui.createPlanetFrame.setVisible(false);
-                Main.ui.createPlanetFrame.dispose();
-            }
+
 
         });
 
