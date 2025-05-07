@@ -195,12 +195,12 @@ public class CreatePlanetView extends JPanel {
             super.addNotify();
             if (!starsgenerated) {
                 starsgenerated = true;
-                int w = getWidth() > 0 ? getWidth() : getPreferredSize().width;
+                int w = getWidth()> 0 ? getWidth() : getPreferredSize().width;
                 int h = getHeight() > 0 ? getHeight() : getPreferredSize().height;
-                int numStars = 65;
+                int numStars = 650;
                 for (int i = 0; i < numStars; i++) {
-                    int starX = (int)(Math.random() * w);
-                    int starY = (int)(Math.random() * h);
+                    int starX = (int)(Math.random() * w * 6.5);
+                    int starY = (int)(Math.random() * h * 6.5);
                     starPlacements.add(new Point(starX, starY)); // randomly scatter stars
                 }
             }
@@ -240,7 +240,7 @@ public class CreatePlanetView extends JPanel {
                 int w = getWidth(), h = getHeight();
                 gasTexture = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
                 PerlinNoise noiseGen = new PerlinNoise();
-                double scale = 2.0, threshold = 0.4;
+                double scale = 1.0, threshold = 0.4;
                 for (int x = 0; x < w; x++) {
                     for (int y = 0; y < h; y++) {
                         double nx = x / (double)w / scale;
@@ -251,9 +251,10 @@ public class CreatePlanetView extends JPanel {
                         } else {
                             double t = (v - threshold) / (1 - threshold);
                             int a = (int)(t * 80);
-                            float hue = 0.65f + (float)t * 0.15f;
-                            float sat = 0.8f, bri = 0.5f + (float)t * 0.3f;
-                            Color c = Color.getHSBColor(hue, sat, bri);
+                            float hue = 0.60f + (float)t * 0.05f;
+                            float saturation = 0.8f;
+                            float brightness = 0.3f + (float)t * 0.15f;
+                            Color c = Color.getHSBColor(hue, saturation, brightness);
                             gasTexture.setRGB(x, y, (a<<24)|(c.getRGB()&0x00FFFFFF)); // colored gas cloud
                         }
                     }
@@ -279,3 +280,14 @@ public class CreatePlanetView extends JPanel {
         }
     }
 }
+
+// hue for planets
+// dragging does not effect speed
+// perlin noise fix
+// create stable orbit
+// if ticked leave to josh, but
+// if not ticked, place planet, pause program and sticks with mouse until first click and then drag to
+// change direction
+// project documentation
+//personal statement
+

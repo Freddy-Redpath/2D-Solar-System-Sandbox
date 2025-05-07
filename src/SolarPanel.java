@@ -177,7 +177,7 @@ public class SolarPanel extends JPanel {
         }
         BufferedImage galaxyImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         PerlinNoise noiseGen = new PerlinNoise();
-        double threshold = 0.85;
+        double threshold = 0.65;
         int maxAlpha = 430;
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
