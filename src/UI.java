@@ -358,7 +358,6 @@ public class UI {
 
                     solarPanelClass.clearPreviewPlanet();
                     Main.solarSystem.addPlanet(planet);
-                    Main.simPaused = false;
                     panel.repaint();
                 }
             }

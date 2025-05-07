@@ -44,12 +44,7 @@ public class Physics {
                     double relativeAngle1 = Math.abs(angleBetween - planet1.getSpeedDirection());
                     double relativeAngle2 = Math.abs(angleBetween - planet2.getSpeedDirection());
 
-
-
                     boolean isHeadOn = (relativeAngle1 > Math.PI * 0.75 && relativeAngle2 < Math.PI * 1.25);
-
-
-
 
                     if (isHeadOn) {
                         double newMass = planet1.getMass() + planet2.getMass();
@@ -94,12 +89,7 @@ public class Physics {
                     double relativeAngle1 = Math.abs(angleBetween - planet1.getSpeedDirection());
                     double relativeAngle2 = Math.abs(angleBetween);
 
-
-
                     boolean isHeadOn = (relativeAngle1 > Math.PI * 0.75 && relativeAngle2 < Math.PI * 1.25);
-
-
-
 
                     if (isHeadOn) {
                         double newMass = planet1.getMass() + star.getMass();
@@ -217,6 +207,11 @@ public class Physics {
 
     public static double specificOrbitalEnergy(Planet planet, Star sun) {
         return (planet.getSpeed() * planet.getSpeed()) / 2 - (G * sun.getMass()) / planet.getRadius();
+    }
+
+    public static void createPlanetPhysics(Planet newPlanet) {
+
+
     }
 
 

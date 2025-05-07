@@ -137,6 +137,9 @@ public class CreatePlanetView extends JPanel {
             if (createStableOrbit) {
                 Main.simPaused = true;
                 Main.ui.mousePlacement(newPlanet);
+                Physics.createPlanetPhysics(newPlanet);
+                Main.simPaused = false;
+
             }
             else {
                 Main.solarSystem.addPlanet(newPlanet);
