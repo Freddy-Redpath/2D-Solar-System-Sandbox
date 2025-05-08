@@ -5,7 +5,7 @@ public class Debris {
     double dx, dy;
     int size;
     int lifespan; // frames until it fades out
-    Color color;
+    Color colour;
 
     public Debris(double x, double y, double dx, double dy, int size,int lifespan, Color color) {
         this.x = x;
@@ -13,7 +13,7 @@ public class Debris {
         this.dx = dx;
         this.dy = dy;
         this.lifespan = lifespan;
-        this.color = color;
+        this.colour = color;
         this.size = size;
     }
 

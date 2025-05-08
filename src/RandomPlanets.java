@@ -3,12 +3,12 @@ import java.awt.*;
 public class RandomPlanets {
     private Point position;
     private int size;
-    private Color color;
+    private Color colour;
 
     public RandomPlanets(Point position, int size, Color color) {
         this.position = position;
         this.size = size;
-        this.color = color;
+        this.colour = color;
     }
 
     // Getter for position
@@ -23,6 +23,6 @@ public class RandomPlanets {
 
     // Getter for color
     public Color getColor() {
-        return color;
+        return colour;
     }
 }

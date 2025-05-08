@@ -37,18 +37,6 @@ public class Main {
                 if (!simPaused) {
 
                     physics.runSimulation(solarSystem, deltaT);
-
-
-/*
-
-                    for (Planet planet : solarSystem.getPlanets()) {
-
-                        double[] newXY = physics.runSimulation(solarSystem);
-                        planet.setXPosition(newXY[0]);
-                        planet.setYPosition(newXY[1]);
-
-                    }
- */
                     ui.solarPanel.repaint();
                 }else {
                 }

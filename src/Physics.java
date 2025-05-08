@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Physics {
 
-    private static final double G = 6.67e-11; // Gravitational constant
+    private static final double gravConst = 6.67e-11; // Gravitational constant
 
     public static void totalForceCalc(ArrayList<Planet> planetArray, Star sun) {
         for (Planet planet : planetArray) {
@@ -143,13 +143,13 @@ public class Physics {
 
         if (distance == 0) return new Vector2D(0, 0); // Avoid divide by zero
 
-        double force = (G * planet.getMass() * mass) / (distance * distance);
+        double force = (gravConst * planet.getMass() * mass) / (distance * distance);
         double angle = Math.atan2(y2 - y1, x2 - x1);
 
         return new Vector2D(force * Math.cos(angle), force * Math.sin(angle));
     }
 
-    public static void newxandy(Planet planet,Star sun,  double deltaT) {
+    public static void newXAndY(Planet planet,Star sun,  double deltaT) {
         double acceleration = planet.getForce() / planet.getMass();
         double forceAngle = planet.getForceDirection();
 
@@ -184,7 +184,7 @@ public class Physics {
         for (Planet planet : planets) {
 
             //eccentricityCalc(planet, sun);
-            newxandy(planet, sun, deltaT);
+            newXAndY(planet, sun, deltaT);
 
         }
     }
@@ -192,8 +192,8 @@ public class Physics {
     public static void eccentricityCalc(Planet planet, Star sun) {
         double h = specificAngularMomentum(planet);
         double E = specificOrbitalEnergy(planet, sun);
-        //double e = Math.sqrt(1 + ((2 * E * h * h) / (G * G * sun.getMass() * sun.getMass())));
-        double e = Math.sqrt(1 - ((h*h)/(G*sun.getMass()*planet.getSemiMajorAxis())));
+        //double e = Math.sqrt(1 + ((2 * E * h * h) / (gravConst * gravConst * sun.getMass() * sun.getMass())));
+        double e = Math.sqrt(1 - ((h*h)/(gravConst*sun.getMass()*planet.getSemiMajorAxis())));
         planet.setEccentricity(e);
     }
 
@@ -202,7 +202,7 @@ public class Physics {
     }
 
     public static double specificOrbitalEnergy(Planet planet, Star sun) {
-        return (planet.getSpeed() * planet.getSpeed()) / 2 - (G * sun.getMass()) / planet.getRadius();
+        return (planet.getSpeed() * planet.getSpeed()) / 2 - (gravConst * sun.getMass()) / planet.getRadius();
     }
 
     public static void createPlanetPhysics(Planet newPlanet, SolarSystem solarSystem) {
@@ -228,7 +228,7 @@ public class Physics {
 
         // STEP 2: Set exact circular speed
         double massSun = sun.getMass();
-        double speed = Math.sqrt(G * massSun / radius);
+        double speed = Math.sqrt(gravConst * massSun / radius);
         newPlanet.setSpeed(speed);
         System.out.println("speed" +speed);
 
@@ -237,7 +237,7 @@ public class Physics {
         System.out.println("radius" +radius);
         // STEP 4: Compute period from Kepler's Third Law
         double pi = Math.PI;
-        double period = 2 * pi * Math.sqrt((radius * radius * radius) / (G * massSun));
+        double period = 2 * pi * Math.sqrt((radius * radius * radius) / (gravConst * massSun));
         newPlanet.setPeriod(period);
         System.out.println("period" +period);
 
@@ -254,18 +254,18 @@ public class Physics {
         double a = planet.getSemiMajorAxis();
 
 
-        //double speedAtR = Math.sqrt(G * mass1 * ((2 / radius) - (1 / a)));
-        double speedAtR = Math.sqrt((G*mass1)/radius);
+        //double speedAtR = Math.sqrt(gravConst * mass1 * ((2 / radius) - (1 / a)));
+        double speedAtR = Math.sqrt((gravConst*mass1)/radius);
         planet.setSpeed(speedAtR);
         // Used to calc speed at a given distance from star in secure orbit
     }
 
-    public static void KeplersThirdLaw(Planet planet, Star sun) {
+    public static void keplersThirdLaw(Planet planet, Star sun) {
         double mass1 = sun.getMass();
         double pi = Math.PI;
 
         double period = planet.getPeriod(); //check on direction? (based on angular velocity)
-        double a = Math.cbrt((period * period * G * mass1) / (4 * pi * pi));
+        double a = Math.cbrt((period * period * gravConst * mass1) / (4 * pi * pi));
 
         planet.setSemiMajorAxis(a);
     }
@@ -278,7 +278,7 @@ public class Physics {
 
 
         // check if correct equation for context
-        return (G * mass1 * mass2) / radius; // Force in Newtons
+        return (gravConst * mass1 * mass2) / radius; // Force in Newtons
     }
 
     public static void periodCalc(Planet planet, Star sun) {

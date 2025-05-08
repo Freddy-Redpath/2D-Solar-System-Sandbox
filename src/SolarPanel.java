@@ -12,13 +12,13 @@ public class SolarPanel extends JPanel {
     private int offsetX = 0, offsetY = 0;
     private int prevMouseX, prevMouseY;
     private boolean planetFocussed = false;
-    private int focussedplanetIndex = 0;
+    private int focussedPlanetIndex = 0;
     private double zoomScale = 1.0;
     private ArrayList<Point> starPlacements = new ArrayList<>();
     private ArrayList<RandomPlanets> randomPlanetPlacements = new ArrayList<>();
-    private boolean starsgenerated = false;
+    private boolean starsGenerated = false;
     private boolean randomPlanetsGenerated = false;
-    private final int STAR_RANGE = 90000;
+    private final int starRange = 90000;
     private BufferedImage gasCloudTexture;
     private BufferedImage galaxyTexture; // (Pre‑generated version, not used now)
     private Planet previewPlanet = null;
@@ -142,7 +142,7 @@ public class SolarPanel extends JPanel {
                     int dy = e.getY() - prevMouseY;
                     offsetX += dx;
                     offsetY += dy;
-                    double scaledRange = STAR_RANGE * zoomScale * 0.15;
+                    double scaledRange = starRange * zoomScale * 0.15;
                     int minOffsetX = (int)(-scaledRange - getWidth());
                     int maxOffsetX = (int)(scaledRange);
                     int minOffsetY = (int)(-scaledRange - getHeight());
@@ -174,12 +174,12 @@ public class SolarPanel extends JPanel {
     @Override
     public void addNotify() {
         super.addNotify();
-        if (!starsgenerated) {
-            starsgenerated = true;
+        if (!starsGenerated) {
+            starsGenerated = true;
             int numStars = 99999;
             for (int i = 0; i < numStars; i++) {
-                int starX = (int)(Math.random() * STAR_RANGE - STAR_RANGE / 2);
-                int starY = (int)(Math.random() * STAR_RANGE - STAR_RANGE / 2);
+                int starX = (int)(Math.random() * starRange - starRange / 2);
+                int starY = (int)(Math.random() * starRange - starRange / 2);
                 starPlacements.add(new Point(starX, starY));
             }
         }
@@ -188,8 +188,8 @@ public class SolarPanel extends JPanel {
             int numPlanets = 33999;
             Random rnd = new Random();
             for (int i = 0; i < numPlanets; i++) {
-                int planetX = (int)(Math.random() * STAR_RANGE - STAR_RANGE / 2);
-                int planetY = (int)(Math.random() * STAR_RANGE - STAR_RANGE / 2);
+                int planetX = (int)(Math.random() * starRange - starRange / 2);
+                int planetY = (int)(Math.random() * starRange - starRange / 2);
                 int size = rnd.nextInt(6) + 1;
                 int red = rnd.nextInt(75);
                 int green = rnd.nextInt(44);
@@ -237,7 +237,7 @@ public class SolarPanel extends JPanel {
     }
 
     public void focusOnPlanet(int index) {
-        this.focussedplanetIndex = index;
+        this.focussedPlanetIndex = index;
         planetFocussed = true;
         zoomScale = 1.0;
         repaint();
@@ -318,14 +318,14 @@ public class SolarPanel extends JPanel {
         if (planetFocussed) {
             int panelWidth = getWidth();
             int panelHeight = getHeight();
-            System.out.print(focussedplanetIndex);
-            if (focussedplanetIndex == Main.solarSystem.getPlanets().size()) {
+            System.out.print(focussedPlanetIndex);
+            if (focussedPlanetIndex == Main.solarSystem.getPlanets().size()) {
                 Star body = Main.solarSystem.getStars().get(0);
                 offsetX = (int) ((panelWidth / 2) - ((body.getXPosition() * zoomScale)/ 5e8) - (32 * zoomScale));
                 offsetY = (int) ((panelHeight / 2) - ((body.getYPosition() * zoomScale)/5e8) - (32 * zoomScale));
             }else{
 
-                Planet body = Main.solarSystem.getPlanets().get(focussedplanetIndex);
+                Planet body = Main.solarSystem.getPlanets().get(focussedPlanetIndex);
                 offsetX = (int) ((panelWidth / 2) - ((body.getXPosition() * zoomScale)/ 5e8) - (32 * zoomScale));
                 offsetY = (int) ((panelHeight / 2) - ((body.getYPosition() * zoomScale)/5e8) - (32 * zoomScale));
 

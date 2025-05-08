@@ -177,7 +177,7 @@ public class CreatePlanetView extends JPanel {
         private double planetSize = 10;
         private Color planetColour = Color.WHITE;
         private java.util.List<Point> starPlacements = new java.util.ArrayList<>();
-        private boolean starsgenerated = false;
+        private boolean starsGenerated = false;
         private String basePlanet = "";
         private Image baseImage;
         private BufferedImage gasTexture;
@@ -201,8 +201,8 @@ public class CreatePlanetView extends JPanel {
         @Override
         public void addNotify() {
             super.addNotify();
-            if (!starsgenerated) {
-                starsgenerated = true;
+            if (!starsGenerated) {
+                starsGenerated = true;
                 int w = getWidth()> 0 ? getWidth() : getPreferredSize().width;
                 int h = getHeight() > 0 ? getHeight() : getPreferredSize().height;
                 int numStars = 650;
@@ -289,13 +289,4 @@ public class CreatePlanetView extends JPanel {
     }
 }
 
-// hue for planets
-// dragging does not effect speed
-// perlin noise fix
-// create stable orbit
-// if ticked leave to josh, but
-// if not ticked, place planet, pause program and sticks with mouse until first click and then drag to
-// change direction
-// project documentation
-//personal statement
 
