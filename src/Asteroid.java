@@ -6,13 +6,14 @@ import java.awt.*;
  */
 public class Asteroid {
     private double xPosition;  // X-coordinate of the asteroid
-    private double yPosition;  // Y-coordinate of the asteroid
+    private double yPosition;  // Y-c            oordinate of the asteroid
     private double mass;       // Mass of the asteroid
     private double speed;      // Speed of the asteroid
     private double direction;  // Direction of movement in degrees
     private double size;       // Size of the asteroid
-    private Image image;       // Image representation of the asteroid
-
+    private String image;       // String representation of the asteroid
+    private String name;
+//
     /**
      * Constructor to initialize an Asteroid object. hello2
      *
@@ -22,9 +23,10 @@ public class Asteroid {
      * @param speed      Speed of the asteroid
      * @param direction  Direction of movement in degrees
      * @param size       Size of the asteroid
-     * @param image      Image representation of the asteroid
+     * @param image      String representation of the asteroid
+     * @param name       Label for the asteroid
      */
-    public Asteroid(double xPosition, double yPosition, double mass, double speed, double direction, double size, Image image) {
+    public Asteroid(double xPosition, double yPosition, double mass, double speed, double direction, double size, String image, String name) {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.mass = mass;
@@ -32,6 +34,7 @@ public class Asteroid {
         this.direction = direction;
         this.size = size;
         this.image = image;
+        this.name = name;
     }
 
     // Getter methods to retrieve asteroid properties
@@ -59,12 +62,14 @@ public class Asteroid {
         return size;
     }
 
-    public Image getImage() {
+    public String getString() {
         return image;
     }
 
+    public String getName() { return name; }
+
     // Setter methods to modify asteroid properties
-    public void setImage(Image image) {
+    public void setString(String image) {
         this.image = image;
     }
 
@@ -91,4 +96,6 @@ public class Asteroid {
     public void setDirection(double direction) {
         this.direction = direction;
     }
+
+    public void setName(String name) {this.name = name;}
 }

@@ -5,13 +5,14 @@ import java.awt.*;
  * and is used to initialize such an object
  */
 public class BlackHole {
+    private String name;
     private double xPosition;  // X-coordinate of the black hole
     private double yPosition;  // Y-coordinate of the black hole
     private double mass;       // Mass of the black hole
     private double speed;      // Speed of the black hole
     private double direction;  // Direction of movement in degrees
     private double size;       // Size of the black hole
-    private Image image;       // Image representation of the black hole
+    private String image;       // String representation of the black hole
 
     /**
      * Constructor to initialize an BlackHole object.
@@ -22,9 +23,10 @@ public class BlackHole {
      * @param speed      Speed of the black hole
      * @param direction  Direction of movement in degrees
      * @param size       Size of the black hole
-     * @param image      Image representation of the black hole
+     * @param image      String representation of the black hole
+     * @param name       Label for the black hole
      */
-    public BlackHole(double xPosition, double yPosition, double mass, double speed, double direction, double size, Image image) {
+    public BlackHole(double xPosition, double yPosition, double mass, double speed, double direction, double size, String image, String name) {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.mass = mass;
@@ -32,6 +34,7 @@ public class BlackHole {
         this.direction = direction;
         this.size = size;
         this.image = image;
+        this.name = name;
     }
 
     // Getter methods to retrieve black hole properties
@@ -59,12 +62,14 @@ public class BlackHole {
         return size;
     }
 
-    public Image getImage() {
+    public String getString() {
         return image;
     }
 
+    public String getName() {return name; }
+
     // Setter methods to modify black hole properties
-    public void setImage(Image image) {
+    public void setString(String image) {
         this.image = image;
     }
 
@@ -91,4 +96,6 @@ public class BlackHole {
     public void setDirection(double direction) {
         this.direction = direction;
     }
+
+    public void setName(String name) {this.name = name;}
 }
