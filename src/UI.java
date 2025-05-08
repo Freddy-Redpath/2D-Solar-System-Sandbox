@@ -195,7 +195,7 @@ public class UI {
         speedPanel.add(Box.createHorizontalGlue()); // To push buttons to the left
 
         // Create the speed slider
-        JSlider speedSlider = new JSlider(JSlider.HORIZONTAL, 100, 1000000, 100000);
+        JSlider speedSlider = new JSlider(JSlider.HORIZONTAL, 100, 700000, 10000);
         speedSlider.addChangeListener(e -> {
             Main.deltaT = speedSlider.getValue();
         });
@@ -297,10 +297,7 @@ public class UI {
             solarPanelClass.focusOnPlanet(planetSelector.getSelectedIndex());
         });
 
-        JButton pauseBTN = ButtonCreator(null, null,0, 0, 100, 100, "Pause");
-        pauseBTN.addActionListener(e -> {
-            Main.simPaused = !Main.simPaused;
-        });
+
 
         topPanel.add(Box.createRigidArea(new Dimension(20, 20)));
 
@@ -312,7 +309,7 @@ public class UI {
         topPanel.add(focusPlanetBTN);
         topPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        topPanel.add(pauseBTN);
+
 
         return topPanel;
     }

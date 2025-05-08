@@ -45,16 +45,25 @@ public class Physics {
                                 planet2.getSpeed() * Math.cos(dir2) * planet2.getMass()) / newMass;
                         double vy = (planet1.getSpeed() * Math.sin(dir1) * planet1.getMass() +
                                 planet2.getSpeed() * Math.sin(dir2) * planet2.getMass()) / newMass;
+                        if (planet1.getMass()*planet1.getSpeed() > planet2.getMass() * planet2.getSpeed()) {
+                            planet1.setMass(newMass);
+                            planet1.setSpeed(Math.sqrt(vx * vx + vy * vy));
+                            planet1.setSpeedDirection(Math.atan2(vy, vx));
 
-                        planet1.setMass(newMass);
-                        planet1.setSpeed(Math.sqrt(vx * vx + vy * vy));
-                        planet1.setSpeedDirection(Math.atan2(vy, vx));
+                            planet1.setSize(planet1.getSize() * 1.2);
+                            generateDebris(planet1.getXPosition(), planet1.getYPosition());
+                            generateDebris(planet2.getXPosition(), planet2.getYPosition());
+                            toDelete.add(planet2);
+                        }else{
+                            planet2.setMass(newMass);
+                            planet2.setSpeed(Math.sqrt(vx * vx + vy * vy));
+                            planet2.setSpeedDirection(Math.atan2(vy, vx));
 
-                        planet1.setSize(planet1.getSize() * 1.2);
-                        generateDebris(planet1.getXPosition(), planet1.getYPosition());
-                        generateDebris(planet2.getXPosition(), planet2.getYPosition());
-                        toDelete.add(planet2);
-
+                            planet2.setSize(planet1.getSize() * 1.2);
+                            generateDebris(planet1.getXPosition(), planet1.getYPosition());
+                            generateDebris(planet2.getXPosition(), planet2.getYPosition());
+                            toDelete.add(planet1);
+                        }
 
                     }
 

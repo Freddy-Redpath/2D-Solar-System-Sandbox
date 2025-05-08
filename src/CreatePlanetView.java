@@ -20,7 +20,7 @@ public class CreatePlanetView extends JPanel {
 
         selectedColor = Color.WHITE;
 
-        JButton colorButton = new JButton("Select Color");
+        JButton colorButton = new JButton("Select Colour");
         colorButton.addActionListener(e -> {
             Color newColor = JColorChooser.showDialog(this, "Choose Planet Color", selectedColor);
             if (newColor != null) {
