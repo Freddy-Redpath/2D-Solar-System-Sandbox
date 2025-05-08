@@ -147,8 +147,11 @@ public class UI {
         speedPanel.add(speedUpBTN);
         speedPanel.add(Box.createHorizontalGlue());
 
-        JSlider speedSlider = new JSlider(JSlider.HORIZONTAL, 100, 1000000, 100000);
-        speedSlider.addChangeListener(e -> Main.deltaT = speedSlider.getValue());
+        // Create the speed slider
+        JSlider speedSlider = new JSlider(JSlider.HORIZONTAL, 100, 700000, 10000);
+        speedSlider.addChangeListener(e -> {
+            Main.deltaT = speedSlider.getValue();
+        });
 
         JButton createPlanetBTN = ButtonCreator(null, null, 0, 0, 150, 50, "Create Planet");
         createPlanetBTN.addActionListener(e -> {
@@ -219,11 +222,13 @@ public class UI {
         JLabel dropDownLabel = new JLabel("Select Planet:");
         JComboBox planetSelector = createPlanetCombo();
 
-        JButton focusPlanetBTN = ButtonCreator(null, null, 0, 0, 110, 50, "Focus on \n selected Planet");
-        focusPlanetBTN.addActionListener(e -> solarPanelClass.focusOnPlanet(planetSelector.getSelectedIndex()));
+        JButton focusPlanetBTN = ButtonCreator(null, null,0, 0, 110, 50, "Focus on \n selected Planet");
+        focusPlanetBTN.addActionListener(e -> {
 
-        JButton pauseBTN = ButtonCreator(null, null, 0, 0, 100, 100, "Pause");
-        pauseBTN.addActionListener(e -> Main.simPaused = !Main.simPaused);
+            solarPanelClass.focusOnPlanet(planetSelector.getSelectedIndex());
+        });
+
+
 
         topPanel.add(Box.createRigidArea(new Dimension(20, 20)));
         topPanel.add(dropDownLabel);
@@ -232,7 +237,9 @@ public class UI {
         topPanel.add(Box.createHorizontalStrut(10));
         topPanel.add(focusPlanetBTN);
         topPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        topPanel.add(pauseBTN);
+
+
+
         return topPanel;
     }
 

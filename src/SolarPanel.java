@@ -318,11 +318,21 @@ public class SolarPanel extends JPanel {
         if (planetFocussed) {
             int panelWidth = getWidth();
             int panelHeight = getHeight();
-            Planet body = Main.solarSystem.getPlanets().get(focussedplanetIndex);
-            offsetX = (int) ((panelWidth / 2) - ((body.getXPosition() * zoomScale)/ 5e8) - (32 * zoomScale));
-            offsetY = (int) ((panelHeight / 2) - ((body.getYPosition() * zoomScale)/5e8) - (32 * zoomScale));
+            System.out.print(focussedplanetIndex);
+            if (focussedplanetIndex == Main.solarSystem.getPlanets().size()) {
+                Star body = Main.solarSystem.getStars().get(0);
+                offsetX = (int) ((panelWidth / 2) - ((body.getXPosition() * zoomScale)/ 5e8) - (32 * zoomScale));
+                offsetY = (int) ((panelHeight / 2) - ((body.getYPosition() * zoomScale)/5e8) - (32 * zoomScale));
+            }else{
 
-        }
+                Planet body = Main.solarSystem.getPlanets().get(focussedplanetIndex);
+                offsetX = (int) ((panelWidth / 2) - ((body.getXPosition() * zoomScale)/ 5e8) - (32 * zoomScale));
+                offsetY = (int) ((panelHeight / 2) - ((body.getYPosition() * zoomScale)/5e8) - (32 * zoomScale));
+
+            }
+            }
+
+
         g2d.setColor(new Color(238,230,197));
         for (Point p : starPlacements) {
             double panParallaxFactor = 0.05;
@@ -363,18 +373,22 @@ public class SolarPanel extends JPanel {
             g2d.drawImage(img, x, y, size, size, this);
             Color semiOpaque = new Color(0.2f, 0.2f, 0.2f, .8f);
             if (planet.getShowInfoTile()) {
-                int panelWidth = 130;
-                int panelHeight = 75;
+                int panelWidth = 160;
+                int panelHeight = 105;
                 int panelX = x + size + 10;
                 int panelY = y;
                 g2d.setColor(semiOpaque);
                 g2d.fillRect(panelX, panelY, panelWidth, panelHeight);
                 DecimalFormat df = new DecimalFormat("#.##");
                 g2d.setColor(Color.WHITE);
-                g2d.drawString("Mass: " + planet.getMass() + " kg", panelX + 2, panelY + 15);
-                g2d.drawString("Speed: " + df.format(planet.getSpeed()) + " km/s", panelX + 2, panelY + 30);
-                g2d.drawString("Direction: " + df.format(planet.getSpeedDirection()) + " radians", panelX + 2, panelY + 45);
-                g2d.drawString("Radius: " + df.format(planet.getSize()) + "m", panelX + 2, panelY + 60);
+                g2d.drawString("Name: " +planet.getName(), panelX + 2, panelY+15);
+                g2d.drawString("Mass: " + planet.getMass() + " kg", panelX + 2, panelY + 30);
+                g2d.drawString("Speed: " + df.format(planet.getSpeed()) + " km/s", panelX + 2, panelY + 45);
+                g2d.drawString("Direction: " + df.format(planet.getSpeedDirection()) + " radians", panelX + 2, panelY + 60);
+                g2d.drawString("Radius: " + df.format(planet.getSize()) + "m", panelX + 2, panelY + 75);
+                DecimalFormat sciFormat = new DecimalFormat("0.00E0");
+                g2d.drawString("distance from sun: " + sciFormat.format(planet.getRadius()) + "m", panelX + 2, panelY + 90);
+
             }
         }
         for (Star star : Main.solarSystem.getStars()) {
@@ -387,17 +401,18 @@ public class SolarPanel extends JPanel {
             Color semiOpaque = new Color(0.2f, 0.2f, 0.2f, .8f);
             if (star.getShowInfoTile()) {
                 int panelWidth = 130;
-                int panelHeight = 75;
+                int panelHeight = 90;
                 int panelX = x + size + 10;
                 int panelY = y - size / 2 + 20;
                 g2d.setColor(semiOpaque);
                 g2d.fillRect(panelX, panelY, panelWidth, panelHeight);
                 DecimalFormat df = new DecimalFormat("#.##");
                 g2d.setColor(Color.WHITE);
-                g2d.drawString("Mass: " + star.getMass() + " kg", panelX + 2, panelY + 15);
-                g2d.drawString("Speed: " + df.format(star.getSpeed()) + " km/s", panelX + 2, panelY + 30);
-                g2d.drawString("Direction: " + df.format(star.getDirection()) + " radians", panelX + 2, panelY + 45);
-                g2d.drawString("Radius: " + df.format(star.getSize()) + "m", panelX + 2, panelY + 60);
+                g2d.drawString("Name: " +star.getName(), panelX + 2, panelY+15);
+                g2d.drawString("Mass: " + star.getMass() + " kg", panelX + 2, panelY + 30);
+                g2d.drawString("Speed: " + df.format(star.getSpeed()) + " km/s", panelX + 2, panelY + 45);
+                g2d.drawString("Direction: " + df.format(star.getDirection()) + " radians", panelX + 2, panelY + 60);
+                g2d.drawString("Radius: " + df.format(star.getSize()) + "m", panelX + 2, panelY + 75);
             }
         }
         ArrayList<Debris> toRemove = new ArrayList<>();

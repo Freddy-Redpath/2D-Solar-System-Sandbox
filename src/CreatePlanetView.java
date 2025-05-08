@@ -38,7 +38,7 @@ public class CreatePlanetView extends JPanel {
         sidePanel.setBackground(Color.LIGHT_GRAY);
 
 
-        JButton colorButton = new JButton("Select Color");
+        JButton colorButton = new JButton("Select Colour");
         colorButton.addActionListener(e -> {
             Color newColor = JColorChooser.showDialog(this, "Choose Planet Color", selectedColor);
             if (newColor != null) {
@@ -95,6 +95,7 @@ public class CreatePlanetView extends JPanel {
         JButton addPlanetButton = new JButton("Add Planet");
         addPlanetButton.addActionListener(e -> {
             double baseOrbitRadius = 2.0e11 + (Main.solarSystem.getPlanets().size() * 1e9);
+
 
 // Random angle around the Sun
             double angle = Math.random() * 2 * Math.PI;
